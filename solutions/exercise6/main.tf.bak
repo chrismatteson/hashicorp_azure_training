@@ -5,18 +5,37 @@ resource "random_id" "project_name" {
   byte_length = 4
 }
 
-# generate client seceret
 resource "random_id" "client_secret" {
   byte_length = 32
 }
 
 # Azure Resources
+data "azurerm_client_config" "current" {}
+
 resource "azurerm_resource_group" "main" {
   name     = "${random_id.project_name.hex}-rg"
   location = "${var.location}"
+
+  tags {
+    DoNotDelete = "true"
+  }
 }
 
-# Azure Networking Resources
+resource "azurerm_azuread_application" "vaultapp" {
+  name = "${random_id.project_name.hex}-vaultapp"
+}
+
+resource "azurerm_azuread_service_principal" "vaultapp" {
+  application_id = "${azurerm_azuread_application.vaultapp.application_id}"
+}
+
+resource "azurerm_azuread_service_principal_password" "vaultapp" {
+  service_principal_id = "${azurerm_azuread_service_principal.vaultapp.id}"
+  value                = "${random_id.client_secret.id}"
+  end_date             = "2020-01-01T01:02:03Z"
+  depends_on           = ["azurerm_role_assignment.role_assignment"]
+}
+
 resource "azurerm_virtual_network" "main" {
   name                = "${random_id.project_name.hex}-vnet"
   address_space       = ["10.0.0.0/16"]
@@ -31,6 +50,7 @@ resource "azurerm_subnet" "main" {
   address_prefix       = "10.0.1.0/24"
 }
 
+# VM Resources
 resource "azurerm_public_ip" "main" {
   name                         = "${random_id.project_name.hex}-pubip"
   location                     = "${azurerm_resource_group.main.location}"
@@ -51,43 +71,12 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
-# Data Sources
-data "azurerm_client_config" "current" {}
-
-data "azurerm_subscription" "subscription" {}
-
-data "azurerm_builtin_role_definition" "builtin_role_definition" {
-  name = "Contributor"
-}
-
 data "template_file" "setup" {
   template = "${file("setupvault.tpl")}"
 
   vars {
     vault_url             = "${var.vault_url}"
   }
-}
-
-# AzureAD resources
-resource "azurerm_azuread_application" "vaultapp" {
-  name = "${random_id.project_name.hex}-vaultapp"
-}
-
-resource "azurerm_azuread_service_principal" "vaultapp" {
-  application_id = "${azurerm_azuread_application.vaultapp.application_id}"
-}
-
-resource "azurerm_azuread_service_principal_password" "vaultapp" {
-  service_principal_id = "${azurerm_azuread_service_principal.vaultapp.id}"
-  value                = "${random_id.client_secret.id}"
-  end_date             = "2020-01-01T01:02:03Z"
-  depends_on           = ["azurerm_role_assignment.role_assignment"]
-}
-
-resource "azurerm_role_assignment" "role_assignment" {
-  scope              = "${data.azurerm_subscription.subscription.id}"
-  role_definition_id = "${data.azurerm_subscription.subscription.id}${data.azurerm_builtin_role_definition.builtin_role_definition.id}"
-  principal_id       = "${azurerm_azuread_service_principal.vaultapp.id}"
 }
 
 resource "azurerm_virtual_machine" "main" {
@@ -142,4 +131,21 @@ resource "azurerm_virtual_machine_extension" "virtual_machine_extension" {
         "port": 50342
     }
 SETTINGS
+}
+
+data "azurerm_subscription" "subscription" {}
+
+data "azurerm_builtin_role_definition" "builtin_role_definition" {
+  name = "Contributor"
+}
+
+# Grant the service principal contributor rights to the current subscription
+resource "azurerm_role_assignment" "role_assignment" {
+  scope              = "${data.azurerm_subscription.subscription.id}"
+  role_definition_id = "${data.azurerm_subscription.subscription.id}${data.azurerm_builtin_role_definition.builtin_role_definition.id}"
+  principal_id       = "${azurerm_azuread_service_principal.vaultapp.id}"
+
+  lifecycle {
+    ignore_changes = ["name"]
+  }
 }

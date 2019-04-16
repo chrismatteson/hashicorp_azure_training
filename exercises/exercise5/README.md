@@ -10,3 +10,5 @@ https://www.terraform.io/docs/providers/azurerm/r/azuread_service_principal_pass
 https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html
 
 `HINT 1: Use azurerm_builtin_role_defintion data source from prior exercise for the role_definition_id.`
+
+`HINT 2: Create a new random_id for client_secret.`

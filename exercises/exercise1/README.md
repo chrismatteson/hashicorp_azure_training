@@ -10,4 +10,4 @@ https://www.terraform.io/docs/commands/plan.html
 https://www.terraform.io/docs/commands/apply.html
 https://www.terraform.io/docs/providers/azurerm/r/resource_group.html
 
-`HINT 1: Create a seperate folder for each exercise. You'll need to run the init-plan-apply workflow in each folder.`
+`HINT 1: If you want your code to be completely reusable, use random_id to generate unique names. For instance, we could create a resource "random_id" "project_name" and use intepolation to pass ${random_id.project_name.hex} as the input to any name fields. https://www.terraform.io/docs/providers/random/r/id.html`
