@@ -4,6 +4,7 @@
 output "download vault" {
   value       = "sudo wget ${var.vault_url} -P /usr/local/bin/vault; sudo chmod 755 /usr/local/bin/vault"
   description = "Command to download and install Vault binary"
+}
 
 output "vault config" {
   value       = "export VAULT_ADDR=http://${azurerm_public_ip.main.ip_address}:8200"
