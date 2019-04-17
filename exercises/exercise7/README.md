@@ -10,6 +10,6 @@ Deploy and connect to Vault.
 ### 7.1 Tasks
 * Initialize, Unseal, and Authenticate to Vault using the initial root token.
 
-* https://learn.hashicorp.com/vault/getting-started/deploy
+https://learn.hashicorp.com/vault/getting-started/deploy
 
 `HINT 1: Copy the unseal keys and initial root token somewhere incase you need to use them again`

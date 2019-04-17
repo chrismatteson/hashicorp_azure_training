@@ -15,7 +15,7 @@ Review and Revoke leases
 * Revoke a single lease, show that it's been revoked.
 * Revoke all the leases, show that they have all been revoked.
 
-* https://www.vaultproject.io/docs/concepts/lease.html
+https://www.vaultproject.io/docs/concepts/lease.html
 
 ## 9.2 HashiCorp Vault - Transit Engine
 Setup Transit Engine
