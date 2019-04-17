@@ -155,26 +155,44 @@ resource "azurerm_virtual_machine_extension" "virtual_machine_extension" {
 SETTINGS
 }
 
-resource "azurerm_sql_server" "sql" {
-  name                         = "${random_id.project_name.hex}-sql"
+resource "azurerm_postgresql_server" "sql" {
+  name                         = "${random_id.project_name.hex}-postgresql"
   resource_group_name          = "${azurerm_resource_group.main.name}"
   location                     = "${azurerm_resource_group.main.location}"
-  version                      = "12.0"
+
+  sku {
+    name     = "B_Gen5_2"
+    capacity = 2
+    tier     = "Basic"
+    family   = "Gen5"
+  }
+
+  storage_profile {
+    storage_mb            = 5120
+    backup_retention_days = 7
+    geo_redundant_backup  = "Disabled"
+  }
+
   administrator_login          = "sqladmin"
   administrator_login_password = "${random_id.sql_password.id}"
+  version                      = "9.5"
+  ssl_enforcement              = "Enabled"
 }
 
-resource "azurerm_sql_database" "database" {
-  name                = "my-mssql-database"
+resource "azurerm_postgresql_database" "database" {
+  name                = "exampledb"
   resource_group_name = "${azurerm_resource_group.main.name}"
-  location            = "${azurerm_resource_group.main.location}"
-  server_name         = "${azurerm_sql_server.sql.name}"
+  server_name         = "${azurerm_postgresql_server.sql.name}"
+  charset             = "UTF8"
+  collation           = "English_United States.1252"
 }
 
-resource "azurerm_sql_firewall_rule" "test" {
+resource "azurerm_postgresql_firewall_rule" "test" {
   name                = "FirewallRule1"
   resource_group_name = "${azurerm_resource_group.main.name}"
-  server_name         = "${azurerm_sql_server.sql.name}"
-  start_ip_address    = "${azurerm_public_ip.main.ip_address}"
-  end_ip_address      = "${azurerm_public_ip.main.ip_address}"
+  server_name         = "${azurerm_postgresql_server.sql.name}"
+#  start_ip_address    = "${azurerm_public_ip.main.ip_address}"
+#  end_ip_address      = "${azurerm_public_ip.main.ip_address}"
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "255.255.255.255"
 }

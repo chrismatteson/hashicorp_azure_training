@@ -8,4 +8,9 @@ Create new namespaces
 https://www.vaultproject.io/docs/enterprise/namespaces/index.htm
 
 ## 12.1 HashiCorp Vault - Sentinel
+Configure Sentinel
 
+### 12.1 Tasks
+* Configure and apply a sentinel policy
+
+https://www.vaultproject.io/docs/enterprise/sentinel/index.html

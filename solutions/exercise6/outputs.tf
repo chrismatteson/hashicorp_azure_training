@@ -11,12 +11,12 @@ output "vault config" {
   description = "Configure local vault agent to use public IP address of Vault Server"
 }
 
-output "SQL Server FQDN" {
-  value = "${azurerm_sql_server.sql.fully_qualified_domain_name}"
+output "PostgreSQL Server FQDN" {
+  value = "${azurerm_postgresql_server.sql.fqdn}"
 }
 
-output "SQL Server Username/Password" {
-  value = "${azurerm_sql_server.sql.administrator_login}\\${azurerm_sql_server.sql.administrator_login_password}"
+output "PostgreSQL Server Username/Password" {
+  value = "${azurerm_postgresql_server.sql.administrator_login}\\${azurerm_postgresql_server.sql.administrator_login_password}"
 }
 
 output "Subscription ID" {

@@ -12,7 +12,7 @@ https://www.hashicorp.com/resources/vault-oss-ui-introduction
 Use the Vault API
 
 ## 11.1 Tasks
-* Use the curl API to authenticate against vault with the root token and access SQL credentials
+* Use the curl API to authenticate against vault with the root token and access PostgreSQL credentials
 
 https://www.vaultproject.io/api/
 
