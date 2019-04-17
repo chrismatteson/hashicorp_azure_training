@@ -163,3 +163,18 @@ resource "azurerm_sql_server" "sql" {
   administrator_login          = "sqladmin"
   administrator_login_password = "${random_id.sql_password.id}"
 }
+
+resource "azurerm_sql_database" "database" {
+  name                = "my-mssql-database"
+  resource_group_name = "${azurerm_resource_group.main.name}"
+  location            = "${azurerm_resource_group.main.location}"
+  server_name         = "${azurerm_sql_server.sql.name}"
+}
+
+resource "azurerm_sql_firewall_rule" "test" {
+  name                = "FirewallRule1"
+  resource_group_name = "${azurerm_resource_group.main.name}"
+  server_name         = "${azurerm_sql_server.sql.name}"
+  start_ip_address    = "${azurerm_public_ip.main.ip_address}"
+  end_ip_address      = "${azurerm_public_ip.main.ip_address}"
+}

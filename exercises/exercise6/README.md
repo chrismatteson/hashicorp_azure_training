@@ -24,8 +24,10 @@ Manage non-virtual machine resources
 
 ### 6.2 Tasks
 * Create a managed SQL Server. Create a new random_id to provide the password.
+* Create a firewall rule to allow access from the public IP of our virtual machine
 
 https://www.terraform.io/docs/providers/azurerm/r/sql_server.html
+https://www.terraform.io/docs/providers/azurerm/r/sql_firewall_rule.html
 
 ## 6.3 HashiCorp Terraform - Add useful output
 Create serveral new outputs

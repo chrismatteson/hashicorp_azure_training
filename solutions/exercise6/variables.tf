@@ -14,5 +14,5 @@ variable "tags" {
 # Vault Binary URL
 variable vault_url {
   description = "URL to download Vault Enterprise"
-  default     = "https://releases.hashicorp.com/vault/1.0.0/vault_1.0.0_linux_amd64.zip"
+  default     = "http://hc-enterprise-binaries.s3.amazonaws.com/vault/ent/1.1.1/vault-enterprise_1.1.1%2Bent_linux_amd64.zip"
 }

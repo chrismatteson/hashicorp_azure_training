@@ -27,8 +27,8 @@ GROUP="vault"
 HOME="/srv/vault"
 
 # Detect package management system.
-YUM=$$(which yum 2>/dev/null)
-APT_GET=$$(which apt-get 2>/dev/null)
+YUM=$(which yum 2>/dev/null)
+APT_GET=$(which apt-get 2>/dev/null)
 
 user_rhel() {
   # RHEL user setup
