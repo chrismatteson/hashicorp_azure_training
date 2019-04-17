@@ -8,5 +8,5 @@ resource "random_id" "project_name" {
 # Azure Resources
 resource "azurerm_resource_group" "main" {
   name     = "${random_id.project_name.hex}-rg"
-  location = "${var.location}"
+  location = "eastus"
 }

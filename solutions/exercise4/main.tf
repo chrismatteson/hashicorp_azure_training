@@ -5,10 +5,16 @@ resource "random_id" "project_name" {
   byte_length = 4
 }
 
+# Local for tag to attach to all items
+locals {
+  tags = "${merge(var.tags, map("ProjectName", random_id.project_name.hex))}"
+}
+
 # Azure Resources
 resource "azurerm_resource_group" "main" {
   name     = "${random_id.project_name.hex}-rg"
   location = "${var.location}"
+  tags     = "${local.tags}"
 }
 
 # Azure Networking Resources
@@ -30,7 +36,7 @@ resource "azurerm_public_ip" "main" {
   name                         = "${random_id.project_name.hex}-pubip"
   location                     = "${azurerm_resource_group.main.location}"
   resource_group_name          = "${azurerm_resource_group.main.name}"
-  public_ip_address_allocation = "static"
+  allocation_method            = "Static"
 }
 
 resource "azurerm_network_interface" "main" {
@@ -51,7 +57,7 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "subscription" {}
 
-data "azurerm_builtin_role_definition" "builtin_role_definition" {
+data "azurerm_role_definition" "role_definition" {
   name = "Contributor"
 }
 

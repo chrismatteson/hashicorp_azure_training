@@ -10,10 +10,16 @@ resource "random_id" "client_secret" {
   byte_length = 32
 }
 
+# Local for tag to attach to all items
+locals {
+  tags = "${merge(var.tags, map("ProjectName", random_id.project_name.hex))}"
+}
+
 # Azure Resources
 resource "azurerm_resource_group" "main" {
   name     = "${random_id.project_name.hex}-rg"
   location = "${var.location}"
+  tags     = "${local.tags}"
 }
 
 # Azure Networking Resources
@@ -35,7 +41,7 @@ resource "azurerm_public_ip" "main" {
   name                         = "${random_id.project_name.hex}-pubip"
   location                     = "${azurerm_resource_group.main.location}"
   resource_group_name          = "${azurerm_resource_group.main.name}"
-  public_ip_address_allocation = "static"
+  allocation_method            = "Static"
 }
 
 resource "azurerm_network_interface" "main" {
@@ -69,16 +75,16 @@ data "template_file" "setup" {
 }
 
 # AzureAD resources
-resource "azurerm_azuread_application" "vaultapp" {
+resource "azuread_application" "vaultapp" {
   name = "${random_id.project_name.hex}-vaultapp"
 }
 
-resource "azurerm_azuread_service_principal" "vaultapp" {
-  application_id = "${azurerm_azuread_application.vaultapp.application_id}"
+resource "azuread_service_principal" "vaultapp" {
+  application_id = "${azuread_application.vaultapp.application_id}"
 }
 
-resource "azurerm_azuread_service_principal_password" "vaultapp" {
-  service_principal_id = "${azurerm_azuread_service_principal.vaultapp.id}"
+resource "azuread_service_principal_password" "vaultapp" {
+  service_principal_id = "${azuread_service_principal.vaultapp.id}"
   value                = "${random_id.client_secret.id}"
   end_date             = "2020-01-01T01:02:03Z"
   depends_on           = ["azurerm_role_assignment.role_assignment"]
@@ -87,7 +93,7 @@ resource "azurerm_azuread_service_principal_password" "vaultapp" {
 resource "azurerm_role_assignment" "role_assignment" {
   scope              = "${data.azurerm_subscription.subscription.id}"
   role_definition_id = "${data.azurerm_subscription.subscription.id}${data.azurerm_builtin_role_definition.builtin_role_definition.id}"
-  principal_id       = "${azurerm_azuread_service_principal.vaultapp.id}"
+  principal_id       = "${azuread_service_principal.vaultapp.id}"
 }
 
 resource "azurerm_virtual_machine" "main" {

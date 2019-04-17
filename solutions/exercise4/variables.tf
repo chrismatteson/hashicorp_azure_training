@@ -5,6 +5,12 @@ variable "location" {
   default = "eastus"
 }
 
+# Azure Tags
+variable "tags" {
+  type    = "map"
+  default = {}
+}
+
 # Vault Binary URL
 variable vault_url {
   description = "URL to download Vault Enterprise"

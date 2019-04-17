@@ -2,7 +2,7 @@
 Create an Azure Virtual Machine
 
 ### 6.0 Tasks
-Create an Azure Virtual Machine to use the resource group, and, network interface created in prior exercises.
+Create an Azure Virtual Machine to use the resource group, network interface, and template_file as custom_data, which were created in prior exercises.
 
 https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html
 
