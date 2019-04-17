@@ -21,3 +21,8 @@ https://www.vaultproject.io/docs/concepts/lease.html
 Setup Transit Engine
 
 ### 9.2 Tasks
+* Enable Transit Secrets Engine
+* Create a key
+* Encrypt and Decrypt a string
+
+https://www.vaultproject.io/docs/secrets/transit/index.html

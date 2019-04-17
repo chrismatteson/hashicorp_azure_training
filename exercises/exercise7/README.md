@@ -13,3 +13,13 @@ Deploy and connect to Vault.
 https://learn.hashicorp.com/vault/getting-started/deploy
 
 `HINT 1: Copy the unseal keys and initial root token somewhere incase you need to use them again`
+
+## 7.2 HashiCorp Vault - Enterprise License
+Enable Vault Enterprise features.
+
+### 7.2 Tasks
+* Write the license file provided by the Trainer into /sys/license
+* Verify that vault license is installed
+
+https://www.vaultproject.io/api/system/license.html
+https://www.vaultproject.io/docs/commands/status.html
