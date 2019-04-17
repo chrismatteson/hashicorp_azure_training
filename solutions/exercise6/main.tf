@@ -10,6 +10,11 @@ resource "random_id" "client_secret" {
   byte_length = 32
 }
 
+# generate sql password
+resource "random_id" "sql_password" {
+  byte_length = 32
+}
+
 # Local for tag to attach to all items
 locals {
   tags = "${merge(var.tags, map("ProjectName", random_id.project_name.hex))}"
@@ -62,7 +67,7 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "subscription" {}
 
-data "azurerm_builtin_role_definition" "builtin_role_definition" {
+data "azurerm_role_definition" "role_definition" {
   name = "Contributor"
 }
 
@@ -92,7 +97,7 @@ resource "azuread_service_principal_password" "vaultapp" {
 
 resource "azurerm_role_assignment" "role_assignment" {
   scope              = "${data.azurerm_subscription.subscription.id}"
-  role_definition_id = "${data.azurerm_subscription.subscription.id}${data.azurerm_builtin_role_definition.builtin_role_definition.id}"
+  role_definition_id = "${data.azurerm_subscription.subscription.id}${data.azurerm_role_definition.role_definition.id}"
   principal_id       = "${azuread_service_principal.vaultapp.id}"
 }
 
@@ -148,4 +153,13 @@ resource "azurerm_virtual_machine_extension" "virtual_machine_extension" {
         "port": 50342
     }
 SETTINGS
+}
+
+resource "azurerm_sql_server" "sql" {
+  name                         = "${random_id.project_name.hex}-sql"
+  resource_group_name          = "${azurerm_resource_group.main.name}"
+  location                     = "${azurerm_resource_group.main.location}"
+  version                      = "12.0"
+  administrator_login          = "sqladmin"
+  administrator_login_password = "${random_id.sql_password.id}"
 }

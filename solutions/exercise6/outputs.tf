@@ -11,6 +11,26 @@ output "vault config" {
   description = "Configure local vault agent to use public IP address of Vault Server"
 }
 
-output "vault-msi-auth" {
-  value = "vault write auth/azure/login role=\"dev-role\" subscription_id=\"${data.azurerm_client_config.current.subscription_id}\" resource_group_name=\"${azurerm_virtual_machine.main.resource_group_name}\" vm_name=\"${azurerm_virtual_machine.main.name}\" jwt=`curl http://localhost:50342/oauth2/token?resource=https://management.azure.com -H metadata:true | jq .access_token | tr -d '\"'"
+output "SQL Server FQDN" {
+  value = "${azurerm_sql_server.sql.fully_qualified_domain_name}"
+}
+
+output "SQL Server Username/Password" {
+  value = "${azurerm_sql_server.sql.administrator_login}\\${azurerm_sql_server.sql.administrator_login_password}"
+}
+
+output "Subscription ID" {
+  value = "${data.azurerm_client_config.current.subscription_id}"
+}
+
+output "Resource Group Name" {
+  value = "${azurerm_virtual_machine.main.resource_group_name}"
+}
+
+output "VM Name" {
+  value = "${azurerm_virtual_machine.main.name}"
+}
+
+output "JWT Token" {
+  value = "jwt=`curl http://localhost:50342/oauth2/token?resource=https://management.azure.com -H metadata:true | jq .access_token | tr -d '\"'"
 }
