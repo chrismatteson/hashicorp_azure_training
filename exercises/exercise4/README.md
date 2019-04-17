@@ -2,19 +2,19 @@
 Create data resources to gather data external sources
 
 ### 4.0 Tasks
-Create data sources for azurerm_client_config, azurerm_subscription, and azurerm_builtin_role_definition with the name Contributor.
+* Create data sources for azurerm_client_config, azurerm_subscription, and azurerm_builtin_role_definition with the name Contributor.
 
-https://www.terraform.io/docs/providers/azurerm/d/client_config.html
-https://www.terraform.io/docs/providers/azurerm/d/subscription.html
-https://www.terraform.io/docs/providers/azurerm/d/builtin_role_definition.html
+* https://www.terraform.io/docs/providers/azurerm/d/client_config.html
+* https://www.terraform.io/docs/providers/azurerm/d/subscription.html
+* https://www.terraform.io/docs/providers/azurerm/d/builtin_role_definition.html
 
 ## 4.1 HashiCorp Terraform - Data Resources
 Create data resources to create template files
 
 ### 4.1 Tasks
-Create a file called setupvault.tpl and copy the following code below into it. Then create a data template_file to pass vault_url variable.
+* Create a file called setupvault.tpl and copy the following code below into it. Then create a data template_file to pass vault_url variable.
 
-https://www.terraform.io/docs/providers/template/d/file.html
+* https://www.terraform.io/docs/providers/template/d/file.html
 
 `#!/bin/bash
 
@@ -133,49 +133,7 @@ sudo chmod 0664 /lib/systemd/system/vault.service
 sudo systemctl daemon-reload
 sudo chown -R vault:vault /etc/vault.d
 sudo chmod -R 0644 /etc/vault.d/*
-
-cat << EOF | sudo tee /etc/profile.d/vault.sh
-export VAULT_ADDR=http://127.0.0.1:8200
-export VAULT_SKIP_VERIFY=true
-EOF
-
 sudo systemctl enable vault
-sudo systemctl start vault
-
-sleep 60s
-export VAULT_ADDR=http://127.0.0.1:8200
-export VAULT_TOKEN=`vault operator init -format json | jq -r .root_token`
-vault token create -id=${vault_token}
-vault auth enable azure
-vault secrets enable aws
-vault write aws/config/root access_key=${aws_iam_access_key} secret_key=${aws_iam_secret_key} region=${aws_region}
-vault write aws/roles/s3-role credential_type=iam_user policy_document=-<<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "s3:*",
-      "Resource": [
-        "arn:aws:s3:::${aws_s3_bucket}",
-        "arn:aws:s3:::${aws_s3_bucket}/*"
-      ]
-    }
-  ]
-}
-EOF
-vault write auth/azure/config tenant_id=${azure_tenant_id} resource=https://management.azure.com client_id=${azure_application_id} client_secret=${azure_sp_password}
-vault policy write s3-policy -<<EOF
-path "aws/creds/s3-role" {
-  capabilities = ["read"]
-}
-EOF
-vault write auth/azure/role/dev-role policies=\"s3-policy\" bound_subscription_ids=${azure_subscription_id} bound_resource_groups=${azure_resource_group}`
-
-https://portal.azure.com/
-https://azure.microsoft.com/en-us/free
+sudo systemctl start vault`
 
 
-`HINT 1: Create a seperate folder for this Terraform code. Terraform treats each folder entirely seperate, and this should simplify dependancies.`
-
-`HINT 2: The Helm provider should be able to use the KUBECONFIG exported in the last step of 3.4.0. Use kubectl to ensure it's configured correctly. Advanced topic - use remote data sources to pull in information from the state file created for 3.4.0.`
