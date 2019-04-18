@@ -5,11 +5,11 @@ Create a module for Azure AD resources
 * Create a subfolder called "modules" and another subfolder called "service_principal"
 * Write a variables.tf, main.tf, and outputs.tf file in this folder to create an azuread_application, azuread_service_principal, and azuread_service_principal_password.
 
-https://www.terraform.io/docs/configuration/modules.html
-https://www.terraform.io/docs/providers/azuread/r/application.html
-https://www.terraform.io/docs/providers/azuread/r/service_principal.html
-https://www.terraform.io/docs/providers/azuread/r/service_principal_password.htm
-https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html
+https://www.terraform.io/docs/configuration/modules.html  
+https://www.terraform.io/docs/providers/azuread/r/application.html  
+https://www.terraform.io/docs/providers/azuread/r/service_principal.html  
+https://www.terraform.io/docs/providers/azuread/r/service_principal_password.html  
+https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html  
 
 `HINT 1: Use azurerm_role_defintion data source from prior exercise for the role_definition_id.`
 

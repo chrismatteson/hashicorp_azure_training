@@ -4,9 +4,9 @@ Create data resources to gather data external sources
 ### 4.0 Tasks
 * Create data sources for azurerm_client_config, azurerm_subscription, and azurerm_builtin_role_definition with the name Contributor.
 
-https://www.terraform.io/docs/providers/azurerm/d/client_config.html
-https://www.terraform.io/docs/providers/azurerm/d/subscription.html
-https://www.terraform.io/docs/providers/azurerm/d/builtin_role_definition.html
+https://www.terraform.io/docs/providers/azurerm/d/client_config.html  
+https://www.terraform.io/docs/providers/azurerm/d/subscription.html  
+https://www.terraform.io/docs/providers/azurerm/d/builtin_role_definition.html  
 
 ## 4.1 HashiCorp Terraform - Data Resources
 Create data resources to create template files
@@ -14,7 +14,7 @@ Create data resources to create template files
 ### 4.1 Tasks
 * Create a file called setupvault.tpl and copy the following code below into it. Then create a data template_file to pass vault_url variable.
 
-https://www.terraform.io/docs/providers/template/d/file.html
+https://www.terraform.io/docs/providers/template/d/file.html  
 
 `#!/bin/bash
 
@@ -135,5 +135,3 @@ sudo chown -R vault:vault /etc/vault.d
 sudo chmod -R 0644 /etc/vault.d/*
 sudo systemctl enable vault
 sudo systemctl start vault`
-
-

@@ -12,9 +12,9 @@ Deploy and connect to Vault.
 * View status of vault
 * Lookup token information
 
-https://learn.hashicorp.com/vault/getting-started/deploy
-https://www.vaultproject.io/docs/commands/status.html
-https://www.vaultproject.io/docs/commands/token/lookup.html
+https://learn.hashicorp.com/vault/getting-started/deploy  
+https://www.vaultproject.io/docs/commands/status.html  
+https://www.vaultproject.io/docs/commands/token/lookup.html  
 
 `HINT 1: Copy the unseal keys and initial root token somewhere incase you need to use them again`
 
@@ -25,4 +25,4 @@ Enable Vault Enterprise features.
 * Write the license file provided by the Trainer into /sys/license
 * Verify that vault license is installed
 
-https://www.vaultproject.io/api/system/license.html
+https://www.vaultproject.io/api/system/license.html  

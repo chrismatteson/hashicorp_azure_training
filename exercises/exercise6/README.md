@@ -4,7 +4,7 @@ Create an Azure Virtual Machine
 ### 6.0 Tasks
 * Create an Azure Virtual Machine to use the resource group, network interface, and template_file as custom_data, which were created in prior exercises.
 
-https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html
+https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html  
 
 `HINT 1: Use vm_size Standard_A2_v2.`
 
@@ -14,8 +14,8 @@ Create VM extension
 ### 6.1 Tasks
 * Add the MSI virtual machine extension to the VM created in the prior exercise.
 
-https://www.terraform.io/docs/providers/azurerm/r/virtual_machine_extension.html
-https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
+https://www.terraform.io/docs/providers/azurerm/r/virtual_machine_extension.html  
+https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview  
 
 `HINT 1: Use the publisher "Microsoft.ManagedIdentity", the type "ManagedIdentityExtensionForLinux" and type_handler_version "1.0"`
 
@@ -26,9 +26,9 @@ Manage non-virtual machine resources
 * Create a managed MySQL Server Instance and Database. Create a new random_id to provide the password.
 * Create a firewall rule to allow access from the public IP of our virtual machine
 
-https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html
-https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html
-https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html
+https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html  
+https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html  
+https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html  
 
 ## 6.3 HashiCorp Terraform - Add useful output
 Create serveral new outputs

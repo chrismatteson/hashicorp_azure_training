@@ -6,7 +6,7 @@ Use the Vault UI
 * Login with root token.
 * Verify ability to generate dynamic credentials and use transit engine
 
-https://www.hashicorp.com/resources/vault-oss-ui-introduction
+https://www.hashicorp.com/resources/vault-oss-ui-introduction  
 
 ## 12.1 HashiCorp Vault - API
 Use the Vault API
@@ -14,5 +14,4 @@ Use the Vault API
 ## 12.1 Tasks
 * Use the curl API to authenticate against vault with the root token and access MySQL credentials
 
-https://www.vaultproject.io/api/
-
+https://www.vaultproject.io/api/  
