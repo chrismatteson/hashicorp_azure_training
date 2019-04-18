@@ -1,16 +1,18 @@
-## 12.0 HashiCorp Vault - Namespaces
-Create new namespaces
+## 12.0 HashiCorp Vault - UI
+Use the Vault UI
 
 ### 12.0 Tasks
-* Create a new namespace
-* Verify that when configured to the new namespace, there is no access to work created before
+* Browse to http://<vault public ip>:8200
+* Login with root token.
+* Verify ability to generate dynamic credentials and use transit engine
 
-https://www.vaultproject.io/docs/enterprise/namespaces/index.htm
+https://www.hashicorp.com/resources/vault-oss-ui-introduction
 
-## 12.1 HashiCorp Vault - Sentinel
-Configure Sentinel
+## 12.1 HashiCorp Vault - API
+Use the Vault API
 
-### 12.1 Tasks
-* Configure and apply a sentinel policy
+## 12.1 Tasks
+* Use the curl API to authenticate against vault with the root token and access MySQL credentials
 
-https://www.vaultproject.io/docs/enterprise/sentinel/index.html
+https://www.vaultproject.io/api/
+

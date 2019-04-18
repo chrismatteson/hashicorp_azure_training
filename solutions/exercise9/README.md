@@ -1,24 +1,16 @@
 ## 9.0 Solutions
-`vault secrets enable database`
-`vault write database/config/exampledb \
-    plugin_name=mysql-database-plugin \
-    allowed_roles="my-role" \
-    connection_url="{{username}}:{{password}}@tcp(911dfe0a-mysql.database.windows.net:3306)/" \
-    username="sqladmin@911dfe0a-mysql" \
-    password="gcUXCPaUhoqNr277W6YXgwIjQjhKb95FVAQDSiD4UHE"`
-`vault write database/roles/my-role \
-    db_name=exampledb \
-    creation_statements="CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON *.* TO '{{name}}'@'%';" \ 
-    default_ttl="1h" \
-    max_ttl="24h"`
+`vault auth enable azure`
+`vault write auth/azure/config \
+  tenant_id=${data.azurerm_client_config.current.tenant_id} \
+  resource=https://management.azure.com \
+  client_id=${azuread_application.vaultapp.application_id} \
+  client_secret=${azuread_service_principal_password.vaultapp.value}`
 
 ## 9.1 Solutions
-`vault read database/leases
-`vault revoke
-`vault revoke
-
-## 9.2 Solutions
-`vault secrets enable transit`
-`vault write -f transit/keys/my-key`
-`vault write transit/encrypt/my-key plaintext=$(base64 <<< "my secret data")`
-`vault write transit/decrypt/my-key ciphertext=vault:v1:8SDd3WHDOjf7mq69CyCqYjBXAiQQAVZRkFM13ok481zoCmHnSeDX9vyf7w==`base64 --decode <<< "bXkgc2VjcmV0IGRhdGEK"`
+`vault secrets enable -version2 kv`
+`vault kv enable-versioning secret/`
+`vault kv put secret/my-secret my-value=s3cr3t`
+`vault kv get secret/my-secret`
+`vault kv put secret/my-secret my-value=new-s3cr3t`
+`vault kv get secret/my-secret`
+`vault kv get -verison=1 secret/my-secret`

@@ -1,28 +1,20 @@
-## 9.0 HashiCorp Vault - Dynamic Secrets
-Setup Dynamic Secrets
+## 9.0 HashiCorp Vault - Auth Method
+Create Auth Method
 
 ### 9.0 Tasks
-* Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
-* Read the creds path and show that dynamic secrets are generated each time.
+* Enable and configure azure auth method.
 
-https://www.vaultproject.io/docs/secrets/databases/mysql.html
+https://www.vaultproject.io/docs/auth/azure.html
 
-## 9.1 HashiCorp Vault - Leases
-Review and Revoke leases
+`HINT 1: Use the tenant_id, application_id, and service_principal_password you created with your Terraform code. Use the state commands to find the values of each these items`
+
+## 9.1 HashiCorp Vault - Key/Value
+Setup and use KV secret engine
 
 ### 9.1 Tasks
-* View the leases from the creds generated in the prior step.
-* Revoke a single lease, show that it's been revoked.
-* Revoke all the leases, show that they have all been revoked.
+* Setup KV version 2.
+* Enable secret versioning
+* Create a secret, read the secret.
+* Overwrite the secret, read both the new and old values.
 
-https://www.vaultproject.io/docs/concepts/lease.html
-
-## 9.2 HashiCorp Vault - Transit Engine
-Setup Transit Engine
-
-### 9.2 Tasks
-* Enable Transit Secrets Engine
-* Create a key
-* Encrypt and Decrypt a string
-
-https://www.vaultproject.io/docs/secrets/transit/index.html
+https://www.vaultproject.io/docs/secrets/kv/kv-v2.html

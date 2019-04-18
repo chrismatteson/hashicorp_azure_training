@@ -1,16 +1,29 @@
-## 10.0 HashiCorp Vault - Policies
-Create policies to limit access to MySQL creds
+## 10.0 HashiCorp Vault - Dynamic Secrets
+Setup Dynamic Secrets
 
 ### 10.0 Tasks
-* Create policy to allow read access to MySQL server creds path
+* Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
+* Read the creds path and show that dynamic secrets are generated each time.
 
-https://www.vaultproject.io/docs/concepts/policies.html
+https://www.vaultproject.io/docs/secrets/databases/mysql.html
 
-## 10.0 HashiCorp Vault - Roles
-Create Azure Auth Role and access secrets using JWT token
+## 10.1 HashiCorp Vault - Leases
+Review and Revoke leases
 
 ### 10.1 Tasks
-* Create a role for Azure auth using the policy created in the prior task and bound to the subscription_id and resource_group. 
-* Authenticate to Vault using the JWT token, verify access to the MySQL creds, and that there is not access to view th MySQL Secret Engine configuration.
+* View the leases from the creds generated in the prior step.
+* Revoke a single lease, show that it's been revoked.
+* Revoke all the leases, show that they have all been revoked.
 
-https://www.vaultproject.io/docs/auth/azure.html
+https://www.vaultproject.io/docs/concepts/lease.html
+https://www.vaultproject.io/api/system/leases.html
+
+## 10.2 HashiCorp Vault - Transit Engine
+Setup Transit Engine
+
+### 10.2 Tasks
+* Enable Transit Secrets Engine
+* Create a key
+* Encrypt and Decrypt a string
+
+https://www.vaultproject.io/docs/secrets/transit/index.html
