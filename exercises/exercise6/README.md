@@ -19,15 +19,16 @@ https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure
 
 `HINT 1: Use the publisher "Microsoft.ManagedIdentity", the type "ManagedIdentityExtensionForLinux" and type_handler_version "1.0"`
 
-## 6.2 HashiCorp Terraform - PostgreSQL Server
+## 6.2 HashiCorp Terraform - MySQL Server
 Manage non-virtual machine resources
 
 ### 6.2 Tasks
-* Create a managed PostgreSQL Server Instance and Database. Create a new random_id to provide the password.
+* Create a managed MySQL Server Instance and Database. Create a new random_id to provide the password.
 * Create a firewall rule to allow access from the public IP of our virtual machine
 
-https://www.terraform.io/docs/providers/azurerm/r/sql_server.html
-https://www.terraform.io/docs/providers/azurerm/r/sql_firewall_rule.html
+https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html
+https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html
+https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html
 
 ## 6.3 HashiCorp Terraform - Add useful output
 Create serveral new outputs

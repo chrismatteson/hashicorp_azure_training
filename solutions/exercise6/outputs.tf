@@ -12,11 +12,11 @@ output "vault config" {
 }
 
 output "PostgreSQL Server FQDN" {
-  value = "${azurerm_postgresql_server.sql.fqdn}"
+  value = "${azurerm_mysql_server.sql.fqdn}"
 }
 
 output "PostgreSQL Server Username/Password" {
-  value = "${azurerm_postgresql_server.sql.administrator_login}\\${azurerm_postgresql_server.sql.administrator_login_password}"
+  value = "${azurerm_mysql_server.sql.administrator_login}\\${azurerm_mysql_server.sql.administrator_login_password}"
 }
 
 output "Subscription ID" {

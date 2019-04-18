@@ -2,10 +2,10 @@
 Setup Dynamic Secrets
 
 ### 9.0 Tasks
-* Enable Vault Database Secret Engine and configure it to connect to postgresql_database created in a prior exercise.
+* Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
 * Read the creds path and show that dynamic secrets are generated each time.
 
-https://www.vaultproject.io/docs/secrets/databases/postgresql.html
+https://www.vaultproject.io/docs/secrets/databases/mysql.html
 
 ## 9.1 HashiCorp Vault - Leases
 Review and Revoke leases
