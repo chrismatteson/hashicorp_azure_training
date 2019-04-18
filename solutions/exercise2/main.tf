@@ -20,10 +20,11 @@ resource "azurerm_virtual_network" "main" {
 }
 
 resource "azurerm_subnet" "main" {
-  name                 = "${random_id.project_name.hex}-subnet"
+  count                = 3
+  name                 = "${random_id.project_name.hex}-subnet-${count.index}"
   resource_group_name  = "${azurerm_resource_group.main.name}"
   virtual_network_name = "${azurerm_virtual_network.main.name}"
-  address_prefix       = "10.0.1.0/24"
+  address_prefix       = "10.0.${count.index+1}.0/24"
 }
 
 resource "azurerm_public_ip" "main" {
@@ -40,7 +41,7 @@ resource "azurerm_network_interface" "main" {
 
   ip_configuration {
     name                          = "config1"
-    subnet_id                     = "${azurerm_subnet.main.id}"
+    subnet_id                     = "${azurerm_subnet.main.0.id}"
     public_ip_address_id          = "${azurerm_public_ip.main.id}"
     private_ip_address_allocation = "dynamic"
   }
