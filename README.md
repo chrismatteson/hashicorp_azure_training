@@ -7,7 +7,7 @@ Before beginning this training, each participate should have basic working knowl
 1) Azure Fundamentals: https://docs.microsoft.com/en-us/learn/paths/azure-fundamentals/
 2) Github: https://guides.github.com/activities/hello-world/
 
-Each participate should also have a login to an active Azure subscription. Participatents should be aware that some of the exercises could incur billing from Azure.
+Each participate should also have a login to an active Azure subscription with the permissions to deploy resources and create service principals. Please double check the service principal permission as it's the commonly locked down for enterprise customers. Participatents should be aware that some of the exercises could incur billing from Azure.
 
 ## Slides
 The slides are only accessible to the instructor. A pdf of these slides can be sent out to the class afterwards if desired.
