@@ -16,7 +16,8 @@ Create data resources to create template files
 
 https://www.terraform.io/docs/providers/template/d/file.html  
 
-`#!/bin/bash
+```
+#!/bin/bash
 
 sudo apt-get install -y unzip jq
 # apt-get install -y libtool libltdl-dev 
@@ -134,4 +135,5 @@ sudo systemctl daemon-reload
 sudo chown -R vault:vault /etc/vault.d
 sudo chmod -R 0644 /etc/vault.d/*
 sudo systemctl enable vault
-sudo systemctl start vault`
+sudo systemctl start vault
+```
