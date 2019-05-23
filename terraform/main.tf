@@ -12,6 +12,13 @@ resource "azuread_user" "user" {
   password            = "${random_id.user.*.id[count.index]}"
 }
 
+resource "azurerm_role_assignment" "user" {
+  count                = "${length(var.users)}"
+  scope                = "${data.azurerm_subscription.primary.id}"
+  role_definition_name = "Contributor"
+  principal_id         = "${azuread_user.user.*.id[count.index]}"
+}
+
 # Create shared Service Principal
 data "azurerm_client_config" "current" {}
 
