@@ -1,15 +1,28 @@
 # Create passwords and user accounts for every student
-resource "random_id" "user" {
+
+resource "random_pet" "password" {
+  length = 1
+}
+
+resource "random_string" "password" {
   count       = "${length(var.users)}"
-  byte_length = "12"
+  length      = 6
+  min_upper   = 1
+  lower       = false
+  min_numeric = 1
+  min_special = 1
+}
+
+data "azuread_domains" "default" {
+  only_default = true
 }
 
 resource "azuread_user" "user" {
   count               = "${length(var.users)}"
-  user_principal_name = "${element(var.users,count.index)}@hashicorptraining.onmicrosoft.com"
+  user_principal_name = "${element(var.users,count.index)}@${data.azuread_domains.default.domains.0.domain_name}"
   display_name        = "${element(var.users,count.index)}"
   mail_nickname       = "${element(var.users,count.index)}"
-  password            = "${random_id.user.*.id[count.index]}"
+  password            = "${random_pet.password.*.id[count.index]}${random_string.password.*.result[count.index]}"
 }
 
 resource "azurerm_role_assignment" "user" {
