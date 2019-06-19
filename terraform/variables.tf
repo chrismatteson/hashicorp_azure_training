@@ -1,3 +1,0 @@
-variable "users" {
-  type    = "list"
-}	
