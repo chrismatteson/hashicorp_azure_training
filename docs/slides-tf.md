@@ -649,7 +649,17 @@ Here is some sample dialog you can use for the demo. Keep it short and sweet. No
 name: chapter-1-exercise
 .center[.lab-header[👩🏼‍🔬 Chapter 1: Exercise]]
 <br>
-Complete Exercise 0 - Get Connected
+## 0.0 HashiCorp Terraform - Cloud CLI
+Get setup with Terraform on Azure Cloud CLI
+
+### 0.0 Tasks
+* Login to Azure Portal, start Cloud CLI session, and verify Terraform is installed
+
+https://portal.azure.com  
+https://azure.microsoft.com/en-us/free  
+https://docs.microsoft.com/en-us/azure/cloud-shell/overview  
+
+`HINT 1: Run Terraform without any other commands for help information.`
 
 ---
 name: chapter-1-review
@@ -950,78 +960,39 @@ name: chapter-2-quiz-answer
 It's important to understand how Terraform views code, state, and reality. If you're ever unsure about what will happen you can run **`terraform plan`** to find out.
 
 ---
-name: chapter-2-exercise
-.center[.lab-header[👩🏼‍🔬 Chapter 2: Exercise]]
+name: chapter-2-exercise-1
+.center[.lab-header[👩🏼‍🔬 Chapter 2: Exercise 1]]
 <br>
-Complete Exercise 1 - Manage Resources
+### Create Resource Group
+* Write Terraform code to create a resource group
+* Explicitely state the azurerm provider using the provider syntax
+
+https://www.terraform.io/intro/index.html  
+https://www.terraform.io/docs/commands/init.html  
+https://www.terraform.io/docs/commands/plan.html  
+https://www.terraform.io/docs/commands/apply.html  
+https://www.terraform.io/docs/providers/azurerm/r/resource_group.html  
+https://www.terraform.io/docs/configuration/providers.html  
+
+`HINT 1: If you want your code to be completely reusable, use random_id to generate unique names. For instance, we could create a resource "random_id" "project_name" and use intepolation to pass ${random_id.project_name.hex} as the input to any name fields. https://www.terraform.io/docs/providers/random/r/id.html`
 
 ---
-name: defining-variables
-Where are Variables Defined?
--------------------------
-Open up the **variables.tf** file and you can see all of the defined variables. Note that some of them have default settings. If you omit the default, the user will be prompted to enter a value.
+name: chapter-2-exercise-2
+.center[.lab-header[👩🏼‍🔬 Chapter 2: Exercise 2]]
+<br>
+### Manage State
+* Use Terraform CLI to view all of the state at once. Compare to viewing the state file directly.
+* Use Terraform CLI to view the Resource Graph.
+* Use Terraform CLI to remove the Resource Group created in task 1.0 from the state file. Show that a Terraform plan now wants to recreate the Resource Group.
+* Use Terraform CLI to import the Resource Group. Show that a Terraform plan does not want to make any changes.
+* Use Terraform CLI to taint the Resource Group in the state file. Show that a Terraform plan now wants to recreate the Group. Untaint the Resource Group and show Terraform plan no longer wants to make changes.
+* Use Terraform CLI to destroy everything.
+* Use Terraform CLI to create just the random_id using target.
 
-Here we are *declaring* all the variables that we intend to use in our Terraform code.
+https://www.terraform.io/docs/import  
+https://www.terraform.io/docs/state/index.html  
+https://www.terraform.io/docs/commands  
 
-```tex
-variable "prefix" {
-  description = "This prefix will be included in the name of most resources."
-}
-
-variable "location" {
-  description = "The region where the virtual network is created."
-  default     = "centralus"
-}
-
-variable "address_space" {
-  description = "The address space that is used by the virtual network. You can supply more than one address space. Changing this forces a new resource to be created."
-  default     = "10.0.0.0/16"
-}
-```
-
-???
-**If you're curious where all these variables are defined, you can see them all in the _variables.tf_ file. Here we are simply defining all the available settings, and optionally declaring some default values. These defaults are what terraform will use if your user doesn't override them with their own settings.**
-
-Q. Where could you override these defaults?  
-A. In the terraform.tfvars file, or optionally on the command line or via environment variables. The most common approach is to use a tfvars file.
-
----
-name: chapter-2-lab
-.center[.lab-header[👩‍💻 Lab Exercise 2: Set a Variable]]
-
-Choose the Azure location nearest to you and set the 'location' variable. You can find a list of Azure locations here:
-
-https://azure.microsoft.com/en-us/global-infrastructure/locations/
-
-Examples:
-```
-centralus  - Iowa
-eastus     - Virginia
-westus     - California
-uksouth    - London
-southindia - Chennai
-eastasia   - Hong Kong
-canadacentral - Toronto
-```
-
-???
-Have the students do this one on their own. They can choose any region, please let us know if you find any regions that do not support the VM type we use in this workshop.
-
----
-name: chapter-2-lab-answer
-.center[.lab-header[👩‍💻 Lab Exercise 2: Solution]]
-<br><br><br>
-Your **terraform.tfvars** file should now look similar to this:
-
-```tex
-# Rename or copy this file to terraform.tfvars
-# Prefix must be all lowercase letters, no symbols please.
-
-prefix = "yourname"
-location = "uksouth"
-```
-
-If you wish you can run **`terraform plan`** again to see a different result. Notice how your location setting has overridden the default setting.
 
 ---
 name: chapter-2-review
@@ -1029,10 +1000,8 @@ name: chapter-2-review
 -------------------------
 .contents[
 In this chapter we:
-* Used the **`terraform init`** command
-* Ran the **`terraform plan`** command
-* Learned about variables
-* Set our location and prefix
+* Created our first Terraform resource
+* Managed a Terraform state file
 ]
 
 ---
@@ -1040,11 +1009,256 @@ name: Chapter-3
 class: center,middle
 .section[
 Chapter 3  
-terraform plan, apply and destroy
+Interpolations, Variables, and Outputs
 ]
 
 ???
-**In this chapter we'll actually build real infrastructure using our sample code.**
+**In this chapter we'll learn some helpful tools to build reusable Terraform code.**
+
+---
+name: interpolations-1
+Interpolations
+-------------------------
+Powerful tool to reference data from other locations in Terraform code, perform functions, and iterate.
+
+Inside of a string:
+```hcl
+"${random_id.project_name.hex}-training-workshop"
+}
+```
+
+Outside of a string:
+<br><br>
+<=0.11
+```hcl
+${var.name}
+```
+\>0.12
+```hcl
+var.name
+```
+
+???
+If you followed the hint and used Random_id in the prior exercise, you've already used interpolation. This syntax allowed us to take information from one resource and input into another resource.
+
+Prior to 0.12, interpolation always had to be encased in a dollar sign and curly braces. With Terraform 0.12 and HCL 2, interpolation is a native part of the language, so while the dollar sign curly brace method is still allowd, it's now only required inside of strings.
+
+---
+name: interpolations-2
+Interpolations - Count
+-------------------------
+
+```hcl
+variable "count" {
+  default = 2
+}
+ 
+resource "azurerm_network_interface" "web" {
+  name  = "nic-${count.index}"
+  count = var.count
+}
+ 
+resource "azurerm_virtual_machine" "web" {
+  count                 = var.count
+  network_interface_ids = ["${element(azurerm_network_interface.web.*.id, count.index)}"]
+}
+```
+
+???
+Prior to 0.12, the only way to create multiple resources was using count parameter.
+
+---
+name: interpolations-3
+Interpolations - Loops
+-------------------------
+
+
+???
+
+
+---
+name: interpolations-3
+Interpolations - Conditionals
+-------------------------
+
+```hcl
+resource "azurerm_virtual_machine" "web" {
+  subnet = "${var.size == "small" ? var.small_vm : var.large_vm}"
+}
+
+```
+
+???
+Terraform interpolation language even supports conditional logic
+
+---
+name: interpolations-4
+Interpolations - If statements
+-------------------------
+
+```hcl
+resource "azurerm_virtual_machine" "web" {
+  subnet = "${var.size == "small" ? var.small_vm : var.large_vm}"
+}
+
+```
+
+???
+Terraform interpolation language even supports conditional logic
+---
+name: interpolations-5
+Interpolations - Built-In Functions
+-------------------------
+
+**concat(list1, list2, ...)** - Combines two or more lists into a single list. 
+*concat(var.base_tags, var.additional_tags)*
+
+
+**element(list, index)** - Returns a single element from a list at the given index.
+*element(azurerm_subnet.foo.*.id, count.index)*
+
+**format(format, args, ...)** - Formats a string according to the given format. The syntax for the format is standard sprintf syntax. 
+*format("web-%03d", 2).*
+
+???
+Terraform includes many helpful functions to munge inputs into the desired format. Here we are combinging two variables with concat, selecting the subnet id which matches the id number of the multiple resources we are creating, and formating a string for a server name to be prefixed by zero.
+
+---
+name: interpolations-6
+Interpolations - Math
+-------------------------
+<br><br>
+```hcl
+resource "azurerm_virtual_machine" "module" {
+  name = "myvm-${count.index + 1}"
+}
+
+resource "azurerm_virtual_machine" "module" {
+  name = "${format("myvm-%03d", count.index + 1)}"
+}
+```
+
+???
+Terraform supports basic math functions. If you don't want the numbering to start from zero for instance, you can just add one.
+
+---
+name: interpolations-7
+Interpolations - Locals
+-------------------------
+<br><br>
+```hcl
+variable "name" {
+  default = "dev"
+}
+ 
+locals {
+  module_name = "${var.name}-sql"
+}
+```
+
+???
+Locals provide a method to store data which doesn't need to be exposed as a variable or data type.
+
+---
+name: chapter-3-exercise-1
+.center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 1]]
+<br>
+### Setup Azure network
+* Create a Virtual Network, Subnet, Public IP and Network Interface. Tie them together with interpolation.
+
+https://www.terraform.io/docs/providers/azurerm/r/virtual_network.html  
+https://www.terraform.io/docs/providers/azurerm/r/subnet.html  
+https://www.terraform.io/docs/providers/azurerm/r/public_ip.html  
+https://www.terraform.io/docs/providers/azurerm/r/network_interface.html  
+https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+
+`HINT 1: Terraform currently provides both a standalone Subnet resource, and allows for Subnets to be defined in-line within the Virtual Network resource. We DO NOT want to create in-line subnets so we can complete Exercise 2.1`
+
+`HINT 2: Terraform docs site examples for more complicated resources often include the code for the simplier resources as well, so sometimes it's easier to copy/paste from the example for the last resource you want to create than starting with the first`
+
+### Count
+* Update Subnet to use a count of 3. Use count.index to ensure each subnet has a unique address space.
+
+https://www.terraform.io/intro/examples/count.html  
+https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+
+---
+name: defining-variables
+Variables
+-------------------------
+Variables provide inputs for Terraform. They can optionally have default values, and types. Variables are reused elsewhere via interpolation.
+
+```hcl
+variable "location" {
+  default     = ”eastus"
+  type        = string
+  description = ”Location to deploy Azure Infrastructure"
+}
+ 
+resource "azurerm_resource_group" "module" {
+  name     = ”my-rg"
+  location = var.location
+}
+```
+
+???
+Terraform allows you to create variables to be used as inputs to your code. The ability to add defaults and types provides for more easily reusable code and error handling.
+
+---
+name: providing-variables
+Where do Variables get their values?
+-------------------------
+There are numerous ways to pass variables to Terraform
+
+Command line:
+```bash
+terraform plan -var 'foo=bar'
+```
+
+With *terraform.tfvars* file:
+```tex
+foo = "bar"
+valid = true
+somelist = [
+  "one",
+  "two"
+]
+```
+
+With environment variables:
+```bash
+export TF_VAR_foo=bar
+export TF_VAR_bar=foo
+```
+
+???
+Choosing an easy and secure method to pass in variables is important to reusing Terraform code. Beyond these options with open source, Terraform Enterprise also has the ability to securely store variables.
+
+---
+name: outputs
+Outputs
+-------------------------
+Outputs define useful values that will be highlighted to the user when Terraform applies: 
+IP addresses
+Usernames
+Computed Values
+
+Easily extract and query information from all resources
+
+```hcl
+output "vm_private_ips" {
+  value = "${azurerm_network_interface.app.private_ip_address}”
+  description = "Dynamic Private IP Addresses”
+}
+```
+???
+While information about all of the resources could be found in the state file, create outputs makes the information much easier for the user to consume.
+
+---
+name: chapter-3-exercise-2
+.center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 2]]
+<br>
+Complete Exercise 3 - Variables and Outputs
 
 ---
 name: main.tf
@@ -1814,67 +2028,6 @@ Terraform provisioners like remote-exec are great when you need to run a few sim
 Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a config management tool.
 
 On the other hand, if you want immutable infrastructure you should consider using our [Packer](https://packer.io) tool.
-
----
-name: chapter-5-lab
-.center[.lab-header[👩🏻‍🔬 Lab Exercise 5: Use a Provisioner]]
-<br><br><br>
-Let's add a simple command to our **remote-exec** block of code.  You can use the 'cowsay' command to output messages into your Terraform log:
-
-```terraform
-inline = [
-  "chmod +x /home/${var.admin_username}/*.sh",
-  "sleep 30",
-  "MYSQL_HOST=${var.prefix}-mysql-server /home/${var.admin_username}/setup.sh",
-* "cowsay Mooooooo!"
-]
-```
-
-Run **`terraform apply`** again and see what happens. Did your virtual machine get rebuilt? Why?
-
-Hint: read up on the [terraform taint](https://www.terraform.io/docs/commands/taint.html) command.
-
-???
-Explain that provisioners only run when virtual machines are first created. If you need to reprovision, you simply destroy and rebuild the VM. You can force a rebuild with this `terraform taint` command. Don't forget that comma at the end of the setup.sh line!
-
----
-name: chapter-5-lab-answer
-.center[.lab-header[👩🏻‍🔬 Lab Exercise 5: Solution]]
-<br><br>
-The remote-exec provisioner is a [Creation Time](https://www.terraform.io/docs/provisioners/index.html#creation-time-provisioners) Provisioner. It does not run every time you update scripts or code within the remote-exec block. If you need to completely rebuild a virtual machine, you can use the **`terraform taint`** command to mark it for a rebuild. Go ahead and taint your Azure VM and rebuild it before the next chapter.
-
-```bash
-terraform taint azurerm_virtual_machine.vault
-terraform apply -auto-approve
-```
-
-```bash
-(remote-exec): ___________
-(remote-exec):< Mooooooo! >
-(remote-exec): -----------
-(remote-exec):        \   ^__^
-(remote-exec):         \  (oo)\_______
-(remote-exec):            (__)\       )\/\
-(remote-exec):                ||----w |
-(remote-exec):                ||     ||
- Creation complete after 4m20s...
-```
-
-???
-You might walk through this one with your students, showing them how easy it is to run commands on your target machine. The cowsay program was installed on your Linux target by the setup.sh script in the files directory.
-
----
-name: chapter-5-review
-📝 Chapter 5 Review
--------------------------
-.contents[
-In this chapter we:
-* Learned about Terraform Provisioners
-* Explored the **file** and **remote-exec** provisioners
-* Learned the **`terraform fmt`** command
-* Used the **`terraform taint`** command
-* Rebuilt our web server with a new provisioning step
-]
 
 ---
 name: Chapter-6
