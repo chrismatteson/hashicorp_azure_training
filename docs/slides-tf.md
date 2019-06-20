@@ -1496,7 +1496,7 @@ The Azure marketplace also includes a VM and storage account already setup to us
 Additionally, HashiCorp now offers the HashiCorp Cloud as a free option to store your state file. Essentially a light version of Terraform Enterprise, this provides you the ability to store state files in the cloud, gets around the chicken and the egg problem of setting up state file storage outside of Terraform, and provides a UI for managing worksspaces.
 
 ---
-name: chapter-5-exercise
+name: chapter-5-exercise-1
 .center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
 ### Modules
 * Create a subfolder called "modules" and another subfolder called "service_principal"
@@ -1519,6 +1519,53 @@ https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise5)]]
 
 ---
+name: chapter-5-exercise-2
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+### Virtual Machine
+* Create an Azure Virtual Machine to use the resource group, network interface, and template_file as custom_data, which were created in prior exercises.
+* Add the MSI virtual machine extension to the VM created in the prior exercise.
+
+https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html  
+https://www.terraform.io/docs/providers/azurerm/r/virtual_machine_extension.html  
+https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview  
+
+`HINT 1: Use vm_size Standard_A2_v2.`
+
+`HINT 2: Use the publisher "Microsoft.ManagedIdentity", the type "ManagedIdentityExtensionForLinux" and type_handler_version "1.0"`
+
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise6)]]
+
+---
+name: chapter-5-exercise-3
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+### MySQL Server
+* Create a managed MySQL Server Instance and Database. Create a new random_id to provide the password.
+* Create a firewall rule to allow access from the public IP of our virtual machine
+
+https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html  
+https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html  
+https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html  
+<br><br><br><br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise6)]]
+
+---
+name: chapter-5-exercise-4
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+### Add Useful Output
+* Add outputs for to ease using the Terraform code.
+ * Configure Vault: `export VAULT_ADDR=http://${azurerm_public_ip.main.ip_address}:8200`
+ * SQL Server FQDN: `${azurerm_sql_server.postgresql.fqdn}`
+ * SQL Server Username/Password: `${azurerm_postgresql_server.sql.administrator_login}\\${azurerm_postgresql_server.sql.administrator_login_password}`
+ * Subscription ID: `${data.azurerm_client_config.current.subscription_id}`
+ * Resource Group Name: `${azurerm_virtual_machine.main.resource_group_name}`
+ * VM Name: `${azurerm_virtual_machine.main.name}`
+ * JWT Token: `curl http://localhost:50342/oauth2/token?resource=https://management.azure.com -H metadata:true | jq .access_token | tr -d '\"'`
+
+https://www.terraform.io/docs/configuration/outputs.html
+
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise6)]]
+
+---
 name: chapter-5-review
 📝 Chapter 5 Review
 -------------------------
@@ -1535,27 +1582,6 @@ name: Chapter-6
 class: center,middle
 .section[
 Chapter 6  
-Backends and Terraform Enterprise
-]
-
-
----
-name: chapter-4-review
-📝 Chapter 4 Review
--------------------------
-.contents[
-In this chapter we:
-* Looked at main.tf, variables.tf and outputs.tf
-* Enabled some outputs in our code
-* Refactored our main.tf into smaller parts
-* Learned the **`terraform fmt`** command
-]
-
----
-name: TFE-Chapter-1
-class: center,middle
-.section[
-Chapter 1  
 Terraform Enterprise - Built for Teams and Organizations
 ]
 
@@ -1683,63 +1709,6 @@ Terraform Enterprise is a SaaS or on-premise application that provides the follo
 **Terraform enterprise can store and encrypt your cloud credentials, passwords or any other sensitive data. These credentials are stored safely inside of a Vault instance that runs inside of TFE.**
 
 ---
-name: chapter-2-tfe-lab
-.center[.lab-header[👩🏽‍🔬 Lab Exercise 2: Re-provision the App]]
-<br><br><br>
-The application has three variables that you can set to change the look and feel of your site.
-
-They are **height**, **width**, and **placeholder**. 
-
-Redeploy your app with a different height and width and reload the page.
-
-If you need a refresher on variables visit the docs:
-
-https://www.terraform.io/docs/configuration/variables.html#variables-on-the-command-line
-
----
-name: chapter-2-tfe-lab-solution
-.center[.lab-header[👩🏽‍🔬 Lab Exercise 2: Solution]]
-<br><br><br>
-Here's an example where we simply override variables on the command line:
-
-Commands:
-```powershell
-terraform apply -var placeholder=fillmurray.com -var height=500 -var width=500
-```
-
-Try some different placeholder image sites. Here are some examples: [placedog.net](http://placedog.net), [placebear.com](http://placebear.com), [fillmurray.com](http://fillmurray.com), [placecage.com](http://placecage.com), [placebeard.it](http://placebeard.it), [loremflickr.com](http://loremflickr.com), [baconmockup.com](http://baconmockup.com), and [placeimg.com](http://placeimg.com).
-
-???
-Point out that we're doing some things here that you shouldn't do in production (like using null_resource for our provisioner.) You can also review the different ways to set variables:
-
-https://www.terraform.io/docs/configuration/variables.html#variable-definition-precedence
-
----
-name: tfe-chapter-2-review
-📝 Chapter 2 Review
--------------------------
-<br>
-.contents[
-In this chapter we:
-* Forked the application repo
-* Cloned the new git repo
-* Deployed the Cat App into Azure Cloud
-* Customized the application with variables
-]
-
----
-name: TFE-Chapter-3
-class: center,middle
-.section[
-Chapter 3  
-Terraform Cloud and
-Terraform Enterprise
-]
-
-???
-**In this chapter we'll sign up for a free Terraform Cloud account.**
-
----
 name: tfe-terraform-cloud-enterprise
 Terraform Cloud or Terraform Enterprise?
 -------------------------
@@ -1840,11 +1809,12 @@ Your instructor will invite you to the workshop organization. Once you've been i
 
 ---
 name: tfe-chapter-3-review
-📝 Chapter 3 Review
+📝 Chapter 6 Review
 -------------------------
 <br>
 .contents[
 In this chapter we:
+* Reviewed the value Terraform Enterprise offers
 * Looked at Terraform Cloud and Enterprise
 * Signed up for a Terraform Cloud account
 * Created a sandbox organization
@@ -1852,10 +1822,10 @@ In this chapter we:
 ]
 
 ---
-name: TFE-Chapter-4
+name: Chapter-7
 class: center,middle
 .section[
-Chapter 4  
+Chapter 7  
 Remote State
 ]
 
@@ -1936,100 +1906,32 @@ Go into the **General** settings for your workspace and change the execution mod
 **This is important. All we want to do is store our state file remotely for now. Later on we'll learn about remote execution.**
 
 ---
-name: chapter-4-tfe-lab
+name: chapter-7-exercise
 .center[.lab-header[👩🏽‍🔬 Lab Exercise 4: Enable Remote State]]
 <br><br>
-.center[![:scale 90%](images/get-started-tfe.png)]
+### Create Terraform Enterprise User and Organization
+* Create a Terraform Enterprise trial account. The instructor will provide you with a link to create a 30 day trial.
+* Create a new organization
+* Create an API key for your user
 
-Click on the **Get Started** button in the Terraform Cloud UI. Follow the instructions on the popup message to migrate your application into a new workspace. Name your token **workshop-token**. Call your remote backend config file **remote_backend.tf**
+https://app.terraform.io/signup/account
+https://www.hashicorp.com/resources/why-consider-terraform-enterprise-over-open-source  
+https://www.hashicorp.com/resources/getting-started-with-terraform-enterprise  
+https://www.terraform.io/docs/enterprise/users-teams-organizations/users.html  
 
----
-name: chapter-4-tfe-lab-solution-1
-.center[.lab-header[👩🏽‍🔬 Lab Exercise 4: Solution Part 1]]
-* Create a **user token**: https://app.terraform.io/app/settings/tokens
-* Edit your **`%APPDATA%\terraform.rc`** config file, replacing where it says REPLACE_ME with your token.
+### Remote State
+* Configure a .terraformrc file with the token created in the last task
+* Create a terraform.tf file with remote backend configuration
+* Run terraform init and copy state file to new backend
+* Move old terraform.state file out of the directory
+* Login to Terraform Enterprise and see the new workspace
 
-```powershell
-code %APPDATA%/terraform.rc
-```
-```hcl
-credentials "app.terraform.io" {
-  token = "REPLACE_ME"
-}
-```
-
-* Rename the **remote_backend.tf.disabled** file to **remote_backend.tf**. It should contain the following code. Replace ORGNAME and YOURWORKSPACE with your own settings.
-
-```hcl
-terraform {
-  backend "remote" {
-    hostname = "app.terraform.io"
-    organization = "ORGNAME"
-    workspaces {
-      name = "YOURWORKSPACE"
-    }
-  }
-}
-```
+https://www.terraform.io/docs/commands/cli-config.html  
+https://www.terraform.io/docs/backends/types/remote.html  
 
 ---
-name: chapter-4-tfe-lab-solution-2
-.center[.lab-header[👩🏽‍🔬 Lab Exercise 4: Solution Part 2]]
-<br><br>
-Run a **`terraform init`** command to migrate to remote state.  You should see output similar to what's below. Answer **`yes`** to the confirmation prompt:
-
-Command:
-```powershell
-terraform init
-```
-
-Output:
-```tex
-Initializing the backend...
-Do you want to copy existing state to the new backend?
-  Pre-existing state was found while migrating the previous "local" backend to the
-  newly configured "remote" backend. No existing state was found in the newly
-  configured "remote" backend. Do you want to copy this state to the new "remote"
-  backend? Enter "yes" to copy and "no" to start with an empty state.
-
-  Enter a value: yes
-
-*Successfully configured the backend "remote"! Terraform will automatically
-*use this backend unless the backend configuration changes.
-```
-???
-Instructor note: You might want to walk through this with some or all of your students. Finding the right file path can be a little bit tricky on Windows machines.
-
----
-name: chapter-4-tfe-lab-solution-3
-.center[.lab-header[👩🏽‍🔬 Lab Exercise 4: Solution Part 3]]
-<br><br>
-Now when you run **`terraform apply`**, your state is automatically stored in your Terraform Cloud account. This feature is available to all free and paid tier users.
-
-.center[![:scale 100%](images/remote_state_free.png)]
-
-Enterprise users gain extra features like remote execution, secure variable storage, code reviews, and collaboration tools.
-
----
-name: delete-state-file
-Delete Your State File
--------------------------
-<br><br><br>
-**WARNING**: Make sure you have enabled remote state and confirmed that your state file is being stored in Terraform Cloud.
-
-Once you've confirmed that remote state is working, go ahead and delete the **terraform.tfstate** file from your local workspace directory.
-
-Command:
-```powershell
-Remove-Item terraform.tfstate
-```
-
-???
-**Now our state file is safely stored and encrypted in Terraform Enterprise. There's actually a small Vault instance running under the hood that handles all our encryption needs.**
-
----
-name: tfe-chapter-4-review
-📝 Chapter 4 Review
+name: chapter-7-review
+📝 Chapter 7 Review
 -------------------------
 <br>
 .contents[
