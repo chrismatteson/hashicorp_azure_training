@@ -1491,61 +1491,55 @@ https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise5)]]
 
 ---
-name: chapter-3-review
-📝 Chapter 3 Review
+name: chapter-5-review
+📝 Chapter 5 Review
 -------------------------
 .contents[
 In this chapter we:
-* Learned about Terraform resources
-* Ran terraform plan, graph, apply and destroy
-* Learned about dependencies
-* Built the lab environment
-* Viewed a graph of the lab
+* Learned about modules
+* Learned about Terraform Internals
+* Implimented a new module
 ]
 
 ---
-name: Chapter-4
+name: Chapter-6
 class: center,middle
 .section[
-Chapter 4  
-Organizing Your Terraform Code
+Chapter 6  
+Backends and Terraform Enterprise
 ]
 
 ---
-name: terraform-outputs
-The Outputs File
+name: backends
+Terraform Backends
 -------------------------
-Open up the outputs.tf file in Visual Studio Code. Uncomment all of the outputs. Save the file.
+Determines how state is loaded and how an operations are executed.
 
-```terraform
-output "Vault_Server_URL" {
-  value = "http://${azurerm_public_ip.vault-pip.fqdn}:8200"
-}
+Enables non-local file state storage, remote execution, etc.
 
-output "MySQL_Server_FQDN" {
-  value = "${azurerm_mysql_server.mysql.fqdn}"
-}
+By default, Terraform uses the "local" backend. Other supported backends include Consul, Azure Storage Accounts, Artificatory, Terraform Enterprise, and much more.
 
-output "Instructions" {
-  value = <<EOF
-
-##############################################################################
-# Connect to your Linux Virtual Machine
-#
-# Run the command below to SSH into your server. You can also use PuTTY or any
-# other SSH client. Your password is: ${var.admin_password}
-##############################################################################
-
-ssh ${var.admin_username}@${azurerm_public_ip.vault-pip.fqdn}
-
-EOF
+```hcl
+terraform {
+  backend "azurerm" {
+    storage_account_name = "myorgeastus8x76ghf"
+    container_name       = "terraformstate"
+    key                  = "dev.terraform.tfstate"
+  }
 }
 ```
+
 ???
-The bit with EOF is called a heredoc. This is how you add multiple lines or a paragraph of text to your outputs.
+We've already seen the power of the state file, so of course we don't want to lose something this important. Additionally if we want to collaborate with our peers, we need somewhere to share state files and provide locking to ensure multiple people are not simultaniously updating the state file. So far we've been using the "local" backend.
+
+Of the many backends supported, one is azure storage accounts, which provide a simple mechanism inside of Azure to store state files. Once we add this statement to our terraform code, we can use Terraform init to copy the state file to the new backend.
+
+The Azure marketplace also includes a VM and storage account already setup to use as a bastion host for managing your Terraform code. In an all Azure environment is this a simple way to get quickly setup in a best practice format.
+
+Additionally, HashiCorp now offers the HashiCorp Cloud as a free option to store your state file. Essentially a light version of Terraform Enterprise, this provides you the ability to store state files in the cloud, gets around the chicken and the egg problem of setting up state file storage outside of Terraform, and provides a UI for managing worksspaces.
 
 ---
-name: terraform-refresh
+name: terraform-enterprise-1
 Terraform Refresh
 -------------------------
 Run the **`terraform refresh`** command again to show the outputs. You will also see these outputs every time you run **`terraform apply`**.
