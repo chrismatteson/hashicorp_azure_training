@@ -649,10 +649,7 @@ Here is some sample dialog you can use for the demo. Keep it short and sweet. No
 name: chapter-1-exercise
 .center[.lab-header[👩🏼‍🔬 Chapter 1: Exercise]]
 <br>
-## 0.0 HashiCorp Terraform - Cloud CLI
-Get setup with Terraform on Azure Cloud CLI
-
-### 0.0 Tasks
+### Azure Portal and Cloud CLI
 * Login to Azure Portal, start Cloud CLI session, and verify Terraform is installed
 
 https://portal.azure.com  
@@ -962,7 +959,6 @@ It's important to understand how Terraform views code, state, and reality. If yo
 ---
 name: chapter-2-exercise-1
 .center[.lab-header[👩🏼‍🔬 Chapter 2: Exercise 1]]
-<br>
 ### Create Resource Group
 * Write Terraform code to create a resource group
 * Explicitely state the azurerm provider using the provider syntax
@@ -975,15 +971,16 @@ https://www.terraform.io/docs/providers/azurerm/r/resource_group.html
 https://www.terraform.io/docs/configuration/providers.html  
 
 `HINT 1: If you want your code to be completely reusable, use random_id to generate unique names. For instance, we could create a resource "random_id" "project_name" and use intepolation to pass ${random_id.project_name.hex} as the input to any name fields. https://www.terraform.io/docs/providers/random/r/id.html`
+<br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise1)]]
 
 ---
 name: chapter-2-exercise-2
 .center[.lab-header[👩🏼‍🔬 Chapter 2: Exercise 2]]
-<br>
 ### Manage State
 * Use Terraform CLI to view all of the state at once. Compare to viewing the state file directly.
 * Use Terraform CLI to view the Resource Graph.
-* Use Terraform CLI to remove the Resource Group created in task 1.0 from the state file. Show that a Terraform plan now wants to recreate the Resource Group.
+* Use Terraform CLI to remove the Resource Group from the state file. Show that a Terraform plan now wants to recreate the Resource Group.
 * Use Terraform CLI to import the Resource Group. Show that a Terraform plan does not want to make any changes.
 * Use Terraform CLI to taint the Resource Group in the state file. Show that a Terraform plan now wants to recreate the Group. Untaint the Resource Group and show Terraform plan no longer wants to make changes.
 * Use Terraform CLI to destroy everything.
@@ -993,6 +990,7 @@ https://www.terraform.io/docs/import
 https://www.terraform.io/docs/state/index.html  
 https://www.terraform.io/docs/commands  
 
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise1)]]
 
 ---
 name: chapter-2-review
@@ -1009,15 +1007,15 @@ name: Chapter-3
 class: center,middle
 .section[
 Chapter 3  
-Interpolations, Variables, and Outputs
+Expressions, Variables, and Outputs
 ]
 
 ???
 **In this chapter we'll learn some helpful tools to build reusable Terraform code.**
 
 ---
-name: interpolations-1
-Interpolations
+name: expressions-1
+Expressions
 -------------------------
 Powerful tool to reference data from other locations in Terraform code, perform functions, and iterate.
 
@@ -1039,13 +1037,13 @@ var.name
 ```
 
 ???
-If you followed the hint and used Random_id in the prior exercise, you've already used interpolation. This syntax allowed us to take information from one resource and input into another resource.
+If you followed the hint and used Random_id in the prior exercise, you've already used expressions. This syntax allowed us to take information from one resource and input into another resource.
 
-Prior to 0.12, interpolation always had to be encased in a dollar sign and curly braces. With Terraform 0.12 and HCL 2, interpolation is a native part of the language, so while the dollar sign curly brace method is still allowd, it's now only required inside of strings.
+Prior to 0.12, Terraform had a interpolations as part of HashiCorp Interpolation Language (HIL). Interpolations always had to be encased in a dollar sign and curly braces so Terraform knew to use this other language. With Terraform 0.12 and HCL 2, expressions are a native part of the language, so while the dollar sign curly brace method is still allowd, it's now only required inside of strings.
 
 ---
-name: interpolations-2
-Interpolations - Count
+name: expressionss-2
+Expressions - Count
 -------------------------
 
 ```hcl
@@ -1060,7 +1058,7 @@ resource "azurerm_network_interface" "web" {
  
 resource "azurerm_virtual_machine" "web" {
   count                 = var.count
-  network_interface_ids = ["${element(azurerm_network_interface.web.*.id, count.index)}"]
+  network_interface_ids = [azurerm_network_interface.web.[count.index].id]
 }
 ```
 
@@ -1068,8 +1066,8 @@ resource "azurerm_virtual_machine" "web" {
 Prior to 0.12, the only way to create multiple resources was using count parameter.
 
 ---
-name: interpolations-3
-Interpolations - Loops
+name: expressions-3
+Expressions - Loops
 -------------------------
 
 
@@ -1077,37 +1075,44 @@ Interpolations - Loops
 
 
 ---
-name: interpolations-3
-Interpolations - Conditionals
+name: expressions-4
+Expressions - Conditionals
 -------------------------
 
 ```hcl
 resource "azurerm_virtual_machine" "web" {
-  subnet = "${var.size == "small" ? var.small_vm : var.large_vm}"
+  name                = "${var.prefix}-vm"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  network_interface_ids = [azurerm_network_interface.main.id]
+  vm_size               = var.size == "small" ? var.small_vm : var.large_vm
 }
-
 ```
 
 ???
 Terraform interpolation language even supports conditional logic
 
 ---
-name: interpolations-4
-Interpolations - If statements
+name: expressions-5
+Expressions - Math
 -------------------------
-
+<br><br>
 ```hcl
-resource "azurerm_virtual_machine" "web" {
-  subnet = "${var.size == "small" ? var.small_vm : var.large_vm}"
+resource "azurerm_virtual_machine" "module" {
+  name = "myvm-${count.index + 1}"
 }
 
+resource "azurerm_virtual_machine" "module" {
+  name = format("myvm-%03d", count.index + 1)
+}
 ```
 
 ???
-Terraform interpolation language even supports conditional logic
+Terraform supports basic math functions. If you don't want the numbering to start from zero for instance, you can just add one.
+
 ---
-name: interpolations-5
-Interpolations - Built-In Functions
+name: functions
+Built-In Functions
 -------------------------
 
 **concat(list1, list2, ...)** - Combines two or more lists into a single list. 
@@ -1123,46 +1128,10 @@ Interpolations - Built-In Functions
 ???
 Terraform includes many helpful functions to munge inputs into the desired format. Here we are combinging two variables with concat, selecting the subnet id which matches the id number of the multiple resources we are creating, and formating a string for a server name to be prefixed by zero.
 
----
-name: interpolations-6
-Interpolations - Math
--------------------------
-<br><br>
-```hcl
-resource "azurerm_virtual_machine" "module" {
-  name = "myvm-${count.index + 1}"
-}
-
-resource "azurerm_virtual_machine" "module" {
-  name = "${format("myvm-%03d", count.index + 1)}"
-}
-```
-
-???
-Terraform supports basic math functions. If you don't want the numbering to start from zero for instance, you can just add one.
-
----
-name: interpolations-7
-Interpolations - Locals
--------------------------
-<br><br>
-```hcl
-variable "name" {
-  default = "dev"
-}
- 
-locals {
-  module_name = "${var.name}-sql"
-}
-```
-
-???
-Locals provide a method to store data which doesn't need to be exposed as a variable or data type.
 
 ---
 name: chapter-3-exercise-1
 .center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 1]]
-<br>
 ### Setup Azure network
 * Create a Virtual Network, Subnet, Public IP and Network Interface. Tie them together with interpolation.
 
@@ -1172,15 +1141,22 @@ https://www.terraform.io/docs/providers/azurerm/r/public_ip.html
 https://www.terraform.io/docs/providers/azurerm/r/network_interface.html  
 https://www.terraform.io/docs/configuration-0-11/interpolation.html  
 
-`HINT 1: Terraform currently provides both a standalone Subnet resource, and allows for Subnets to be defined in-line within the Virtual Network resource. We DO NOT want to create in-line subnets so we can complete Exercise 2.1`
+`HINT 1: Use a standalone Subnet resource, instead of defining in-line within the Virtual Network resource so we can complete the next exercise.`
 
-`HINT 2: Terraform docs site examples for more complicated resources often include the code for the simplier resources as well, so sometimes it's easier to copy/paste from the example for the last resource you want to create than starting with the first`
+`HINT 2: Terraform docs site examples for more complicated resources often include the code for prerequisate resources as well. Sometimes it's easier to copy/paste from the example for the last resource you want to create than starting with the first`
+<br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise2)]]
 
+---
+name: chapter-3-exercise-2
+.center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 2]]
 ### Count
 * Update Subnet to use a count of 3. Use count.index to ensure each subnet has a unique address space.
 
 https://www.terraform.io/intro/examples/count.html  
 https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+<br><br><br><br><br><br><br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise2)]]
 
 ---
 name: defining-variables
@@ -1190,13 +1166,13 @@ Variables provide inputs for Terraform. They can optionally have default values,
 
 ```hcl
 variable "location" {
-  default     = ”eastus"
+  default     = "eastus"
   type        = string
-  description = ”Location to deploy Azure Infrastructure"
+  description = "Location to deploy Azure Infrastructure"
 }
  
 resource "azurerm_resource_group" "module" {
-  name     = ”my-rg"
+  name     = "my-rg"
   location = var.location
 }
 ```
@@ -1247,29 +1223,114 @@ Easily extract and query information from all resources
 
 ```hcl
 output "vm_private_ips" {
-  value = "${azurerm_network_interface.app.private_ip_address}”
-  description = "Dynamic Private IP Addresses”
+  value       = azurerm_network_interface.app.private_ip_address
+  description = "Dynamic Private IP Addresses"
 }
 ```
+
 ???
 While information about all of the resources could be found in the state file, create outputs makes the information much easier for the user to consume.
 
 ---
-name: chapter-3-exercise-2
-.center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 2]]
-<br>
-Complete Exercise 3 - Variables and Outputs
+name: locals
+Locals
+-------------------------
+<br><br>
+```hcl
+variable "name" {
+  default = "dev"
+}
+ 
+locals {
+  module_name = "${var.name}-sql"
+}
+```
+
+???
+Locals provide a method to store data which doesn't need to be exposed as a variable or data type.
 
 ---
-name: main.tf
+name: chapter-3-exercise-3
+.center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 3]]
+### Variables
+* Create variables.tf file with a variables for Azure location, Tags, and Vault Binary URL.
+* Set defaults for each variable as follows:
+ * location = eastus
+ * tags = {}
+ * vault binary url = http://hc-enterprise-binaries.s3.amazonaws.com/vault/ent/1.1.1/vault-enterprise_1.1.1%2Bent_linux_amd64.zip
+* Update main.tf file to use Azure location variable for the Resource Group.
+
+https://www.terraform.io/docs/configuration/variables.html  
+<br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise3)]]
+
+---
+name: chapter-3-exercise-4
+.center[.lab-header[👩🏼  <200d>🔬 Chapter 3: Exercise 3]]
+### Outputs
+* Create a file called outputs.tf file with an output called "download vault" that the following value which includes the vault_url variable you created in the prior task.
+
+`sudo wget ${var.vault_url} -P /usr/local/bin/vault; sudo chmod 755 /usr/local/bin/vault`
+
+https://www.terraform.io/docs/configuration/outputs.html  
+<br><br><br><br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise3)]]
+
+---
+name: chapter-3-exercise-5
+.center[.lab-header[👩🏼    <200d>🔬 Chapter 3: Exercise 4]]
+### Locals
+* Create a local named tags which uses the merge function to merge the tags varaible created in 3.0 with a tag named ProjectName that has the value of your project name.
+* Update the Resource Group with the tags local.
+
+https://www.terraform.io/docs/configuration/locals.html  
+https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+<br><br><br><br><br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise3)]]
+
+---
+name: chapter-3-review
+📝 Chapter 3 Review
+-------------------------
+.contents[
+In this chapter we:
+* Learned about Variables, Outputs, and Locals
+* Updated our Terraform code to include several variables, an output, and local.
+]
+
+---
+name: Chapter-4
+class: center,middle
+.section[
+Chapter 4  
+Organizing Your Terraform Code, Comments, and Data Sources
+]
+
+---
+name: organizing-your-terraform
+Organize Your Terraform Code
+-------------------------
+.center[![:scale 50%](images/terraform_config_files.png)]
+You should have three files that end in the \*.tf extension on your workstation. The convention is to have a main.tf, variables.tf, and outputs.tf. You may add more tf files if you wish.
+
+* The first file is called main.tf. This is where you normally store your terraform code. With larger, more complex infrastructure you might break this up across several files.
+* The second file is called variables.tf. This is where you define your variables and optionally set some defaults.
+* The outputs file is where you configure any messages or data you want to show at the end of a terraform apply.
+
+???
+Variables.tf, main.tf, outputs.tf is a common convention for organizing Terraform code. It's not required, and more complex code often benifits form being broken down further, but it's a good place to start, and something you're likely to see often.
+
+---
+name: comments
 Terraform Comments
 -------------------------
 <br><br>
-Open the main.tf file in the VSC file browser. You'll notice that most of the file is full of comments. There are two types of comments:
+Terraform supports a few types of comments:
 
-Line Comments begin with an octothorpe<sup>*</sup>, or pound symbol: #
+Line Comments begin with an octothorpe<sup>*</sup>, or pound symbol: #. Alternatively a double forward slash can be used.
 ```hcl
 # This is a line comment.
+// This is an alternative format for a line comment.
 ```
 
 Block comments are contained between /\* and \*/ symbols.
@@ -1283,231 +1344,73 @@ The comment ends with this symbol: */
 \* Yes, it really is called an [octothorpe](https://www.merriam-webster.com/dictionary/octothorpe).
 ]
 
-
 ---
-name: terraform-plan
-I Love It When a Plan Comes Together
+name: data-sources
+Data Sources
 -------------------------
-Run the **`terraform plan`** command and observe the output:
 
-Command:
-```powershell
-terraform plan
-```
+Data Sources allow Terraform to ingest external data.
 
-Output:
-```tex
-------------------------------------------------------------------------
-An execution plan has been generated and is shown below.
-Resource actions are indicated with the following symbols:
-  + create
+Enable code reusability by limiting need to hard code settings and replace them with dynamic credentials
 
-Terraform will perform the following actions:
+Very useful to tie Terraform workspaces together with remote state data sources
 
-  + azurerm_resource_group.hashitraining
-      id:       <computed>
-      location: "centralus"
-      name:     "yourname-workshop"
-      tags.%:   <computed>
+Local data sources allow for creating files from templates
 
+```hcl
+data "azurerm_image" "search" {
+  name                = "search-api"
+  resource_group_name = "packerimages"
+}
 
-Plan: 1 to add, 0 to change, 0 to destroy.
-------------------------------------------------------------------------
-```
-
-???
-**Terraform plan is a dry run. It gives you a chance to have other people review and approve your changes before you apply them.**
-
----
-name: terraform-apply
-Terraform Apply
--------------------------
-Run the **`terraform apply`** command to execute the code and build a resource group. Type 'yes' when it prompts you to continue.
-
-Command:
-```powershell
-terraform apply
-```
-
-Output:
-```tex
-...
-Plan: 1 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-  Enter a value: yes
-
-  azurerm_resource_group.hashitraining: Creating...
-  location: "" => "centralus"
-  name:     "" => "yourname-workshop"
-  tags.%:   "" => "<computed>"
-azurerm_resource_group.hashitraining: Creation complete after 1s (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-workshop)
-
-Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
-```
-
----
-name: what-did-we-build
-What Did We Build?
--------------------------
-.center[![:scale 60%](images/blast_radius_graph_1.png)]
-This graph represents the infrastructure we just built. You can see the azurerm provider, your resource group, and two variables, location and prefix.
-
-???
-The grayed out items are variables that we're not using yet, and therefore they have no dependencies. This graph was created with the free Blast Radius tool.
-
----
-name: terraform-plan-again
-Terraform Plan - Repeat
--------------------------
-Run the **`terraform plan`** command again and see what happens.
-
-Command:
-```powershell
-terraform plan
-```
-
-Output:
-```tex
-Refreshing Terraform state in-memory prior to plan...
-The refreshed state will be used to calculate this plan, but will not be
-persisted to local or remote state storage.
-
-azurerm_resource_group.hashitraining: Refreshing state... (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-workshop)
-
-------------------------------------------------------------------------
-
-*No changes. Infrastructure is up-to-date.
-
-This means that Terraform did not detect any differences between your
-configuration and real physical resources that exist. As a result, no
-actions need to be performed.
-```
-
-???
-Terraform is sometimes called idempotent. This means it keeps track of what you built, and if something is already in the correct state Terraform will leave it alone.
-
----
-name: chapter-3-lab
-.center[.lab-header[👩🏻‍💻 Lab Exercise 3a: Change Your Location]]
-<br><br><br>
-Change the location variable in your terraform.tfvars file to a different Azure location. Re-run the **`terraform plan`** and **`terraform apply`** commands. What happens?
-
-???
-This is a good spot for a mini discussion on how Terraform is idempotent, and declarative. You declare what you want (eg, one resource group in a particular region, with a specific name), and then terraform goes and carries out your command, even if you're changing something that already exists. In this example, we have to tear down the existing resource group and build a new one.
-
----
-name: chapter-3-lab-answer
-.center[.lab-header[👩🏻‍💻 Lab Exercise 3a: Solution]]
-<br><br><br>
-When you changed your location variable, Terraform detected a difference between your current settings and what you built before. Terraform can destroy and recreate resources as you make changes to your code. Some resources can be changed in place.
-
-```tex
-Terraform will perform the following actions:
-
--/+ azurerm_resource_group.hashitraining (new resource required)
-      id:       "/subscriptions/c0a607b2-6372-4ef3-abdb-dbe52a7b56ba/resourceGroups/yourname-workshop" => <computed> (forces new resource)
-      location: "uksouth" => "uscentral" (forces new resource)
-      name:     "yourname-workshop" => "yourname-workshop"
-      tags.%:   "0" => <computed>
-
-
-Plan: 1 to add, 0 to change, 1 to destroy.
-```
-
----
-name: terraform-destroy
-Terraform Destroy
--------------------------
-Run the **`terraform destroy`** command to delete your resource group.
-
-Command:
-```powershell
-terraform destroy
-```
-
-Output:
-```tex
-Do you really want to destroy all resources?
-  Terraform will destroy all your managed infrastructure, as shown above.
-  There is no undo. Only 'yes' will be accepted to confirm.
-
-  Enter a value: yes
-
-Destroy complete! Resources: 0 destroyed.
-```
-
-???
-**Terraform can just as easily destroy infrastructure as create it. With great power comes great responsibility!**
-
----
-name: we-can-rebuild-him
-We Can Rebuild Him
--------------------------
-Reset your location variable to your nearest Azure location. This time you can skip straight to **`terraform apply`**. Use the **`-auto-approve`** flag this time to avoid having to type 'yes'.
-
-Command:
-```powershell
-terraform apply -auto-approve
-```
-
-Output:
-```tex
-azurerm_resource_group.hashitraining: Creating...
-  location: "" => "centralus"
-  name:     "" => "yourname-workshop"
-  tags.%:   "" => "<computed>"
-azurerm_resource_group.hashitraining: Creation complete after 1s (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-workshop)
-
-Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
-```
-
-???
-The phrase "We can rebuild him. We have the technology." comes from 1970s TV show, The Six Million Dollar Man. https://www.youtube.com/watch?v=0CPJ-AbCsT8#t=2m00s 
-
----
-name: chapter-3b-lab
-.center[.lab-header[👩🏼‍💻 Lab Exercise 3b: Add a Tag]]
-<br><br><br>
-Read the documentation for the `azurerm_resource_group` resource and learn how to add tags to the resource group:
-
-https://www.terraform.io/docs/providers/azurerm/r/resource_group.html
-
-Edit your main.tf file and add a tag to the resource. Set the name of the tag to 'environment' and the value to 'Production'.
-
-???
-Don't just give the answer away here. Let people struggle a little bit and try to actually read the documentation. You can literally copy the example right from the docs into your code. Wait a few minutes until everyone's had a chance to try and do this on their own.
-
----
-name: chapter-3b-lab-answer
-.center[.lab-header[👩🏼‍💻 Lab Exercise 3b: Solution]]
-<br><br>
-Adding and removing tags is a non-destructive action, therefore Terraform is able to make these changes in-place, without destroying your resource group. Your main.tf file should look like this:
-
-```terraform
-resource "azurerm_resource_group" "hashitraining" {
-  name     = "${var.prefix}-vault-workshop"
-  location = "${var.location}"
-
-  tags = {
-    environment = "Production"
+data "terraform_remote_state" "vpc" {
+  backend = "remote"
+  config = {
+    name = "hashicorp/vpc-prod"
   }
 }
 ```
 
-Note how the tag is added by modifying the existing resource:
-```tex
-azurerm_resource_group.hashitraining: Modifying... (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-workshop)
-  tags.%:           "0" => "1"
-  tags.environment: "" => "Production"
-azurerm_resource_group.hashitraining: Modifications complete after 0s (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-workshop)
-```
-
 ???
-Some resources can be non-destructively changed in place. Ask your class what they think some of those resources might be? Good examples are tags and security group rules.
+Here we have two examples of data sources. The first looks up an image id from azure, while the second load in a terraform state file from a seperate Terraform workspace.
 
+---
+name: chapter-4-exercise
+.center[.lab-header[👩🏼    <200d>🔬 Chapter 4: Exercise]]
+### Data Resources
+* Create data sources for azurerm_client_config, azurerm_subscription, and azurerm_builtin_role_definition with the name Contributor.
+
+https://www.terraform.io/docs/providers/azurerm/d/client_config.html  
+https://www.terraform.io/docs/providers/azurerm/d/subscription.html  
+https://www.terraform.io/docs/providers/azurerm/d/builtin_role_definition.html  
+
+### Template File Data Resources
+* Download the below code into a file called setupvault.tpl. Then create a data template_file to pass vault_url variable.
+
+[setupvault.tpl](https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/master/exercises/exercise4/setupvault.tpl)
+
+https://www.terraform.io/docs/providers/template/d/file.html  
+
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise4)]]
+
+---
+name: chapter-4-review
+📝 Chapter 4 Review
+-------------------------
+.contents[
+In this chapter we:
+* How to organize our Terraform code
+* How to create comments
+* How to use Data Sources
+]
+
+---
+name: Chapter-5
+class: center,middle
+.section[
+Chapter 5 
+Modules
+]
 ---
 name: add-virtual-network
 Add a Virtual Network
@@ -1663,105 +1566,6 @@ class: center,middle
 Chapter 4  
 Organizing Your Terraform Code
 ]
-
----
-name: organizing-your-terraform
-Organize Your Terraform Code
--------------------------
-.center[![:scale 85%](images/terraform_config_files.png)]
-You should have three files that end in the \*.tf extension on your workstation. The convention is to have a main.tf, variables.tf, and outputs.tf. You may add more tf files if you wish.
-
----
-name: terraform-main
-The Main File
--------------------------
-The first file is called main.tf. This is where you normally store your terraform code. With larger, more complex infrastructure you might break this up across several files.
-
-```powershell
-# This is the main.tf file.
-resource "azurerm_resource_group" "hashitraining" {
-  name     = "${var.prefix}-vault-workshop"
-  location = "${var.location}"
-}
-
-resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}-vnet"
-  location            = "${azurerm_resource_group.hashitraining.location}"
-  address_space       = ["${var.address_space}"]
-  resource_group_name = "${azurerm_resource_group.hashitraining.name}"
-}
-
-resource "azurerm_subnet" "subnet" {
-  name                 = "${var.prefix}-subnet"
-  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  resource_group_name  = "${azurerm_resource_group.hashitraining.name}"
-  address_prefix       = "${var.subnet_prefix}"
-}
-```
-
-???
-**We've removed all the comments from this code so it will fit on the slide.**
-
----
-name: terraform-variables
-The Variables File
--------------------------
-The second file is called variables.tf. This is where you define your variables and optionally set some defaults.
-
-```powershell
-variable "prefix" {
-  description = "This prefix will be included in the name of most resources."
-}
-
-variable "location" {
-  description = "The region where the virtual network is created."
-  default     = "centralus"
-}
-
-variable "address_space" {
-  description = "The address space that is used by the virtual network. You can supply more than one address space. Changing this forces a new resource to be created."
-  default     = "10.0.0.0/16"
-}
-
-variable "subnet_prefix" {
-  description = "The address prefix to use for the subnet."
-  default     = "10.0.10.0/24"
-}
-```
-
----
-name: terraform-outputs
-The Outputs File
--------------------------
-The outputs file is where you configure any messages or data you want to show at the end of a terraform apply.
-
-```terraform
-output "Vault_Server_URL" {
-  value = "http://${azurerm_public_ip.vault-pip.fqdn}:8200"
-}
-
-output "MySQL_Server_FQDN" {
-  value = "${azurerm_mysql_server.mysql.fqdn}"
-}
-
-output "Instructions" {
-  value = <<EOF
-
-##############################################################################
-# Connect to your Linux Virtual Machine
-#
-# Run the command below to SSH into your server. You can also use PuTTY or any
-# other SSH client. Your password is: ${var.admin_password}
-##############################################################################
-
-ssh ${var.admin_username}@${azurerm_public_ip.vault-pip.fqdn}
-
-EOF
-}
-```
-
-???
-**This bit here with the EOF is an example of a HEREDOC. It allows you store multi-line text in an output.**
 
 ---
 name: terraform-outputs
