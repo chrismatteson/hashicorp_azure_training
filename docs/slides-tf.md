@@ -1412,139 +1412,83 @@ Chapter 5
 Modules
 ]
 ---
-name: add-virtual-network
-Add a Virtual Network
+name: modules
+Modules
 -------------------------
-<br><br>
-Let's add a virtual network. Scroll down in the main.tf file until you find the azurerm_virtual_network resource. Uncomment it and save the file.
+Root module:
+	The current working directory when you run terraform init/plan/apply, holding the Terraform configuration files. It is itself a valid module.
 
-```terraform
-resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}-vnet"
-  location            = "${azurerm_resource_group.hashitraining.location}"
-  address_space       = ["${var.address_space}"]
-  resource_group_name = "${azurerm_resource_group.hashitraining.name}"
-}
-```
-Note the syntax for ensuring that this virtual network is placed into the resource group we created earlier.
+Variable scoping:
+	Variables are scoped only to the module in which they are declared. There is no inheritance!
 
-???
-Hop over to your own workstation and regenerate the terraform graph. Point out that we now have a Virtual Network, that depends on the resource group. How did Terraform know these things are connected? 
-
----
-name: dependency-mapping
-Terraform Dependency Mapping
--------------------------
-<br><br>
-Terraform can automatically keep track of dependencies for you. Let's take a look at the two resources in our main.tf file. Note the highlighted line in the azurerm_virtual_network resource. This is how we tell one resource to refer to another in terraform.
-
-```terraform
-resource "azurerm_resource_group" "hashitraining" {
-  name     = "${var.prefix}-vault-workshop"
-  location = "${var.location}"
-}
-
-resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}-vnet"
-  location            = "${azurerm_resource_group.hashitraining.location}"
-  address_space       = ["${var.address_space}"]
-* resource_group_name = "${azurerm_resource_group.hashitraining.name}"
+```hcl
+module "windowsservers" {
+  source         = "Azure/compute/azurerm"
+  version        = "1.1.5"
+  location       = "eastus"
+  vm_hostname    = "mywinvm"
+  vm_os_simple   = "WindowsServer"
 }
 ```
 
+???
+Congradulations! You've already written a module. All Terraform code is reusable as modules. Of course the code you've written so far might not be the most reusable, but Terraform wants to make using modules as easy as possible 
+
 ---
-name: terraform-apply-again
-Terraform Apply
+name: module-sources
+Module Sources
 -------------------------
-Run the **`terraform apply`** command again to build the virtual network.
+Modules can be stored in many locations:
+* Local
+* Github
+* Generic git repo
+* Bitbucket
+* HTTP URLs
+* Public Registry (support versioning)
+* Private Registry (support versioning)
 
-Command:
-```powershell
-terraform apply -auto-approve
-```
-
-Output:
-```tex
-azurerm_resource_group.hashitraining: Refreshing state... (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...ourceGroups/yourname-workshop)
-azurerm_virtual_network.vnet: Creating...
-  address_space.#:     "" => "1"
-  address_space.0:     "" => "10.0.0.0/16"
-  location:            "" => "centralus"
-  name:                "" => "yourname-vnet"
-  resource_group_name: "" => "yourname-workshop"
-  subnet.#:            "" => "<computed>"
-  tags.%:              "" => "<computed>"
-azurerm_virtual_network.vnet: Still creating... (10s elapsed)
-azurerm_virtual_network.vnet: Creation complete after 10s (ID: /subscriptions/c0a607b2-6372-4ef3-abdb-...twork/virtualNetworks/yourname-vnet)
-
-Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
-```
-
-???
-The auto-approve flag is so we don't have to type 'yes' every time we run terraform.
 
 ---
-name: tf-dependency-map
-Expanding the Graph
+name: module-registry
+Module Registry
 -------------------------
-.center[![:scale 50%](images/blast_radius_graph_3.png)]
-The terraform resource graph has expanded to include our virtual network.
+.center[![:scale 100%](images/registry.png)]
 
 ???
-This is a good spot to talk a bit about how the dependency graph gets formed.
+The public registry provides numerous modules to simplify the code which you need to write. Even if you don't use them as modules, they provide some fantastic examples of how to write high quality Terraform code.
 
 ---
-name: chapter-3c-lab
-.center[.lab-header[👩🏽‍💻 Lab Exercise 3c: Build the Vault Lab]]
-<br><br><br>
-Go through the rest of the **main.tf** file and uncomment all of the terraform resources. 
-
-Alternatively, you can copy all of the contents of the **main.tf.completed** file into your **main.tf** file. Just make sure you overwrite the entire file and save it.
-
-Run **`terraform apply`** again to build out the rest of your lab environment.
-
-???
-Note the dependency in the `data` block that forces terraform to wait until the Virtual Machine is fully provisioned and has a Public IP address before proceeding. Without that `depends_on` parameter the run may sometimes fail. You don't have to highlight this or explain it. This is for the instructor just in case someone asks. Normally it's best to allow Terraform to discover all dependencies automatically.
-
-NOTE: It will take up to five minutes to build out the lab environment. This is a good place to take a break, or have some time for open discussion and questions.
-
----
-name: chapter-3c-lab-answer
-.center[.lab-header[👩🏽‍💻 Lab Exercise 3c: Solution]]
-<br><br>
-If you copied all the code over from **main.tf.completed** into **main.tf**, it should look like this (comments have been removed for brevity):
-
-```terraform
-resource "azurerm_resource_group" "hashitraining" {
-  name     = "${var.prefix}-vault-workshop"
-  location = "${var.location}"
-}
-
-resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}-vnet"
-  location            = "${azurerm_resource_group.hashitraining.location}"
-  address_space       = ["${var.address_space}"]
-  resource_group_name = "${azurerm_resource_group.hashitraining.name}"
-}
-
-resource "azurerm_subnet" "subnet" {
-  name                 = "${var.prefix}-subnet"
-  virtual_network_name = "${azurerm_virtual_network.vnet.name}"
-  resource_group_name  = "${azurerm_resource_group.hashitraining.name}"
-  address_prefix       = "${var.subnet_prefix}"
-}
-...
-```
-
----
-name: tf-full-graph
-Terraform Graph
+name: terraform-internals
+Terraform Internals
 -------------------------
-.center[![:scale 70%](images/blast_radius_graph_2.png)]
-This graph represents your entire lab environment. Check out the free [Blast Radius](https://github.com/28mm/blast-radius) tool to generate your own terraform graphs.
+.center[![:scale 90%](images/tree.png)]
+Terraform stores all dependancies for this workspace in a .terraform folder. This way every terraform workspace can have their own, potentially conflicting, dependancies without issue.
 
 ???
+Terraform dependencies exist under the .terraform folder. The terraform init command is what downloads these dependancies. If you update code to require a new provider or module, you can run terraform init again. It's always safe to just delete the .terraform folder as well and run terraform init again.
 
+---
+name: chapter-5-exercise
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+### Modules
+* Create a subfolder called "modules" and another subfolder called "service_principal"
+* Write a variables.tf, main.tf, and outputs.tf file in this folder to create an azuread_application, azuread_service_principal, and azuread_service_principal_password.
+
+https://www.terraform.io/docs/configuration/modules.html  
+https://www.terraform.io/docs/providers/azuread/r/application.html  
+https://www.terraform.io/docs/providers/azuread/r/service_principal.html  
+https://www.terraform.io/docs/providers/azuread/r/service_principal_password.html  
+https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html  
+
+`HINT 1: Use azurerm_role_defintion data source from prior exercise for the role_definition_id.`
+
+`HINT 2: Create a new random_id for client_secret.`
+
+`Hint 3: You'll need inputs for resource_group, location, project_name, subscription_id and role_definition_id`
+
+`Hint 4: You'll want to create outputs for application_id and service_principal_password`
+
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise5)]]
 
 ---
 name: chapter-3-review
@@ -1731,149 +1675,6 @@ In this chapter we:
 * Refactored our main.tf into smaller parts
 * Learned the **`terraform fmt`** command
 ]
-
----
-name: Chapter-5
-class: center,middle
-.section[
-Chapter 5  
-Provision and Configure Azure VMs
-]
-
----
-name: intro-to-provisioners
-Using Terraform Provisioners
--------------------------
-<br><br><br><br>
-Once you've used Terraform to stand up a virtual machine or container, you may wish to configure your operating system and applications. This is where provisioners come in. Terraform supports several different types of provisioners including: Bash, Powershell, Chef, Puppet, Ansible, and more.
-
-.center[https://www.terraform.io/docs/provisioners/index.html]
-
-???
-**Terraform works hand-in-hand with these other configuration management tools to install packages, configure applications and change OS settings inside of a virtual machine or container.**
-
----
-name: file-provisioner
-The File Provisioner
--------------------------
-The Terraform file provisioner copies files from your workstation onto the remote machine. This is one of the simplest ways to put config files into the correct locations on the target machine. In our code we're using the file provisioner to upload a shell script.
-
-```terraform
-provisioner "file" {
-  source      = "files/setup.sh"
-  destination = "/home/${var.admin_username}/setup.sh"
-
-  connection {
-    type     = "ssh"
-    user     = "${var.admin_username}"
-    password = "${var.admin_password}"
-    host     = "${azurerm_public_ip.vault-pip.fqdn}"
-  }
-}
-```
-
-Note the *connection* block of code inside the provisioner block. This is where you configure the method for connecting to the target machine. The file provisioner supports both SSH and WinRM connections.
-
-???
-SSH for linux, WinRM for your windows machines.
-
----
-name: remote-exec-provisioner
-The Remote Exec Provisioner
--------------------------
-The remote exec provisioner allows you to execute scripts or other programs on the target host. If its something you can run unattended (for example, a software installer), then you can run it with remote exec.
-
-```terraform
-provisioner "remote-exec" {
-  inline = [
-    "chmod +x /home/${var.admin_username}/*.sh",
-    "sleep 30",
-    "MYSQL_HOST=${var.prefix}-mysql-server /home/${var.admin_username}/setup.sh"
-  ]
-
-  connection {
-    type     = "ssh"
-    user     = "${var.admin_username}"
-    password = "${var.admin_password}"
-    host     = "${azurerm_public_ip.vault-pip.fqdn}"
-  }
-}
-```
-
-In this example we're running two commands. The first changes the permissions of the script to make it executable. The second command runs the script with variables that we defined earlier.
-
-???
-Local exec and remote exec can be used to trigger Puppet or Ansible runs. We do have a dedicated chef provisioner as well. 
-
----
-name: puppet-chef-ansible
-Terraform & Config Management Tools
--------------------------
-.center[![:scale 80%](images/cpa.jpg)]
-
-Terraform works well with common config management tools like Chef, Puppet or Ansible. Below are some links with more information on each:
-
-Official Chef Terraform provisioner:  
-https://www.terraform.io/docs/provisioners/chef.html
-
-Run Puppet with 'local-exec':  
-https://www.terraform.io/docs/provisioners/local-exec.html
-
-Terraform and Ansible - Better Together:  
-https://github.com/scarolan/ansible-terraform
-
----
-name: provisioner-tips
-Terraform Provisioner Tips
--------------------------
-<br><br>
-Terraform provisioners like remote-exec are great when you need to run a few simple commands or scripts. For more complex configuration management you'll want a tool like Chef or Ansible. 
-
-Provisioners only run the first time a Terraform run is executed. In this sense, they are not idempotent. If you need ongoing state management of VMs or servers that are long-lived, we recommend using a config management tool.
-
-On the other hand, if you want immutable infrastructure you should consider using our [Packer](https://packer.io) tool.
-
----
-name: Chapter-6
-class: center,middle
-.section[
-Chapter 6  
-Manage and Change Infrastructure State
-]
-
-
----
-name: terraform-refresh
-Terraform Refresh
--------------------------
-Sometimes infrastructure may be changed outside of Terraform's control. Virtual machines could be deleted, firewall rules changed, hardware failures could occur causing your infrastructure to look different than what's in the state file.
-
-The state file represents the *last known* state of the infrastructure. If you'd like to check and see if the state file still matches what you built, you can use the **terraform refresh** command. 
-
-Note that this does *not* update your infrastructure, it simply updates the state file.
-
-```bash
-terraform refresh
-```
-
----
-name: change-existing-infra
-Changing Existing Infrastructure
--------------------------
-During the earlier sections, you learned to write code in small increments, then test your changes with the **`terraform apply`** command. Whenever you run a plan or apply, Terraform reconciles three different data sources:
-
-1.  What you wrote in your code
-2.  The state file
-3.  What actually exists
-
-Terraform does its best to add, delete, change, or replace existing resources based on what is in your *.tf files. Here are the four different things that can happen to each resource during a plan/apply:
-
-```tex
-+   create
--   destroy
--/+ replace
-~   update in-place
-```
 
 ---
 name: terraform-destroy-2
