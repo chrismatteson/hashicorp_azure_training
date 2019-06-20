@@ -1,3 +1,4 @@
 variable "users" {
-  type    = "list"
-}	
+  type = list(string)
+}
+
