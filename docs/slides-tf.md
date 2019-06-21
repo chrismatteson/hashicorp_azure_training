@@ -1753,77 +1753,17 @@ Sign Up for a Free Account
 **Go ahead and sign up for a new account if you don't have one already. Once you've signed up wait for more instructions.**
 
 ---
-name: tfe-join-a-team
-Join an Existing Team
--------------------------
-.center[![:scale 90%](images/tf_cloud_welcome.png)]
-
-Before you go further, provide your username to your instructor. This is so you can be invited to the workshop organization.
-
-???
-**Now I need you all to write your TFE username on the whiteboard. This is so I can invite you to our shared training organization.**
-
-Instructor - you should have an organization ready for training. Invite all your students to your organization. You can put them all on a team called "students" and give them "Manage Workspaces" permissions. You should also create a global sentinel policy called `block_allow_all_http` and populate it with the following Sentinel code. The policy enforcement mode should be set to advisory at the beginning of the training.
-
-TODO: Copy this into the instructor guide.
-
-```
-import "tfplan"
-
-get_sgs = func() {
-    sgs = []
-    for tfplan.module_paths as path {
-        sgs += values(tfplan.module(path).resources.azurerm_network_security_group) else []
-    }
-    return sgs
-}
-
-network_sgs = get_sgs()
-
-disallowed_cidr_blocks = [
-  "0.0.0.0/0",
-  "0.0.0.0",
-  "*",
-]
-
-block_allow_all = rule {
-  all network_sgs as _, instances {
-    all instances as _, sg {
-    	all sg.applied.security_rule as _, sr {
-        not (sr.destination_port_range == "80" and sr.source_address_prefix in disallowed_cidr_blocks) or (sr.access == "Deny")
-    	}
-    }
-  }
-}
-
-main = rule {
-  (block_allow_all) else true
-}
-```
-
----
 name: tfe-create-an-org
 Create an Organization
 -------------------------
 .center[![:scale 70%](images/sandbox.png)]
 
-Create a new organization for your own development work. Name it **yourname-sandbox**. We'll be using this later in the training.
+Create a new organization. Name it with a prefix which the instructor will provide and your name **prefix-yourname**. We'll be using this later in the training.
 
 ???
-**Okay, now everybody should create a new sandbox organization. Write those down too so I can upgrade them to trial organizations. This will just take a moment.**
+**Okay, now everybody should create a new organization. Write those down too so I can upgrade them to trial organizations. This will just take a moment.**
 
-Instructors, have your students write their org names on a piece of paper or the whiteboard. You'll need to go into the admin console and upgrade them all to trial organizations.
-
----
-name: tfe-choose-an-org
-Select the Workshop Organization
--------------------------
-.center[![:scale 70%](images/choose_training_org.png)]
-Your instructor will invite you to the workshop organization. Once you've been invited you'll see a second organization in the org pull-down menu. Change from your sandbox organization into the workshop organization.
-
-???
-**For the first portion of this workshop we'll all be sharing the same sandbox. I've invited you all to this $TRAININGORG where you have the ability to create your own workspaces.**
-
+Instructors, provide a unique prefix based on the course for everyone to include in their organization name. Then ask students to provide you their organization names. You'll need to go into the admin console and upgrade them all to trial organizations.
 
 ---
 name: why-remote-state
@@ -1880,34 +1820,24 @@ terraform {
 **You need two config files to get remote state working. First is your .terraformrc (or terraform.rc on Windows), and the second is a remote_backend.tf with the terraform block of code in it. The credentials file holds your token, while the config file tells terraform where to store your state file.  We'll be creating these two files in a moment.**
 
 ---
-name: create-a-workspace-gui
-Create a New Workspace
--------------------------
-.center[![:scale 80%](images/create_workspace_gui.png)]
-
-With paid and trial accounts, you must create a workspace before migrating to remote state. Make sure you are in the workshop organization (not your sandbox), then create a new workspace.
-
-???
-**Make sure you are in the shared workshop organization, not your personal sandbox org.**
-
----
 name: change-to-local-exec
-Change to Local Execution
+Remote vs Local Execution
 -------------------------
 .center[![:scale 100%](images/change_to_local.png)]
 
-Go into the **General** settings for your workspace and change the execution mode to **Local**. Save your settings.
+TFE supports both local and remote execution. This setting can be configured under **General** settings for your workspace.
 
 ???
-**This is important. All we want to do is store our state file remotely for now. Later on we'll learn about remote execution.**
+Local executation occurs on your local laptop and Terraform Enterprise is only used to store the state file. Remote execuation occurs on the Terraform Enterprise servers. The greatest advantage of remote execuation is the ability to seperate your local internet access and local credentials from the Terraform run.
 
 ---
 name: chapter-6-exercise-1
 .center[.lab-header[👩🏽‍🔬 Chaper 6: Exercise 1]]
 ### Create Terraform Enterprise User and Organization
 * Create a Terraform Enterprise trial account. The instructor will provide you with a link to create a 30 day trial.
-* Create a new organization
+* Create a new organization, make sure to include the provided prefix in the name
 * Create an API key for your user
+* Provide the name of the organization to the instructor
 
 https://app.terraform.io/signup/account
 https://www.hashicorp.com/resources/why-consider-terraform-enterprise-over-open-source  
@@ -1925,6 +1855,8 @@ name: chapter-6-exercise-2
 * Run terraform init and copy state file to new backend
 * Move old terraform.state file out of the directory
 * Login to Terraform Enterprise and see the new workspace
+* Change workspace to local execution
+* Run a terraform apply and see that it's executed locally
 
 https://www.terraform.io/docs/commands/cli-config.html  
 https://www.terraform.io/docs/backends/types/remote.html  
@@ -1941,8 +1873,7 @@ In this chapter we:
 * Reviewed the value Terraform Enterprise offers
 * Looked at Terraform Cloud and Enterprise
 * Signed up for a Terraform Cloud account
-* Created a sandbox organization
-* Joined the workshop organization
+* Created a new organization
 * Learned about Remote State
 * Generated a Terraform Cloud Token
 * Configured our terraform.rc file
@@ -2005,7 +1936,7 @@ Before we migrate our sensitive API credentials into the application we need to 
 name: chapter-7-exercise
 .center[.lab-header[👩🏻‍🏫 Chapter 7: Exercise 1]]
 ### Provide API Credentials
-Create Terraform Cloud **environment variables** for your Azure credentials. Make sure the `ARM_CLIENT_SECRET` is marked as **sensitive**. Reference the credentials document shared at the beginning of the workshpo for these credentials.
+Create Terraform Cloud **environment variables** for your Azure credentials. Make sure the `ARM_CLIENT_SECRET` is marked as **sensitive**. Reference the credentials document shared at the beginning of the workshop for these credentials.
 
 ```tex
 Name                           Value
@@ -2031,7 +1962,6 @@ In this chapter we:
 * Viewed our Azure Credentials
 * Enabled Remote Execution
 * Moved our Azure Creds to TF Cloud
-* Created a prefix variable
 * Ran Terraform Apply from the GUI
 ]
 
@@ -2106,20 +2036,99 @@ GUI:
 Do not click the red Destroy from Terraform Enterprise button. This will delete your entire workspace. Remember to confirm the destroy action from within the UI.
 
 ---
-name: instructor-enable-sentinel
-.center[🤖 Sentinel Policy Enforcement 🤖 
--------------------------]
+name: create-a-new-policy-0
+Create a New Sentinel Policy
+-------------------------
+.center[![:scale 70%](images/create_a_new_policy.png)]
+Before we re-create your workspace, let's implement a simple Sentinel policy for our organization.
+
+Under your **Organization** settings select **Policies** and then **Create a New Policy**.
+
+---
+name: create-a-new-policy-1
+Create a New Sentinel Policy
+-------------------------
+.center[![:scale 45%](images/policy_name_and_mode.png)]
+
+Name it **restrict_allowed_vm_types**. You can put whatever you like in the description.
+
+The Sentinel code for your policy is on the next slide. Copy and paste it into the **Policy Code** field.
+
+---
+name: create-a-new-policy-2
+Sentinel Policy Code - Copy & Paste
+-------------------------
+```hcl
+import "tfplan"
+
+get_vms = func() {
+    vms = []
+    for tfplan.module_paths as path {
+        vms += values(tfplan.module(path).resources.azurerm_virtual_machine) else []
+    }
+    return vms
+}
+
+allowed_vm_sizes = [
+  "Standard_A0",
+  "Standard_A1",
+]
+vms = get_vms()
+vm_size_allowed = rule {
+    all vms as _, instances {
+      all instances as index, r {
+           r.applied.vm_size in allowed_vm_sizes
+      }
+    }
+}
+
+main = rule {
+  (vm_size_allowed) else true
+}
+```
+
+---
+name: create-a-new-policy-3
+Create a New Sentinel Policy
+-------------------------
+.center[![:scale 60%](images/create_policy_button.png)]
 <br><br>
-.center[![:scale 100%](images/kitt_scanner.gif)]
+Leave the Policy Sets box alone for now. We will create a policy set on the next slide.
 
-Your instructor will enable a Sentinel policy across the entire organization. 
+Click **Create Policy** to proceed.
 
-A robot now stands guard between your Terraform code and the Azure APIs.
 
-Take a break or discuss Sentinel testing while **`terraform destroy`** is running.
+---
+name: create-policy-set-0
+Create a Policy Set
+-------------------------
+.center[![:scale 60%](images/create_a_new_policy_set_gui.png)]
+<br>
+**Policy Sets** determine where your policies are applied. Policies can be applied to groups of workspaces, or to your entire organization.
 
-???
-Instructor notes: take a break here. Deleting a single VM in Azure can sometimes take upwards of ten minutes. Or do a side panel discussion on how Sentinel works. Either way you need to buy some time. While your students are on break, go into your organization settings and flip the block_allow_all_http enforcement mode to hard-mandatory.
+Under **Policy Sets** select **Create a New Policy Set**.
+
+---
+name: create-policy-set-1
+Create a Policy Set
+-------------------------
+.center[![:scale 50%](images/policy_set_settings.png)]
+<br>
+Name your policy set **global_restrict_vm_size**.
+
+Make sure **Policies enforced on all workspaces** is selected.
+
+---
+name: create-policy-set-2
+Create a Policy Set
+-------------------------
+.center[![:scale 60%](images/add_policy_to_policy_set.png)]
+<br>
+Add the **restrict_allowed_vm_types** policy you created in the previous step to your policy set.
+
+Click **Create Policy Set** at the bottom to save and activate your new policy.
+
+Now your policy will be enforced for all workspaces across your sandbox organization.
 
 ---
 name: create-your-application
@@ -2255,10 +2264,10 @@ Terraform Enterprise is a multi-tenanted application that supports fine-grained 
 TODO: Find a better image for this slide.
 
 ---
-name: chapter-9a-tfe-lab
+name: chapter-9-exercise
 .center[.lab-header[👭 Lab Exercise 9a: Share the Sandbox]]
-<br><br>
-This is another partner exercise. In this lab you'll invite your partner to your organization.
+### Role Based Access Control
+This is a partner exercise. In this lab you'll invite your partner to your organization.
 
 **Partner 1**:
 1. Go into your organization's team settings and create a new team called **developers**. 
@@ -2269,41 +2278,6 @@ This is another partner exercise. In this lab you'll invite your partner to your
 Verify that you are able to see your partner's organization and workspace.
 
 Trade roles and repeat the lab exercise.
-
----
-name: chapter-9a-tfe-lab-solution
-.center[.lab-header[👭 Lab Exercise 9a: Solution]]
-<br><br>
-.center[![:scale 60%](images/team_workspace_acls.png)]
-Users can be members of multiple organizations, and multiple teams within each organization. Teams are granted different levels of access to workspaces within the organization depending on their role.
-
-You can learn more about workspace permissions on the [Terraform Enterprise Docs](https://www.terraform.io/docs/enterprise/users-teams-organizations/permissions.html)
-
-???
-TODO: Put a better image on this slide.
-
----
-name: chapter-9b-tfe-lab
-.center[.lab-header[🔒 Lab Exercise 9b: RBAC Controls]]
-<br><br><br>
-One of your team members needs a larger virtual machine size for load testing. This is another partner exercise.
-
-**Partner 1**:
-In Partner 2's workspace, create a new variable called **vm_size** and set it to **Standard_A1_v2**. Click on the **Queue Plan** button to trigger a new terraform plan. What happens? Are you able to override the Sentinel failure and continue?
-
-**Partner 2**:
-Log onto your workspace and navigate to the current run. Have a discussion with Partner 1 about why they need a larger VM. Agree upon a solution and redeploy the application.
-
-Exchange roles and repeat the lab exercise.
-
----
-name: chapter-9b-tfe-lab-solution
-.center[.lab-header[🔒 Lab Exercise 9b: Solution]]
-<br><br>
-.center[![:scale 100%](images/standard_a1_v2.png)]
-The Sentinel policy you created earlier checks any Azure Virtual Machines that appear in the plan, and looks at the configured vm_size. This is compared to the list of approved types which includes only **Standard_A0** and **Standard_A1**. Anything outside of these two approved sizes of VM will be flagged by Sentinel.
-
-There's no single correct answer to this lab. You may decide that partner 1 doesn't need such a large VM for their development work. Or partner 2 might grant an exception and use their admin powers to override the Sentinel failure. Or perhaps the new VM size could be added to the Sentinel rule to allow it as a new option.
 
 ---
 name: chapter-9-review
