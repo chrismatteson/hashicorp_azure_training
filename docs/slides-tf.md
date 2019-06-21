@@ -749,8 +749,6 @@ Terraform fetches any required providers and modules and stores them in the .ter
 name: terraform-plan
 Run Terraform Plan
 -------------------------
-When you run **`terraform plan`** you should see output that looks like this:
-
 Command:
 ```bash
 terraform plan
