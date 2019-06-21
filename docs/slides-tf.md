@@ -620,8 +620,8 @@ Resources - Terraform Building Blocks
 Create an Azure Resource Group with a random name.
 
 ```hcl
-resource "random_id" "project_name" }
-  length = 4
+resource "random_id" "project_name" {
+  byte_length = 4
 }
 
 resource "azurerm_resource_group" "hashitraining" {
