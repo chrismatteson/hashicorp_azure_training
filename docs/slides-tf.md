@@ -78,13 +78,17 @@ Table of Contents
 =========================
 
 .contents[
-0. Intro to Terraform & Demo
-1. Set Up Your Workstation
+0. Housekeeping and Background
+1. Intro to Terraform & Demo
 2. My First Terraform
-3. Terraform In Action: plan, apply, destroy
-4. Organizing Your Terraform Code
-5. Provision and Configure Azure VMs
-6. Manage and Change Infrastructure State
+3. Expressions, Variables, and Outputs
+4. Organizing Your Terraform Code, Comments, and Data Sources
+5. Modules, Internals, and Backends
+6. Terraform Enterprise - Built for Teams and Organizations
+7. Protecting Sensative Values
+8. Sentinel Policy Enforcement
+9. Version Control Systems and Terraform
+10. Access Controls
 ]
 
 ???
