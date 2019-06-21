@@ -42,7 +42,7 @@ The Slide Deck
 .center[
 Follow along on your own computer at this link:
 
-https://bit.ly/hashiazure
+https://bit.ly/2x9izst
 =========================
 ]
 
@@ -50,22 +50,26 @@ https://bit.ly/hashiazure
 name: Introductions
 Introductions
 -------------------------
-<br><br><br>
-.contents[
-* Your Name
-* Job Title
-* Automation Experience
-* Favorite Text Editor
-]
 
 ???
-Use this slide to introduce yourself, give a little bit of your background story, then go around the room and have all your participants introduce themselves.
+Introduce yourself
 
-The favorite text editor question is a good ice breaker, but perhaps more importantly it gives you an immediate gauge of how technical your users are.  
+---
+name: Introductions
+Introductions
+-------------------------
+<br><br><br><br><br>
+.center[.lab-header[Everyone Stand up]]
 
-**There are no wrong answers to this question. Unless you say Notepad. Friends don't let friends write code in Notepad.**
+???
+Have everyone stand up. Then ask those whom to continue standing whom have:
+- Used a scripting language
+- Used a configuration management/provisioning tool such as puppet/chef/ansible/cloudformation/arm/terraform/etc
+- Used a cloud provisioning tool such as cloudformation/arm/terraform
+- Used Terraform
+- Used Terraform Enterprise
 
-**If you don't have a favorite text editor, that's okay! We've brought prebuilt cloud workstations that have Visual Studio Code already preinstalled. VSC is a free programmer's text editor for Microsoft, and it has great Terraform support. Most of this workshop will be simply copying and pasting code, so if you're not a developer don't fret. Terraform is easy to learn and fun to work with.**
+Then ask everyone to sit. Ask anyone to raise their hands if they have used any other HashiCorp tools. Depending on th size of the group, ask them each tool individually, or inquire to the individuals with their hands raised what they have used.
 
 ---
 name: Table-of-Contents
@@ -84,7 +88,7 @@ Table of Contents
 ]
 
 ???
-This workshop should take roughly three hours to complete. It is ideal for a half-day workshop and can be paired with Vault content for a full day of training. The infrastructure participants build during the morning session is used as the lab environment for the afternoon session. So you can do a half day of Terraform and/or Vault, or both of them together.
+This workshop should take roughly four hours to complete. It is ideal for a half-day workshop and can be paired with Vault content for a full day of training. The infrastructure participants build during the morning session is used as the lab environment for the afternoon session. So you can do a half day of Terraform and/or Vault, or both of them together.
 
 **Here is our agenda for today's training. We'll be taking breaks after each major section or every hour, whichever comes first. This part of the workshop will take us through lunch break, then we'll cover Vault during the afternoon session.**
 
@@ -741,7 +745,6 @@ Terraform fetches any required providers and modules and stores them in the .ter
 name: terraform-plan
 Run Terraform Plan
 -------------------------
-<br><br>
 When you run **`terraform plan`** you should see output that looks like this:
 
 Command:
@@ -1523,7 +1526,7 @@ name: chapter-5-exercise-2
 .center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
 ### Virtual Machine
 * Create an Azure Virtual Machine to use the resource group, network interface, and template_file as custom_data, which were created in prior exercises.
-* Add the MSI virtual machine extension to the VM created in the prior exercise.
+* Add the MSI virtual machine extension to the VM.
 
 https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html  
 https://www.terraform.io/docs/providers/azurerm/r/virtual_machine_extension.html  
@@ -1885,8 +1888,8 @@ Go into the **General** settings for your workspace and change the execution mod
 **This is important. All we want to do is store our state file remotely for now. Later on we'll learn about remote execution.**
 
 ---
-name: chapter-7-exercise-1
-.center[.lab-header[👩🏽‍🔬 Chaper 7: Exercise 1]
+name: chapter-6-exercise-1
+.center[.lab-header[👩🏽‍🔬 Chaper 6: Exercise 1]]
 ### Create Terraform Enterprise User and Organization
 * Create a Terraform Enterprise trial account. The instructor will provide you with a link to create a 30 day trial.
 * Create a new organization
@@ -1900,8 +1903,8 @@ https://www.terraform.io/docs/enterprise/users-teams-organizations/users.html
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise7)]]
 
 ---
-name: chapter-7-exercise-2
-.center[.lab-header[👩🏽‍🔬 Chaper 7: Exercise 1]
+name: chapter-6-exercise-2
+.center[.lab-header[👩🏽‍🔬 Chaper 6: Exercise 2]]
 ### Remote State
 * Configure a .terraformrc file with the token created in the last task
 * Create a terraform.tf file with remote backend configuration
@@ -1985,9 +1988,9 @@ Before we migrate our sensitive API credentials into the application we need to 
 **When remote execution is enabled, all of your variables are stored in Terraform Enterprise, and the `terraform plan` and `terraform apply` commands now happen on the server instead of on your workstation. State is still stored remotely as before. Your command line simply becomes a tool for driving the remote execution.**
 
 ---
-name: chapter-7-exercise-1
+name: chapter-7-exercise
 .center[.lab-header[👩🏻‍🏫 Chapter 7: Exercise 1]]
-<br><br>
+### Provide API Credentials
 Create Terraform Cloud **environment variables** for your Azure credentials. Make sure the `ARM_CLIENT_SECRET` is marked as **sensitive**. Reference the credentials document shared at the beginning of the workshpo for these credentials.
 
 ```tex
@@ -2001,16 +2004,12 @@ ARM_CLIENT_ID                  91299f64-f951-4462-8e97-9efb1d215501
 
 HINT: You'll need to find the **Environment Variables** section of your workspace settings.
 
-
----
-name: chapter-7-exercise-2
-.center[.lab-header[🖱️ Chapter 7: Exercise 2]]
-<br><br><br>
+### Initiate a Plan/Apply
 Kick off a run in the using the **Queue Plan** button. Watch the results of your run in the UI.
 
 ---
-name: tfe-chapter-5-review
-📝 Chapter 5 Review
+name: chapter-7-review
+📝 Chapter 7 Review
 -------------------------
 <br>
 .contents[
@@ -2138,7 +2137,7 @@ Result: false
 Oh no! Our **`terraform apply`** failed. How can we fix our code?
 
 ---
-name: chapter-6-tfe-lab
+name: chapter-8-exercise
 .center[.lab-header[👮🏿‍♀️ Lab Exercise 6: Secure the App]]
 <br><br>
 The security team has a new requirement: Development applications should not be exposed to the public Internet.
@@ -2160,30 +2159,8 @@ You may also simply type "What is my IP address?" into your browser search bar.
 Instructors: Have fun with this exercise. Pull up your organization's homepage on the projector screen. You can make a game out of it, see who gets their code compliant first.
 
 ---
-name: chapter-6-tfe-lab-solution
-.center[.lab-header[👮🏿‍♀️ Lab Exercise 6: Solution]]
-<br><br>
-Our new Sentinel policy looks through the Terraform plan output and searches for network security rules that allow Internet access on port 80. In order to pass the Sentinel test you must change your code to restrict access to a single IP or range of IPs. Replace 127.0.0.1 below with your own source IP, then run **`terraform apply`**.
-
-Solution:
-```hcl
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-*   source_address_prefix      = "127.0.0.1"
-    destination_address_prefix = "*"
-  }
-```
-Now try loading the app from your workstation. Try it from a different workstation.
-
----
-name: tfe-chapter-6-review
-📝 Chapter 6 Review
+name: chapter-8-review
+📝 Chapter 8 Review
 -------------------------
 <br>
 .contents[
@@ -2196,10 +2173,10 @@ In this chapter we:
 ]
 
 ---
-name: TFE-Chapter-7
+name: Chapter-9
 class: center,middle
 .section[
-Chapter 7  
+Chapter 9  
 Version Control Systems and Terraform
 ]
 
@@ -2223,24 +2200,6 @@ Until now all our code changes have been done on our workstation. Let's upgrade 
 TODO: Add an image to this slide.
 
 ---
-name: tfe-chapter-7-review
-📝 Chapter 7 Review
--------------------------
-.contents[
-In this chapter we:
-* Connected our Organization to VCS
-* Created a New Workspace
-]
-
----
-name: TFE-Chapter-8
-class: center,middle
-.section[
-Chapter 8  
-VCS Collaboration for Teams
-]
-
----
 name: vcs-driven-workflow
 Collaboration With VCS
 -------------------------
@@ -2251,20 +2210,17 @@ When your Terraform code is stored in a version control system, you unlock extra
 You can configure rules like requiring tests to pass, code reviews, approvals and more. Let's do a code collaboration exercise.
 
 ---
-name: tfe-chapter-8-review
+name: chapter-8-review
 📝 Chapter 8 Review
 -------------------------
 .contents[
 In this chapter we:
-* Edited a file on our partner's repo
-* Created a fork and submitted a pull request
-* Reviewed and discussed the pull request
-* Merged changes into the code repo
-* Triggered a Terraform run from a git merge
+* Reviewed VCS workflow for Terraform
+* Disucssed collaboration via VCS
 ]
 
 ---
-name: TFE-Chapter-9
+name: Chapter-9
 class: center,middle
 .section[
 Chapter 9  
@@ -2336,39 +2292,7 @@ The Sentinel policy you created earlier checks any Azure Virtual Machines that a
 There's no single correct answer to this lab. You may decide that partner 1 doesn't need such a large VM for their development work. Or partner 2 might grant an exception and use their admin powers to override the Sentinel failure. Or perhaps the new VM size could be added to the Sentinel rule to allow it as a new option.
 
 ---
-name: reset-environment
-Reset the Lab Environment
--------------------------
-Before the next chapter we need to make some simple modifications to our **main.tf** and **outputs.tf** files. 
-
-In **main.tf** comment out everything below the first resource in the file:
-
-```hcl
-resource "azurerm_resource_group" "myresourcegroup" {
-  name     = "${var.prefix}-workshop"
-  location = "${var.location}"
-}
-
-# EVERYTHING BELOW HERE GETS COMMENTED OUT
-# resource "azurerm_virtual_network" "vnet" {
-#   name                = "${var.prefix}-vnet"
-```
-
-Comment out your entire **outputs.tf** file too:
-
-```hcl
-# Outputs file
-# output "catapp_url" {
-#   value = "http://${azurerm_public_ip.catapp-pip.fqdn}"
-# }
-```
-Save both files, commit them to git, and push to your remote repository. This will reset your environment to an empty resource group.
-
-???
-Instructor note: The next run will get stopped by your policy. Yes, it feels a bit weird and counterintuitive. That is just the way Sentinel works right now.
-
----
-name: tfe-chapter-9-review
+name: chapter-9-review
 📝 Chapter 9 Review
 -------------------------
 <br>
@@ -2388,7 +2312,7 @@ Before You Go...
 Please run **`terraform destroy`** command to delete your lab environment(s) before you go. This helps us keep our cloud costs under control.
 
 Command:
-```powershell
+```bash
 terraform destroy
 ```
 
@@ -2413,7 +2337,7 @@ Your feedback is important to us!
 
 The survey is short, we promise:
 
-http://bit.ly/hashiworkshopfeedback
+https://www.surveymonkey.com/r/TerraformTraining
 =========================
 ]
 
@@ -2436,40 +2360,4 @@ Terraform Azurerm Provider Documentation
 https://www.terraform.io/docs/providers/azurerm/
 
 Link to this Slide Deck  
-https://bit.ly/hashiazure
-
----
-name: before-you-go
-Before You Go...
--------------------------
-Please run **`terraform destroy`** command to delete your lab environment(s) before you go. This helps us keep our cloud costs under control.
-
-Command:
-```powershell
-terraform destroy
-```
-
-Output:
-```tex
-Do you really want to destroy all resources?
-  Terraform will destroy all your managed infrastructure, as shown above.
-  There is no undo. Only 'yes' will be accepted to confirm.
-
-  Enter a value: yes
-
-Destroy complete! Resources: 15 destroyed.
-```
-
----
-name: Feedback-Survey
-Workshop Feedback Survey
--------------------------
-<br><br>
-.center[
-Your feedback is important to us! 
-
-The survey is short, we promise:
-
-http://bit.ly/hashiworkshopfeedback
--------------------------
-]
+https://bit.ly/2x9izst
