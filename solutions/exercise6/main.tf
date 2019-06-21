@@ -36,7 +36,7 @@ resource "azurerm_resource_group" "main" {
 # Networking Module
 module "networking" {
   source       = "./modules/networking"
-  rg_name      = azurerm_resource_group.main.id
+  rg_name      = azurerm_resource_group.main.name
   location     = azurerm_resource_group.main.location
   project_name = random_id.project_name.hex
 }
