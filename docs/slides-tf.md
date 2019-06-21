@@ -2034,7 +2034,7 @@ name: chapter-8-exercise-2
 .center[.lab-header[👩🏻‍🏫 Chapter 8: Exercise 2]]
 ### Create a New Sentinel Policy
 * Create new Sentinel policy called**restrict_allowed_vm_types**.
-* Copy the following Sentinel code into your policy: (restrict_allowed_vm_types.hcl)[https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/docs/exercises/exercise7/restrict_allowed_vm_types.hcl]
+* Copy the following Sentinel code into your policy: [restrict_allowed_vm_types.hcl](https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/docs/exercises/exercise7/restrict_allowed_vm_types.hcl)
 * Create a new policy set that applies to your workspace 
 * Add the **restrict_allowed_vm_types** policy you created in the previous step to your policy set.
 * Run a new Terraform plan and apply and see the Sentinel results
