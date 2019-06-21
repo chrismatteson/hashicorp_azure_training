@@ -63,9 +63,9 @@ data "azurerm_role_definition" "role_definition" {
 }
 
 data "template_file" "setup" {
-  template = "${file("setupvault.tpl")}"
+  template = file("setupvault.tpl")
 
-  vars {
-    vault_url             = "${var.vault_url}"
+  vars= {
+    vault_url             = var.vault_url
   }
 }
