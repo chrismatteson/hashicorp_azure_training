@@ -1049,6 +1049,8 @@ name: expressionss-2
 Expressions - Count
 -------------------------
 
+Count allows us to create multiple similiar resources without a lot of duplicated code. We can then either use the splat (*) syntax of count.index to reference these dynamic resources.
+
 ```hcl
 variable "count" {
   default = 2
@@ -1072,15 +1074,34 @@ Prior to 0.12, the only way to create multiple resources was using count paramet
 name: expressions-3
 Expressions - Loops
 -------------------------
+Terraform 0.12 supports for statements and dynamic blocks within resources.
 
+```hcl
+resource "azurerm_virtual_network" "test" {
+  name                = "virtualNetwork1"
+  location            = "${azurerm_resource_group.test.location}"
+  resource_group_name = "${azurerm_resource_group.test.name}"
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  dynamic "subnet" {
+    for_each = var.subnets
+    content {
+      name           = "subnet${subnet.key}"
+      address_prefix = subnet.value
+    }
+  }
+}
+```
 
 ???
-
+Terraform 0.12 has opened up true for loops to create dynamic content both for resources and information inside of resources. In this instance we are dynamically creating subnets based on the population of a list variable.
 
 ---
 name: expressions-4
 Expressions - Conditionals
 -------------------------
+Terraform supports conditional logic for more flexible code.
 
 ```hcl
 resource "azurerm_virtual_machine" "web" {
@@ -1099,7 +1120,8 @@ Terraform interpolation language even supports conditional logic
 name: expressions-5
 Expressions - Math
 -------------------------
-<br><br>
+Expressions even support simple math.
+
 ```hcl
 resource "azurerm_virtual_machine" "module" {
   name = "myvm-${count.index + 1}"
@@ -1117,10 +1139,10 @@ Terraform supports basic math functions. If you don't want the numbering to star
 name: functions
 Built-In Functions
 -------------------------
+Numerous functions for munging values are built-in.
 
 **concat(list1, list2, ...)** - Combines two or more lists into a single list. 
 *concat(var.base_tags, var.additional_tags)*
-
 
 **element(list, index)** - Returns a single element from a list at the given index.
 *element(azurerm_subnet.foo.*.id, count.index)*
