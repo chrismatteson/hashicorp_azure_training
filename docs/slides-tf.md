@@ -1807,27 +1807,6 @@ Your instructor will invite you to the workshop organization. Once you've been i
 ???
 **For the first portion of this workshop we'll all be sharing the same sandbox. I've invited you all to this $TRAININGORG where you have the ability to create your own workspaces.**
 
----
-name: tfe-chapter-3-review
-📝 Chapter 6 Review
--------------------------
-<br>
-.contents[
-In this chapter we:
-* Reviewed the value Terraform Enterprise offers
-* Looked at Terraform Cloud and Enterprise
-* Signed up for a Terraform Cloud account
-* Created a sandbox organization
-* Joined the workshop organization
-]
-
----
-name: Chapter-7
-class: center,middle
-.section[
-Chapter 7  
-Remote State
-]
 
 ---
 name: why-remote-state
@@ -1906,9 +1885,8 @@ Go into the **General** settings for your workspace and change the execution mod
 **This is important. All we want to do is store our state file remotely for now. Later on we'll learn about remote execution.**
 
 ---
-name: chapter-7-exercise
-.center[.lab-header[👩🏽‍🔬 Lab Exercise 4: Enable Remote State]]
-<br><br>
+name: chapter-7-exercise-1
+.center[.lab-header[👩🏽‍🔬 Chaper 7: Exercise 1]
 ### Create Terraform Enterprise User and Organization
 * Create a Terraform Enterprise trial account. The instructor will provide you with a link to create a 30 day trial.
 * Create a new organization
@@ -1918,7 +1896,12 @@ https://app.terraform.io/signup/account
 https://www.hashicorp.com/resources/why-consider-terraform-enterprise-over-open-source  
 https://www.hashicorp.com/resources/getting-started-with-terraform-enterprise  
 https://www.terraform.io/docs/enterprise/users-teams-organizations/users.html  
+<br><br><br><br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise7)]]
 
+---
+name: chapter-7-exercise-2
+.center[.lab-header[👩🏽‍🔬 Chaper 7: Exercise 1]
 ### Remote State
 * Configure a .terraformrc file with the token created in the last task
 * Create a terraform.tf file with remote backend configuration
@@ -1928,14 +1911,21 @@ https://www.terraform.io/docs/enterprise/users-teams-organizations/users.html
 
 https://www.terraform.io/docs/commands/cli-config.html  
 https://www.terraform.io/docs/backends/types/remote.html  
+<br><br><br><br><br><br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/solutions/solutions/exercise7)]]
 
 ---
-name: chapter-7-review
-📝 Chapter 7 Review
+name: chapter-6-review
+📝 Chapter 6 Review
 -------------------------
 <br>
 .contents[
 In this chapter we:
+* Reviewed the value Terraform Enterprise offers
+* Looked at Terraform Cloud and Enterprise
+* Signed up for a Terraform Cloud account
+* Created a sandbox organization
+* Joined the workshop organization
 * Learned about Remote State
 * Generated a Terraform Cloud Token
 * Configured our terraform.rc file
@@ -1944,10 +1934,10 @@ In this chapter we:
 ]
 
 ---
-name: TFE-Chapter-5
+name: Chapter-7
 class: center,middle
 .section[
-Chapter 5  
+Chapter 7  
 Protecting Sensitive Variables
 ]
 
@@ -1957,14 +1947,6 @@ Where Are Your API Keys?
 -------------------------
 Terraform requires credentials in order to communicate with your cloud provider's API. These API keys should never, ever be stored directly in your terraform code. Config files and environment variables are a better option, but the credentials still live on your workstation, usually stored in plaintext.
 
-Try this command on your workstation to see your API credentials:
-
-Command:
-```powershell
-gci env:ARM*
-```
-
-Output:
 ```tex
 Name                           Value
 ----                           -----
@@ -1973,6 +1955,8 @@ ARM_SUBSCRIPTION_ID            14692f20-9428-451b-8298-102f4ke39c2a
 ARM_TENANT_ID                  0e3e2e88-8caf-41ca-b4da-e3b33b6c52ec
 ARM_CLIENT_ID                  91299f64-f951-4462-8e97-9efb1d215501
 ```
+
+For this workshop, a service principal with appropriate credentials has been provided.
 
 ???
 **Note how our API keys are just sitting there in plain text. This isn't the most secure way to build cloud resources.**
@@ -2001,17 +1985,11 @@ Before we migrate our sensitive API credentials into the application we need to 
 **When remote execution is enabled, all of your variables are stored in Terraform Enterprise, and the `terraform plan` and `terraform apply` commands now happen on the server instead of on your workstation. State is still stored remotely as before. Your command line simply becomes a tool for driving the remote execution.**
 
 ---
-name: chapter-5-tfe-lab
-.center[.lab-header[👩🏻‍🏫 Lab Exercise 5a: Sensitive Variables]]
+name: chapter-7-exercise-1
+.center[.lab-header[👩🏻‍🏫 Chapter 7: Exercise 1]]
 <br><br>
-Create Terraform Cloud **environment variables** for your Azure credentials. Make sure the `ARM_CLIENT_SECRET` is marked as **sensitive**. Here's the command to see your credentials:
+Create Terraform Cloud **environment variables** for your Azure credentials. Make sure the `ARM_CLIENT_SECRET` is marked as **sensitive**. Reference the credentials document shared at the beginning of the workshpo for these credentials.
 
-Command:
-```powershell
-gci env:ARM*
-```
-
-Output:
 ```tex
 Name                           Value
 ----                           -----
@@ -2023,91 +2001,12 @@ ARM_CLIENT_ID                  91299f64-f951-4462-8e97-9efb1d215501
 
 HINT: You'll need to find the **Environment Variables** section of your workspace settings.
 
----
-name: chapter-5a-tfe-lab-solution
-.center[.lab-header[👩🏻‍🏫 Lab Exercise 5a: Solution]]
-<br><br>
-.center[![:scale 100%](images/encrypted_vars.png)]
-When you're done your **Environment Variables** section should look like this. Make sure you are not entering these as ordinary Terraform variables.
 
 ---
-name: terraform-plan-remote
-Run Terraform Plan
--------------------------
-Run a **`terraform plan`** command and see what happens:
-
-Command:
-```powershell
-terraform plan
-```
-
-Output:
-```tex
-Running plan in the remote backend. Output will stream here. Pressing Ctrl-C
-will stop streaming the logs, but will not stop the plan running remotely.
-Preparing the remote plan...
-To view this run in a browser, visit:https://app.terraform.io/app/hashicorp-workshop/seanc-catapp/runs/run-f7oFdL4vyxC5L7Zg
-Waiting for the plan to start...
-...
-*Error: Required variable not set: prefix
-```
-
-Looks like we need to set that prefix variable again. With remote execution *all* your variables and settings need to be stored in the app.
-
-???
-**You need to run at least one terraform apply on the command line to activate remote execution.  Don't jump to the GUI controls just yet...**
-
----
-name: set-prefix-variable
-Set Your Prefix Variable
--------------------------
-.center[![:scale 100%](images/set_prefix_gui.png)]
-Go back to the **Variables** settings again, this time create a regular Terraform variable called **prefix**. Replace YOURNAME with the prefix you stored in your terraform.tfvars file earlier.
-
-???
-**Note that this is a regular Terraform variable, not an environment variable. You can change any of the defaults found in variables.tf with these fields.**
-
----
-name: terraform-apply-remote
-Run Terraform Apply
--------------------------
-Run **`terraform apply`**:
-
-Command:
-```powershell
-terraform apply -auto-approve
-```
-
-Output:
-```tex
-Running apply in the remote backend. Output will stream here. Pressing Ctrl-C
-will stop streaming the logs, but will not stop the plan running remotely.
-
-Preparing the remote plan...
-
-To view this run in a browser, visit:
-https://app.terraform.io/app/hashicorp-workshop/seanc-catapp/runs/run-1F94Y1fTNsf8GhhH
-```
-
-Remote execution is now enabled. The results of your apply will still stream back into your console window, but Terraform is now running in the cloud. You can also watch the Terraform apply output in the GUI.
-
-???
-**Now you can run terraform either from the command line or from the GUI.**
-
----
-name: chapter-5b-tfe-lab
-.center[.lab-header[🖱️ Lab Exercise 5b: Terraform UI Runs]]
+name: chapter-7-exercise-2
+.center[.lab-header[🖱️ Chapter 7: Exercise 2]]
 <br><br><br>
-Configure three more variables in your workspace. These are the same **height**, **width**, and **placeholder** variables that we used before.
-
-Now kick off a run in the using the **Queue Plan** button. Watch the results of your run in the UI.
-
----
-name: chapter-5b-tfe-lab-solution
-.center[.lab-header[🖱️ Lab Exercise 5b: Solution]]
-<br><br>
-.center[![:scale 100%](images/variables_answer.png)]
-The local variables on your workstation are no longer used. Variables are now all stored in your workspace.
+Kick off a run in the using the **Queue Plan** button. Watch the results of your run in the UI.
 
 ---
 name: tfe-chapter-5-review
@@ -2124,10 +2023,10 @@ In this chapter we:
 ]
 
 ---
-name: TFE-Chapter-6
+name: Chapter-8
 class: center,middle
 .section[
-Chapter 6  
+Chapter 8  
 Sentinel Policy Enforcement
 ]
 
@@ -2184,7 +2083,7 @@ Destroy Your Application
 Either from the command line, or the GUI, destroy your web application. 
 
 Command Line:
-```powershell
+```bash
 terraform destroy -force
 ```
 
@@ -2214,7 +2113,7 @@ name: create-your-application
 Re-deploy Your Application
 -------------------------
 Command Line:
-```powershell
+```bash
 terraform apply -auto-approve
 ```
 
@@ -2324,210 +2223,6 @@ Until now all our code changes have been done on our workstation. Let's upgrade 
 TODO: Add an image to this slide.
 
 ---
-name: delete-the-app
-Delete the App
--------------------------
-.center[![:scale 100%](images/queue_destroy_plan.png)]
-
-First we need to move our workspace out of the training organization and into our sandbox organization.
-
-1. Go into the **Destruction and Deletion** settings for your workspace.
-2. Click on the **Queue Destroy Plan** button. When the run reaches the confirmation stage click **Confirm and Apply**.
-
-Move on to the next slides while the destroy run proceeds.
-
-???
-Instructors: if anyone's workspace fails to delete, revert your sentinel policy back to 'advisory' and have them run it again. This was observed with Terraform 0.12 when trying to delete.
-
-```
-An error occurred: block_allow_all_http.sentinel:22:10: unsupported type for looping: undefined
-```
-
----
-name: switch-back-to-sandbox
-Change to Your Sandbox Org
--------------------------
-<br>
-.center[![:scale 70%](images/choose_org.png)]
-
-Use the Organization pull-down menu to go back to your sandbox organization. This is a clean development environment where you can experiment with Terraform Cloud.
-
----
-name: create-a-new-policy-0
-Create a New Sentinel Policy
--------------------------
-.center[![:scale 70%](images/create_a_new_policy.png)]
-Before we re-create your workspace, let's implement a simple Sentinel policy for our organization. 
-
-Under your **Organization** settings select **Policies** and then **Create a New Policy**. 
-
----
-name: create-a-new-policy-1
-Create a New Sentinel Policy
--------------------------
-.center[![:scale 45%](images/policy_name_and_mode.png)]
-
-Name it **restrict_allowed_vm_types**. You can put whatever you like in the description.
-
-The Sentinel code for your policy is on the next slide. Copy and paste it into the **Policy Code** field.
-
----
-name: create-a-new-policy-2
-Sentinel Policy Code - Copy & Paste
--------------------------
-```hcl
-import "tfplan"
-
-get_vms = func() {
-    vms = []
-    for tfplan.module_paths as path {
-        vms += values(tfplan.module(path).resources.azurerm_virtual_machine) else []
-    }
-    return vms
-}
-
-allowed_vm_sizes = [
-  "Standard_A0",
-  "Standard_A1",
-]
-
-vms = get_vms()
-vm_size_allowed = rule {
-    all vms as _, instances {
-      all instances as index, r {
-  	   r.applied.vm_size in allowed_vm_sizes
-      }
-    }
-}
-
-main = rule {
-  (vm_size_allowed) else true
-}
-```
-
----
-name: create-a-new-policy-3
-Create a New Sentinel Policy
--------------------------
-.center[![:scale 60%](images/create_policy_button.png)]
-<br><br>
-Leave the Policy Sets box alone for now. We will create a policy set on the next slide.
-
-Click **Create Policy** to proceed.
-
-
----
-name: create-policy-set-0
-Create a Policy Set
--------------------------
-.center[![:scale 60%](images/create_a_new_policy_set_gui.png)]
-<br>
-**Policy Sets** determine where your policies are applied. Policies can be applied to groups of workspaces, or to your entire organization.
-
-Under **Policy Sets** select **Create a New Policy Set**.
-
----
-name: create-policy-set-1
-Create a Policy Set
--------------------------
-.center[![:scale 50%](images/policy_set_settings.png)]
-<br>
-Name your policy set **global_restrict_vm_size**.
-
-Make sure **Policies enforced on all workspaces** is selected.
-
----
-name: create-policy-set-2
-Create a Policy Set
--------------------------
-.center[![:scale 60%](images/add_policy_to_policy_set.png)]
-<br>
-Add the **restrict_allowed_vm_types** policy you created in the previous step to your policy set. 
-
-Click **Create Policy Set** at the bottom to save and activate your new policy.
-
-Now your policy will be enforced for all workspaces across your sandbox organization.
-
----
-name: chapter-7a-tfe-lab
-.center[.lab-header[👩🏼‍🔧 Lab Exercise 7a: Integrate with Github]]
-<br><br>
-.center[![:scale 70%](images/integrate_github.png)]
-During this lab you'll follow the instructions on the Terraform docs site for connecting to Github. Visit the link below and carefully follow the instructions to integrate your Terraform Cloud organization with your Github account.
-
-.center[https://www.terraform.io/docs/enterprise/vcs/github.html]
-
----
-name: chapter-7a-tfe-lab-solution
-.center[.lab-header[👩🏼‍🔧 Lab Exercise 7a: Solution]]
-<br><br>
-.center[![:scale 100%](images/vcs_success.png)]
-If you successfully connected your Terraform Cloud organization to Github, you'll see the above text in the VCS Providers section of your organization settings. 
-
-Congratulations, you can now create repo-backed Terraform workspaces.
-
----
-name: create-new-workspace
-Create a New Workspace
--------------------------
-.center[![:scale 50%](images/create_repo_workspace.png)]
-Create a new workspace. This time you'll see an option to choose a git repository to connect to. Find your forked copy of the **`hashicat`** repo and click on **Create Workspace**.
-
----
-name: update-remote-backend
-Update the Remote Backend
--------------------------
-<br><br>
-Update your **remote_backend.tf** file so that the organization matches your sandbox org:
-
-```hcl
-terraform {
-  backend "remote" {
-    hostname = "app.terraform.io"
-*   organization = "YOURNAME-sandbox"
-    workspaces {
-      name = "YOURNAME-catapp"
-    }
-  }
-}
-```
-
-Save the **remote_backend.tf** file.
-
----
-name: migrate-remote-backend
-Migrate the State
--------------------------
-Command:
-```powershell
-terraform init
-```
-
-Output:
-```tex
-Terraform has detected that the configuration specified for the backend
-has changed. Terraform will now check for existing state in the backends.
-
-Acquiring state lock. This may take a few moments...
-Do you want to copy existing state to the new backend?
-  Pre-existing state was found while migrating the previous "remote" backend to the
-  newly configured "remote" backend. No existing state was found in the newly
-  configured "remote" backend. Do you want to copy this state to the new "remote"
-  backend? Enter "yes" to copy and "no" to start with an empty state.
-
-  Enter a value: yes
-
-Releasing state lock. This may take a few moments...
-
-*Successfully configured the backend "remote"! Terraform will automatically
-*use this backend unless the backend configuration changes.
-```
-
-???
-We're actually moving your state file from one organization to another. Cool!
-
-
----
 name: tfe-chapter-7-review
 📝 Chapter 7 Review
 -------------------------
@@ -2535,13 +2230,6 @@ name: tfe-chapter-7-review
 In this chapter we:
 * Connected our Organization to VCS
 * Created a New Workspace
-* Added a Sentinel Policy
-* Migrated Terraform State
-* Installed the TFH Tool
-* Uploaded Environment Variables
-* Tested the Sentinel Policy
-* Re-Deployed our Application from VCS
-* Deleted Insecure Local Credentials
 ]
 
 ---
@@ -2561,39 +2249,6 @@ Collaboration With VCS
 When your Terraform code is stored in a version control system, you unlock extra features like pull requests, code reviews and testing. Here's an example showing the tests that run on our training lab repo.
 
 You can configure rules like requiring tests to pass, code reviews, approvals and more. Let's do a code collaboration exercise.
-
----
-name: chapter-8a-tfe-lab
-.center[.lab-header[👫 Lab Exercise 8a: VCS Collaboration]]
-<br>
-One of your team members needs to make a change to your shared dev environment. Break into pairs and exchange the URLs of your hashicat repo forks. Take turns doing the steps below:
-
-**Partner 1:**
-1. Navigate to your partner's git repo URL.
-2. Click on the **`files/`** directory then click on **`deploy_app.sh`**.
-3. Click on the pencil ✏️ icon on the upper right side of the page.
-4. Make some edits to your partner's webapp code.
-5. Submit a pull request.
-
-**Partner 2:**
-1. Log onto github and view your new pull request.
-2. Post a comment about the proposed changes.
-3. Merge the pull request to the master branch.
-4. Pull up the Terraform Enterprise UI and observe the git-triggered run.
-5. Check your webapp and see the changes you approved.
-
-Exchange roles and repeat the lab exercise.
-
----
-name: chapter-8a-tfe-lab-solution
-.center[.lab-header[👬 Lab Exercise 8a: Solution]]
-<br>
-.center[![:scale 100%](images/merge_pull_request.png)]
-
-You can enable different pre-merge checks and options in your git repo settings. Explore the **Settings** >> **Branches** menu to learn more about Branch Protection Rules.
-
-???
-In the real world we might run a bunch of automated tests, and require one or more approvers to do a code review before any changes are merged.
 
 ---
 name: tfe-chapter-8-review
