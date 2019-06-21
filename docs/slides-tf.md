@@ -2008,9 +2008,9 @@ Talk about Sentinel and some other things you can do with it.
 
 ---
 name: enable-workspace-destroy
-Appetite for Destruction
+Enable Workspace Destroy
 -------------------------
-For the next lab we'll need to destroy and recreate your lab environment. Terraform Cloud requires a special environment variable to enable destruction of infrastructure.
+For the next exercise we'll need to destroy and recreate your environment. Terraform Cloud requires a special environment variable to enable destruction of infrastructure.
 
 .center[![:scale 100%](images/confirm_destroy.png)]
 
@@ -2020,115 +2020,24 @@ Create a new Environment Variable named **`CONFIRM_DESTROY`** and set the value 
 **This is a safety switch, it's there to prevent us from shooting ourselves in the foot and deleting production.**
 
 ---
-name: destroy-your-application
-Destroy Your Application
--------------------------
-Either from the command line, or the GUI, destroy your web application. 
+name: chapter-8-exercise
+.center[.lab-header[👩🏻‍🏫 Chapter 7: Exercise 1]]
+### Destroy Workspace
+* Add `CONFIRM_DESTROY` environment variable to your workspace.
+* Either from the command line, or the GUI, destroy your workspace. 
 
-Command Line:
-```bash
-terraform destroy -force
-```
+https://www.terraform.io/docs/enterprise/workspaces/settings.html#destruction-and-deletion
 
-GUI:
-.center[![:scale 100%](images/destroy_gui.png)]
+`HINT 1: Do not click the red Destroy from Terraform Enterprise button. This will delete your entire workspace. Remember to confirm the destroy action from within the UI.`
 
-Do not click the red Destroy from Terraform Enterprise button. This will delete your entire workspace. Remember to confirm the destroy action from within the UI.
+### Create a New Sentinel Policy
+* Create new Sentinel policy called**restrict_allowed_vm_types**.
+* Copy the following Sentinel code into your policy: (restrict_allowed_vm_types.hcl)[https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/docs/exercises/exercise7/restrict_allowed_vm_types.hcl]
+* Create a new policy set that applies to your workspace 
+* Add the **restrict_allowed_vm_types** policy you created in the previous step to your policy set.
 
----
-name: create-a-new-policy-0
-Create a New Sentinel Policy
--------------------------
-.center[![:scale 70%](images/create_a_new_policy.png)]
-Before we re-create your workspace, let's implement a simple Sentinel policy for our organization.
-
-Under your **Organization** settings select **Policies** and then **Create a New Policy**.
-
----
-name: create-a-new-policy-1
-Create a New Sentinel Policy
--------------------------
-.center[![:scale 45%](images/policy_name_and_mode.png)]
-
-Name it **restrict_allowed_vm_types**. You can put whatever you like in the description.
-
-The Sentinel code for your policy is on the next slide. Copy and paste it into the **Policy Code** field.
-
----
-name: create-a-new-policy-2
-Sentinel Policy Code - Copy & Paste
--------------------------
-```hcl
-import "tfplan"
-
-get_vms = func() {
-    vms = []
-    for tfplan.module_paths as path {
-        vms += values(tfplan.module(path).resources.azurerm_virtual_machine) else []
-    }
-    return vms
-}
-
-allowed_vm_sizes = [
-  "Standard_A0",
-  "Standard_A1",
-]
-vms = get_vms()
-vm_size_allowed = rule {
-    all vms as _, instances {
-      all instances as index, r {
-           r.applied.vm_size in allowed_vm_sizes
-      }
-    }
-}
-
-main = rule {
-  (vm_size_allowed) else true
-}
-```
-
----
-name: create-a-new-policy-3
-Create a New Sentinel Policy
--------------------------
-.center[![:scale 60%](images/create_policy_button.png)]
-<br><br>
-Leave the Policy Sets box alone for now. We will create a policy set on the next slide.
-
-Click **Create Policy** to proceed.
-
-
----
-name: create-policy-set-0
-Create a Policy Set
--------------------------
-.center[![:scale 60%](images/create_a_new_policy_set_gui.png)]
-<br>
-**Policy Sets** determine where your policies are applied. Policies can be applied to groups of workspaces, or to your entire organization.
-
-Under **Policy Sets** select **Create a New Policy Set**.
-
----
-name: create-policy-set-1
-Create a Policy Set
--------------------------
-.center[![:scale 50%](images/policy_set_settings.png)]
-<br>
-Name your policy set **global_restrict_vm_size**.
-
-Make sure **Policies enforced on all workspaces** is selected.
-
----
-name: create-policy-set-2
-Create a Policy Set
--------------------------
-.center[![:scale 60%](images/add_policy_to_policy_set.png)]
-<br>
-Add the **restrict_allowed_vm_types** policy you created in the previous step to your policy set.
-
-Click **Create Policy Set** at the bottom to save and activate your new policy.
-
-Now your policy will be enforced for all workspaces across your sandbox organization.
+https://www.terraform.io/docs/enterprise/sentinel/index.html
+https://www.terraform.io/docs/enterprise/sentinel/manage-policies.html
 
 ---
 name: create-your-application
@@ -2289,8 +2198,6 @@ In this chapter we:
 * Created a new team for developers
 * Granted devs write access to our workspace
 * Added our partner to the devs team
-* Tested our Sentinel policy
-* Collaborated on an infrastructure change
 ]
 
 ---
