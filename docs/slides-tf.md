@@ -78,17 +78,16 @@ Table of Contents
 =========================
 
 .contents[
-0. Housekeeping and Background
-1. Intro to Terraform & Demo
-2. My First Terraform
-3. Expressions, Variables, and Outputs
-4. Organizing Your Terraform Code, Comments, and Data Sources
-5. Modules, Internals, and Backends
-6. Terraform Enterprise - Built for Teams and Organizations
-7. Protecting Sensative Values
-8. Sentinel Policy Enforcement
-9. Version Control Systems and Terraform
-10. Access Controls
+0. Intro to Terraform & Demo
+1. My First Terraform
+2. Expressions, Variables, and Outputs
+3. Organizing Your Terraform Code, Comments, and Data Sources
+4. Modules, Internals, and Backends
+5. Terraform Enterprise - Built for Teams and Organizations
+6. Protecting Sensative Values
+7. Sentinel Policy Enforcement
+8. Version Control Systems and Terraform
+9. Access Controls
 ]
 
 ???
@@ -2126,7 +2125,7 @@ TODO: Find a better image for this slide.
 
 ---
 name: chapter-10-exercise
-.center[.lab-header[👭 Lab Exercise 9a: Share the Sandbox]]
+.center[.lab-header[👭 Chapter 10: Exercise]]
 ### Role Based Access Control
 This is a partner exercise. In this lab you'll invite your partner to your organization.
 
