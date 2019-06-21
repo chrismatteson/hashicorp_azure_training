@@ -7,12 +7,13 @@ variable "location" {
 
 # Azure Tags
 variable "tags" {
-  type    = "map"
+  type    = map(string)
   default = {}
 }
 
 # Vault Binary URL
-variable vault_url {
+variable "vault_url" {
   description = "URL to download Vault Enterprise"
   default     = "http://hc-enterprise-binaries.s3.amazonaws.com/vault/ent/1.1.1/vault-enterprise_1.1.1%2Bent_linux_amd64.zip"
 }
+
