@@ -1260,7 +1260,8 @@ While information about all of the resources could be found in the state file, c
 name: locals
 Locals
 -------------------------
-<br><br>
+Locals provide a convienant place to store information.
+
 ```hcl
 variable "name" {
   default = "dev"
@@ -1403,11 +1404,9 @@ Here we have two examples of data sources. The first looks up an image id from a
 name: chapter-4-exercise
 .center[.lab-header[👩🏼    <200d>🔬 Chapter 4: Exercise]]
 ### Data Resources
-* Create data sources for azurerm_client_config, azurerm_subscription, and azurerm_builtin_role_definition with the name Contributor.
+* Create data source for azurerm_client_config.
 
 https://www.terraform.io/docs/providers/azurerm/d/client_config.html  
-https://www.terraform.io/docs/providers/azurerm/d/subscription.html  
-https://www.terraform.io/docs/providers/azurerm/d/builtin_role_definition.html  
 
 ### Template File Data Resources
 * Download the below code into a file called setupvault.tpl. Then create a data template_file to pass vault_url variable.
@@ -1524,22 +1523,15 @@ Additionally, HashiCorp now offers the HashiCorp Cloud as a free option to store
 name: chapter-5-exercise-1
 .center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
 ### Modules
-* Create a subfolder called "modules" and another subfolder called "service_principal"
-* Write a variables.tf, main.tf, and outputs.tf file in this folder to create an azuread_application, azuread_service_principal, and azuread_service_principal_password.
+* Create a subfolder called "modules" and another subfolder called "networking"
+* Write a variables.tf, main.tf, and outputs.tf file in this folder and move the code for all of the azure networking components from the root module into here.
+* Write module code in the root module to call this new module and remove the networking code from the root.
 
-https://www.terraform.io/docs/configuration/modules.html  
-https://www.terraform.io/docs/providers/azuread/r/application.html  
-https://www.terraform.io/docs/providers/azuread/r/service_principal.html  
-https://www.terraform.io/docs/providers/azuread/r/service_principal_password.html  
-https://www.terraform.io/docs/providers/azurerm/r/role_assignment.html  
+https://www.terraform.io/docs/configuration/modules.html
 
-`HINT 1: Use azurerm_role_defintion data source from prior exercise for the role_definition_id.`
+`HINT 1: Use variables to pass in information regarding the resource group and project_name`
 
-`HINT 2: Create a new random_id for client_secret.`
-
-`Hint 3: You'll need inputs for resource_group, location, project_name, subscription_id and role_definition_id`
-
-`Hint 4: You'll want to create outputs for application_id and service_principal_password`
+`HINT 2: Create an outputs for network_interface id and public_ip ip_address to be used in a later exercise.`
 
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise5)]]
 
@@ -1578,7 +1570,7 @@ name: chapter-5-exercise-4
 .center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
 ### Add Useful Output
 * Add outputs for to ease using the Terraform code.
- * Configure Vault: `export VAULT_ADDR=http://${azurerm_public_ip.main.ip_address}:8200`
+ * Configure Vault: `export VAULT_ADDR=http://${module.networking.public_ip}:8200`
  * SQL Server FQDN: `${azurerm_sql_server.postgresql.fqdn}`
  * SQL Server Username/Password: `${azurerm_postgresql_server.sql.administrator_login}\\${azurerm_postgresql_server.sql.administrator_login_password}`
  * Subscription ID: `${data.azurerm_client_config.current.subscription_id}`

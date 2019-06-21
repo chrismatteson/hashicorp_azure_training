@@ -30,14 +30,14 @@ resource "azurerm_subnet" "main" {
   name                 = "${random_id.project_name.hex}-subnet-${count.index}"
   resource_group_name  = "${azurerm_resource_group.main.name}"
   virtual_network_name = "${azurerm_virtual_network.main.name}"
-  address_prefix       = "10.0.${count.index+1}.0/24"
+  address_prefix       = "10.0.${count.index + 1}.0/24"
 }
 
 resource "azurerm_public_ip" "main" {
-  name                         = "${random_id.project_name.hex}-pubip"
-  location                     = "${azurerm_resource_group.main.location}"
-  resource_group_name          = "${azurerm_resource_group.main.name}"
-  allocation_method            = "Static"
+  name                = "${random_id.project_name.hex}-pubip"
+  location            = "${azurerm_resource_group.main.location}"
+  resource_group_name = "${azurerm_resource_group.main.name}"
+  allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "main" {
