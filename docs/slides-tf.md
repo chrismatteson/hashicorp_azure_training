@@ -1521,7 +1521,7 @@ Additionally, HashiCorp now offers the HashiCorp Cloud as a free option to store
 
 ---
 name: chapter-5-exercise-1
-.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise 1]]
 ### Modules
 * Create a subfolder called "modules" and another subfolder called "networking"
 * Write a variables.tf, main.tf, and outputs.tf file in this folder and move the code for all of the azure networking components from the root module into here.
@@ -1537,7 +1537,7 @@ https://www.terraform.io/docs/configuration/modules.html
 
 ---
 name: chapter-5-exercise-2
-.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise 2]]
 ### Virtual Machine
 * Create an Azure Virtual Machine to use the resource group, network interface, and template_file as custom_data, which were created in prior exercises.
 * Add the MSI virtual machine extension to the VM.
@@ -1554,7 +1554,7 @@ https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure
 
 ---
 name: chapter-5-exercise-3
-.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise 3]]
 ### MySQL Server
 * Create a managed MySQL Server Instance and Database. Create a new random_id to provide the password.
 * Create a firewall rule to allow access from the public IP of our virtual machine
@@ -1567,7 +1567,7 @@ https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html
 
 ---
 name: chapter-5-exercise-4
-.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise]]
+.center[.lab-header[👩🏼‍🔬 Chapter 5: Exercise 4]]
 ### Add Useful Output
 * Add outputs for to ease using the Terraform code.
  * Configure Vault: `export VAULT_ADDR=http://${module.networking.public_ip}:8200`
@@ -1834,10 +1834,10 @@ Local executation occurs on your local laptop and Terraform Enterprise is only u
 name: chapter-6-exercise-1
 .center[.lab-header[👩🏽‍🔬 Chaper 6: Exercise 1]]
 ### Create Terraform Enterprise User and Organization
-* Create a Terraform Enterprise trial account. The instructor will provide you with a link to create a 30 day trial.
-* Create a new organization, make sure to include the provided prefix in the name
-* Create an API key for your user
-* Provide the name of the organization to the instructor
+* Create a Terraform Enterprise trial account.
+* Create a new organization, make sure to include the provided prefix in the name.
+* Create an API key for your user.
+* Provide the name of the organization to the instructor.
 
 https://app.terraform.io/signup/account
 https://www.hashicorp.com/resources/why-consider-terraform-enterprise-over-open-source  
@@ -1870,8 +1870,7 @@ name: chapter-6-review
 <br>
 .contents[
 In this chapter we:
-* Reviewed the value Terraform Enterprise offers
-* Looked at Terraform Cloud and Enterprise
+* Reviewed at Terraform Cloud and Enterprise
 * Signed up for a Terraform Cloud account
 * Created a new organization
 * Learned about Remote State
@@ -2020,8 +2019,8 @@ Create a new Environment Variable named **`CONFIRM_DESTROY`** and set the value 
 **This is a safety switch, it's there to prevent us from shooting ourselves in the foot and deleting production.**
 
 ---
-name: chapter-8-exercise
-.center[.lab-header[👩🏻‍🏫 Chapter 7: Exercise 1]]
+name: chapter-8-exercise-1
+.center[.lab-header[👩🏻‍🏫 Chapter 8: Exercise 1]]
 ### Destroy Workspace
 * Add `CONFIRM_DESTROY` environment variable to your workspace.
 * Either from the command line, or the GUI, destroy your workspace. 
@@ -2030,65 +2029,18 @@ https://www.terraform.io/docs/enterprise/workspaces/settings.html#destruction-an
 
 `HINT 1: Do not click the red Destroy from Terraform Enterprise button. This will delete your entire workspace. Remember to confirm the destroy action from within the UI.`
 
+---
+name: chapter-8-exercise-2
+.center[.lab-header[👩🏻‍🏫 Chapter 8: Exercise 2]]
 ### Create a New Sentinel Policy
 * Create new Sentinel policy called**restrict_allowed_vm_types**.
 * Copy the following Sentinel code into your policy: (restrict_allowed_vm_types.hcl)[https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/docs/exercises/exercise7/restrict_allowed_vm_types.hcl]
 * Create a new policy set that applies to your workspace 
 * Add the **restrict_allowed_vm_types** policy you created in the previous step to your policy set.
+* Run a new Terraform plan and apply and see the Sentinel results
 
 https://www.terraform.io/docs/enterprise/sentinel/index.html
 https://www.terraform.io/docs/enterprise/sentinel/manage-policies.html
-
----
-name: create-your-application
-Re-deploy Your Application
--------------------------
-Command Line:
-```bash
-terraform apply -auto-approve
-```
-
-Output:
-```tex
-Organization policy check:
-
-Sentinel Result: false
-
-Sentinel evaluated to false because one or more Sentinel policies evaluated
-to false. This false was not due to an undefined value or runtime error.
-
-1 policies evaluated.
-
-## Policy 1: block_allow_all_http.sentinel (hard-mandatory)
-
-Result: false
-
-  FALSE - block_allow_all_http.sentinel:23:70 - sr.access == "Deny"
-*Error: Organization policy check hard failed.
-```
-Oh no! Our **`terraform apply`** failed. How can we fix our code?
-
----
-name: chapter-8-exercise
-.center[.lab-header[👮🏿‍♀️ Lab Exercise 6: Secure the App]]
-<br><br>
-The security team has a new requirement: Development applications should not be exposed to the public Internet.
-
-We have implemented a policy that disallows **`0.0.0.0`** or **`*`** as the **`source_address_prefix`** in Azure network security group rules that apply to port 80.
-
-Fix the code on your local workstation so that it passes the Sentinel check. Run Terraform apply to limit dev environment access to your workstation's source IP address.
-
-**HINT:** You can use this Powershell command to get your workstation's public IP address:
-```powershell
-(Invoke-WebRequest -UseBasicParsing http://icanhazip.com).content
-```
-
-You may also simply type "What is my IP address?" into your browser search bar.
-
-???
-**I'm going to keep the organization view up here on the projector screen. Let's see how fast everyone can get their code compliant and have a clean terraform apply.**
-
-Instructors: Have fun with this exercise. Pull up your organization's homepage on the projector screen. You can make a game out of it, see who gets their code compliant first.
 
 ---
 name: chapter-8-review
@@ -2099,8 +2051,6 @@ name: chapter-8-review
 In this chapter we:
 * Destroyed our Application
 * Enabled a Sentinel Policy
-* Watched our Terraform Code Fail
-* Fixed the Code to Pass Sentinel Tests
 * Verified the New Policy
 ]
 
@@ -2142,8 +2092,8 @@ When your Terraform code is stored in a version control system, you unlock extra
 You can configure rules like requiring tests to pass, code reviews, approvals and more. Let's do a code collaboration exercise.
 
 ---
-name: chapter-8-review
-📝 Chapter 8 Review
+name: chapter-9-review
+📝 Chapter 9 Review
 -------------------------
 .contents[
 In this chapter we:
@@ -2152,10 +2102,10 @@ In this chapter we:
 ]
 
 ---
-name: Chapter-9
+name: Chapter-10
 class: center,middle
 .section[
-Chapter 9  
+Chapter 10  
 Access Controls
 ]
 
@@ -2173,7 +2123,7 @@ Terraform Enterprise is a multi-tenanted application that supports fine-grained 
 TODO: Find a better image for this slide.
 
 ---
-name: chapter-9-exercise
+name: chapter-10-exercise
 .center[.lab-header[👭 Lab Exercise 9a: Share the Sandbox]]
 ### Role Based Access Control
 This is a partner exercise. In this lab you'll invite your partner to your organization.
@@ -2189,8 +2139,8 @@ Verify that you are able to see your partner's organization and workspace.
 Trade roles and repeat the lab exercise.
 
 ---
-name: chapter-9-review
-📝 Chapter 9 Review
+name: chapter-10-review
+📝 Chapter 10 Review
 -------------------------
 <br>
 .contents[
