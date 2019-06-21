@@ -1,4 +1,5 @@
-provider "azurerm" {}
+provider "azurerm" {
+}
 
 # generate random project name
 resource "random_id" "project_name" {
