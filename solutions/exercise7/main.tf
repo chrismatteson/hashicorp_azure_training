@@ -75,7 +75,7 @@ data "azurerm_role_definition" "role_definition" {
 data "template_file" "setup" {
   template = "${file("setupvault.tpl")}"
 
-  vars {
+  vars = {
     vault_url             = "${var.vault_url}"
   }
 }
@@ -97,10 +97,6 @@ resource "azurerm_virtual_machine" "main" {
   network_interface_ids         = ["${azurerm_network_interface.main.id}"]
   vm_size                       = "Standard_A2_v2"
   delete_os_disk_on_termination = true
-
-  identity = {
-    type = "SystemAssigned"
-  }
 
   storage_image_reference {
     publisher = "Canonical"
