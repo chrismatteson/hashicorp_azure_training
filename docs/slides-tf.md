@@ -2183,7 +2183,7 @@ Your feedback is important to us!
 
 The survey is short, we promise:
 
-https://www.surveymonkey.com/r/TerraformTraining
+https://www.surveymonkey.com/r/V86JTWD
 =========================
 ]
 
