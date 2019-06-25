@@ -1126,7 +1126,7 @@ resource "azurerm_virtual_machine" "web" {
 ```
 
 ???
-Terraform interpolation language even supports conditional logic
+Terraform language even supports conditional logic
 
 ---
 name: expressions-5
@@ -1170,13 +1170,13 @@ Terraform includes many helpful functions to munge inputs into the desired forma
 name: chapter-3-exercise-1
 .center[.lab-header[👩🏼‍🔬 Chapter 3: Exercise 1]]
 ### Setup Azure network
-* Create a Virtual Network, Subnet, Public IP and Network Interface. Tie them together with interpolation.
+* Create a Virtual Network, Subnet, Public IP and Network Interface. Tie them together with .
 
 https://www.terraform.io/docs/providers/azurerm/r/virtual_network.html  
 https://www.terraform.io/docs/providers/azurerm/r/subnet.html  
 https://www.terraform.io/docs/providers/azurerm/r/public_ip.html  
 https://www.terraform.io/docs/providers/azurerm/r/network_interface.html  
-https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+https://www.terraform.io/docs/configuration/expressions.html#references-to-named-values
 
 `HINT 1: Use a standalone Subnet resource, instead of defining in-line within the Virtual Network resource so we can complete the next exercise.`
 
@@ -1191,7 +1191,7 @@ name: chapter-3-exercise-2
 * Update Subnet to use a count of 3. Use count.index to ensure each subnet has a unique address space.
 
 https://www.terraform.io/intro/examples/count.html  
-https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+https://www.terraform.io/docs/configuration/resources.html#count-multiple-resource-instances
 <br><br><br><br><br><br><br><br><br><br><br>
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise2)]]
 
@@ -1199,7 +1199,7 @@ https://www.terraform.io/docs/configuration-0-11/interpolation.html
 name: defining-variables
 Variables
 -------------------------
-Variables provide inputs for Terraform. They can optionally have default values, and types. Variables are reused elsewhere via interpolation.
+Variables provide inputs for Terraform. They can optionally have default values, and types. Variables are reused elsewhere via references.
 
 ```hcl
 variable "location" {
@@ -1322,7 +1322,7 @@ name: chapter-3-exercise-5
 * Update the Resource Group with the tags local.
 
 https://www.terraform.io/docs/configuration/locals.html  
-https://www.terraform.io/docs/configuration-0-11/interpolation.html  
+https://www.terraform.io/docs/configuration/functions.html
 <br><br><br><br><br><br><br><br><br>
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise3)]]
 
