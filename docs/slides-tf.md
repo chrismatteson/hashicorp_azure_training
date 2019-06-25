@@ -1304,7 +1304,7 @@ https://www.terraform.io/docs/configuration/variables.html
 
 ---
 name: chapter-3-exercise-4
-.center[.lab-header[👩🏼  <200d>🔬 Chapter 3: Exercise 3]]
+.center[.lab-header[👩🏼  <200d>🔬 Chapter 3: Exercise 4]]
 ### Outputs
 * Create a file called outputs.tf file with an output called "download vault" that the following value which includes the vault_url variable you created in the prior task.
 
@@ -1316,7 +1316,7 @@ https://www.terraform.io/docs/configuration/outputs.html
 
 ---
 name: chapter-3-exercise-5
-.center[.lab-header[👩🏼    <200d>🔬 Chapter 3: Exercise 4]]
+.center[.lab-header[👩🏼    <200d>🔬 Chapter 3: Exercise 5]]
 ### Locals
 * Create a local named tags which uses the merge function to merge the tags varaible created in 3.0 with a tag named ProjectName that has the value of your project name.
 * Update the Resource Group with the tags local.
