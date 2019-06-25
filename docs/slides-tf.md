@@ -770,6 +770,17 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 We are not actually building anything yet. This is just a dry run, showing us what would happen if we applied our change.
 
 ---
+name: terraform-apply
+Run Terraform Apply
+-------------------------
+Command:
+```bash
+terraform apply
+```
+
+Perform the actions specified in the plan.
+
+---
 name: terraform-destroy
 Run Terraform Destroy
 -------------------------
