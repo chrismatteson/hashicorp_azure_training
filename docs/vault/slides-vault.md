@@ -1168,6 +1168,12 @@ Namespaces and Sentinel
 name: Namespaces
 Vault Namespaces
 -------------------------
+Multi-tenancy for Vault
+
+* Tenant Isolation
+* Self-Management
+
+Configured via environment variable (CLI) or header (API)
 
 ---
 name: Sentinel
