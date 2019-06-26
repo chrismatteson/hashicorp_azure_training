@@ -928,26 +928,19 @@ This policy grants all permissions to all secrets mounted under `lob_a/dept_1/` 
 Sudo is mainly reserved for interacting with 'root-protected' paths like things under /sys.
 
 ---
-name: chapter-6a-lab
-.center[.lab-header[👩‍🔬 Lab Exercise 4a: Create New Policies]]
+name: chapter-6-exercise
+.center[.lab-header[👩‍🔬 Chapter 6: Exercise]]
 <br><br>
-Policies are assigned when a user or app authenticates. Create the following two policies using the Vault UI Policies tab. You can copy and paste the code below right into the UI.
+### Policies
+* Create policy to allow read access to MySQL server creds path
 
-Call the first policy *lob_a* and the second policy *secret*.
+https://www.vaultproject.io/docs/concepts/policies.html  
 
-Policy #1: lob_a
-```hcl
-path "lob_a/workshop/*" {
-    capabilities = ["read", "list", "create", "delete", "update"]
-}
-```
+### Roles
+* Create a role for Azure auth using the policy created in the prior task and bound to the subscription_id and resource_group. 
+* Authenticate to Vault using the JWT token, verify access to the MySQL creds, and that there is not access to view th MySQL Secret Engine configuration.
 
-Policy #2: secret
-```hcl
-path "secret/*" {
-    capabilities = ["read", "list", "create"]
-}
-```
+https://www.vaultproject.io/docs/auth/azure.html  
 
 ---
 name: chapter-6a-lab-answer
