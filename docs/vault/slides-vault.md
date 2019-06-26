@@ -171,6 +171,31 @@ https://learn.hashicorp.com/vault/operations/ops-reference-architecture
 ]
 
 ---
+name: Vault-Seal
+Vault Architecture - Vault Seal
+-------------------------
+When a Vault server is started, it starts in sealed - doesn't know how to decrypt the data
+
+Unsealing is the process of constructing the master key necessary to read the decryption key to decrypt data
+
+Why?
+* The data stored by Vault is encrypted with encryption key
+* The encryption key is encrypted with master key
+* The master key is NOT stored anywhere
+
+---
+name: Vault-Seal-2
+Vault Architecture - Vault Seal
+-------------------------
+.center[![:scale 90%](images/vault-seal.svg)]
+
+---
+name: Vault-Autounseal
+Vault Architecture - Vault Autounseal
+-------------------------
+.center[![:scale 90%](images/vault-autounseal.png)]
+
+---
 name: chapter-1-review
 📝 Chapter 1 Review
 -------------------------
@@ -294,23 +319,35 @@ Your Lab Environment
 Some of the lab exercises will ask you to run commands on the Linux server where Vault is installed. Vault can be managed via the command line, the GUI, or via the API.
 
 ???
-During the Terraform Workshop we deployed a pre-configured Vault server, an Azure MySQL database, and a simple Python Flask application. The Linux server here in the diagram is doing triple duty. It's running Vault as well as our application, and it will also be where we run most of our lab commands.
+During the Terraform Workshop we deployed a pre-configured Vault server, an Azure MySQL database. The Linux server here in the diagram is doing double duty. It's running vault and it will also be where we run most of our lab commands.
 
 Reminder: This is a lab training environment and we are doing some things here that you should never do in production. There is no SSL encryption configured, and Vault is running in memory on a single machine in development mode. 
 
-We've skipped over some steps that you would normally do in a production environment:
+---
+name: chapter-2-exercise
+.center[.lab-header[👩‍🔬 Chapter 2: Exercise]]
+<br>
+### Connect to Vault
+* Run commands from outputs to install and configure vault agent
 
-* Initialize the server (vault init)
-  * This creates the master key used to encrypt storage
-* Unsealed it
-  * Vault protects the master key using a process called unsealing
-  * You can unseal using Shamir's Secret Sharing, or auto unseal mechanisms
-  * For production we strongly recommend integrating Vault with an HSM or cloud key management service like Azure Key Vault
-* Retrieved the initial root token
-  * When a Vault server first starts it prints the root token
-  * The root token is a super user in Vault
-  * In production it should be used for initial config and then destroyed
-  * A root token can be regenerated at a later date if needed
+### Deploy Vault
+* Initialize, Unseal, and Authenticate to Vault using the initial root token.
+* View status of vault
+* Lookup token information
+
+https://learn.hashicorp.com/vault/getting-started/deploy  
+https://www.vaultproject.io/docs/commands/status.html  
+https://www.vaultproject.io/docs/commands/token/lookup.html  
+
+`HINT 1: Copy the unseal keys and initial root token somewhere incase you need to use them again`
+
+### Enterprise License
+* Write the license file provided by the Trainer into /sys/license
+* Verify that vault license is installed
+
+https://www.vaultproject.io/api/system/license.html  
+
+???
 
 ---
 name: chapter-2-review
@@ -320,8 +357,7 @@ name: chapter-2-review
 Your Lab Environment
 * Linux server and Azure MySQL database
 * Vault and application are on the Linux server
-* Ports 8200, 5000, and 22 are open
-* Vault is running in *dev* mode
+* Ports 8200, and 22 are open
 * Don't do this in production
 ]
 
@@ -341,12 +377,7 @@ During the Terraform workshop we learned the `terraform output` command. Run thi
 
 Command:
 ```powershell
-terraform output Vault_Server_URL
-```
-
-Output:
-```tex
-http://bugsbunny.centralus.cloudapp.azure.com:8200
+terraform output
 ```
 
 ---
