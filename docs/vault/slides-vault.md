@@ -324,8 +324,8 @@ During the Terraform Workshop we deployed a pre-configured Vault server, an Azur
 Reminder: This is a lab training environment and we are doing some things here that you should never do in production. There is no SSL encryption configured, and Vault is running in memory on a single machine in development mode. 
 
 ---
-name: chapter-2-exercise
-.center[.lab-header[👩‍🔬 Chapter 2: Exercise]]
+name: chapter-2-exercise-1
+.center[.lab-header[👩‍🔬 Chapter 2: Exercise 1]]
 <br>
 ### Connect to Vault
 * Run commands from outputs to install and configure vault agent
@@ -341,6 +341,9 @@ https://www.vaultproject.io/docs/commands/token/lookup.html
 
 `HINT 1: Copy the unseal keys and initial root token somewhere incase you need to use them again`
 
+---
+name: chapter-2-exercise-2
+.center[.lab-header[👩‍🔬 Chapter 2: Exercise 2]]
 ### Enterprise License
 * Write the license file provided by the Trainer into /sys/license
 * Verify that vault license is installed
