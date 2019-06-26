@@ -943,16 +943,6 @@ https://www.vaultproject.io/docs/concepts/policies.html
 https://www.vaultproject.io/docs/auth/azure.html  
 
 ---
-name: chapter-6a-lab-answer
-.center[.lab-header[👩‍🔬 Lab Exercise 4a: Answer]]
-<br><br><br>
-1. Click on the **Policies** link on the top navigation bar.
-1. In the upper right corner, click on **Create ACL Policy**
-1. Enter `lob_a` for the name and copy and paste the lob_a policy into the text area.
-1. Click **Create Policy** at the bottom of the page.
-1. Repeat for the `secret` policy.
-
----
 name: chapter-6-review
 📝 Chapter 4 Review
 -------------------------
