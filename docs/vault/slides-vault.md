@@ -421,22 +421,13 @@ Congratulations, you just stored your first secret in HashiCorp Vault!
 name: Getting-Connected-CLI-1
 The Vault Command Line Interface
 -------------------------
-Vault is distributed as a single binary file, which means it can act as both a server or a command line client. We're going to SSH onto the Vault server and run some vault commands locally. Go back to your Visual Studio Code terminal and run the following command.
+Vault is distributed as a single binary file, which means it can act as both a server or a command line client. We're going to SSH onto the Vault server and run some vault commands locally.
 
 Command:
 ```powershell
-terraform output Instructions
+terraform output
 ```
 
-Output:
-```bash
-# Connect to your Linux Virtual Machine
-#
-# Run the command below to SSH into your server. You can also use PuTTY or any
-# other SSH client. Your password is: Password123!
-
-ssh hashicorp@seancvault.centralus.cloudapp.azure.com
-```
 
 ---
 name: Getting-Connected-CLI-2
@@ -444,7 +435,6 @@ The Vault Command Line Interface
 -------------------------
 In Visual Studio Code, open a new Terminal window and paste the ssh command from your terraform output into the terminal. The command below is an example. Yours will contain your own username where YOURNAME is.
 
-Your password is: **Password123!**
 
 Commands:
 ```powershell
@@ -715,6 +705,122 @@ name: Chapter-4
 class: center,middle
 .section[
 Chapter 4
+Authenticating to Vault: Auth Methods
+]
+
+---
+name: Vault-Authentication
+Vault Auth Methods
+-------------------------
+.center[![:scale 65%](images/vault_auth_methods.png)]
+Vault supports many different authentication methods. You can enable multiple auth methods, or multiple instances of the same auth method.
+
+???
+Auth methods are how your apps and users verify their identity. In the same way you might present some kind of valid ID at the hotel check-in desk, users and apps provide some kind of credential or token to authenticate.
+
+---
+name: Vault-Authentication-0
+Vault Auth Method: UserPass
+-------------------------
+.center[![:scale 50%](images/userpass_login.png)]
+The simplest authentication method (besides using a token directly) is the userpass method. As the name implies, these are local user accounts on the Vault server itself.
+
+???
+In the real world you'd probably have Vault use your Active Directory, LDAP or other system of record for authentication.
+
+The userpass method of authentication is not recommended for production, but it's fine for development and lab environments.
+
+We're keeping it simple here. Userpass does not require an active directory server or any other external provider to work.
+
+---
+name: Vault-Authentication-1
+Vault Auth Method: UserPass
+-------------------------
+.center[![:scale 90%](images/enable-userpass.png)]
+<br>
+Let's enable the userpass authentication method in Vault. Click on the **Access** link in the top menu, then select **Enable New Method**.
+
+---
+name: Vault-Authentication-2
+Vault Auth Method: UserPass
+-------------------------
+<br><br>
+.center[![:scale 90%](images/select-userpass.png)]
+<br>
+Select the **Username and Password** box and click **Next** at the bottom of the page.
+
+---
+name: Vault-Authentication-3
+Vault Auth Method: UserPass
+-------------------------
+<br><br>
+.center[![:scale 90%](images/set-userpass-path.png)]
+<br>
+Leave the default path of **userpass** and click on **Enable Method**. The userpass authentication method is now mounted at the `userpass/` API endpoint.
+
+---
+name: Vault-Authentication-4
+Vault Auth Method: UserPass
+-------------------------
+Next, let's create a couple of users. These steps need to be done on the command line. Make sure you are SSH'd into the Vault server when you run these commands. Copy and paste the below commands into your terminal:
+
+Commands:
+```bash
+vault write auth/userpass/users/bob \
+    password=foo \
+    policies=secret
+
+vault write auth/userpass/users/sally \
+    password=foo \
+    policies=lob_a
+```
+
+Output:
+```tex
+Success! Data written to: auth/userpass/users/bob
+Success! Data written to: auth/userpass/users/sally
+```
+
+???
+Notice the policy section.  Policies are mapped to authentication endpoints.  Tokens generated from those endpoints have the policies assigned to it.
+
+---
+name: chapter-4-exercise
+.center[.lab-header[👩‍🔬 Chapter 4: Exercise 5]]
+<br><br><br>
+### Auth Method
+* Enable and configure azure auth method.
+
+https://www.vaultproject.io/docs/auth/azure.html  
+
+`HINT 1: Use the tenant_id, application_id, and service_principal_password you created with your Terraform code. Use the state commands to find the values of each these items`
+
+### Key/Value
+* Setup KV version 2.
+* Enable secret versioning
+* Create a secret, read the secret.
+* Overwrite the secret, read both the new and old values.
+
+https://www.vaultproject.io/docs/secrets/kv/kv-v2.html 
+
+---
+name: chapter-4-review
+📝 Chapter 4 Review
+-------------------------
+<br>
+.contents[
+Vault Authentication Methods
+* Supports over a dozen auth methods
+* Policies assigned to a token after auth
+* Multiple policies can be assigned to an entity
+* Policies prevent unauthorized access
+* The default policy in vault is *deny*
+]
+---
+name: Chapter-4
+class: center,middle
+.section[
+Chapter 4
 Authorization in Vault: Policies
 ]
 
@@ -806,141 +912,6 @@ Vault ACL Policies
 * Root policy is special, not for everyday use
 ]
 
----
-name: Chapter-5
-class: center,middle
-.section[
-Chapter 5
-Authenticating to Vault: Auth Methods
-]
-
----
-name: Vault-Authentication
-Vault Auth Methods
--------------------------
-.center[![:scale 65%](images/vault_auth_methods.png)]
-Vault supports many different authentication methods. You can enable multiple auth methods, or multiple instances of the same auth method.
-
-???
-Auth methods are how your apps and users verify their identity. In the same way you might present some kind of valid ID at the hotel check-in desk, users and apps provide some kind of credential or token to authenticate.
-
----
-name: Vault-Authentication-0
-Vault Auth Method: UserPass
--------------------------
-.center[![:scale 50%](images/userpass_login.png)]
-The simplest authentication method (besides using a token directly) is the userpass method. As the name implies, these are local user accounts on the Vault server itself.
-
-???
-In the real world you'd probably have Vault use your Active Directory, LDAP or other system of record for authentication.
-
-The userpass method of authentication is not recommended for production, but it's fine for development and lab environments.
-
-We're keeping it simple here. Userpass does not require an active directory server or any other external provider to work.
-
----
-name: Vault-Authentication-1
-Vault Auth Method: UserPass
--------------------------
-.center[![:scale 90%](images/enable-userpass.png)]
-<br>
-Let's enable the userpass authentication method in Vault. Click on the **Access** link in the top menu, then select **Enable New Method**.
-
----
-name: Vault-Authentication-2
-Vault Auth Method: UserPass
--------------------------
-<br><br>
-.center[![:scale 90%](images/select-userpass.png)]
-<br>
-Select the **Username and Password** box and click **Next** at the bottom of the page.
-
----
-name: Vault-Authentication-3
-Vault Auth Method: UserPass
--------------------------
-<br><br>
-.center[![:scale 90%](images/set-userpass-path.png)]
-<br>
-Leave the default path of **userpass** and click on **Enable Method**. The userpass authentication method is now mounted at the `userpass/` API endpoint.
-
----
-name: Vault-Authentication-4
-Vault Auth Method: UserPass
--------------------------
-Next, let's create a couple of users. These steps need to be done on the command line. Make sure you are SSH'd into the Vault server when you run these commands. Copy and paste the below commands into your terminal:
-
-Commands:
-```bash
-vault write auth/userpass/users/bob \
-    password=foo \
-    policies=secret
-
-vault write auth/userpass/users/sally \
-    password=foo \
-    policies=lob_a
-```
-
-Output:
-```tex
-Success! Data written to: auth/userpass/users/bob
-Success! Data written to: auth/userpass/users/sally
-```
-
-???
-Notice the policy section.  Policies are mapped to authentication endpoints.  Tokens generated from those endpoints have the policies assigned to it.
-
----
-name: chapter-5a-lab
-.center[.lab-header[👩‍🔬 Lab Exercise 5a: Bob and Sally]]
-<br><br><br>
-**Exercise 1:**<br>
-Log onto the web UI with Bob's account. Create some secret data under the secret/* path, where the default K/V engine is mounted. Log out of Bob's account.
-
-Now log on using Sally's account. Can you see the secret data Bob entered? Why or why not?
-
-**Exercise 2:**<br>
-Log back on with your root token, and create a new policy called "readonly" so Sally can *read* and *list* what's inside of `secret/`.
-
-**Hint:** You'll need to recreate Sally's account with a `vault write` command, adding the policy to her account.
-
----
-name: chapter-5a-lab-answers
-.center[.lab-header[👩‍🔬 Lab Exercise 5a: Answers]]
-<br>
-Bob can read, list and create data under the `secret/*` path because his policy allows him to do so. Vault comes with a key/value engine mounted at `secret/` by default.
-
-When Sally logs on she can't even see the `secret/` path because she does not have list permissions. Here are the policy and command you'll need to run to grant Sally read-only access:
-
-Policy: readonly
-```hcl
-path "secret/*" {
-    capabilities = ["read", "list"]
-}
-```
-Vault Command:
-```bash
-vault write auth/userpass/users/sally \
-    password=foo \
-    policies=lob_a,readonly
-```
-
-???
-It's worth mentioning that you can create policies for paths that do not exist yet. Sally has permission to create secrets under lob_a/workshop/ even though she can't see these paths in the UI (yet).
-
----
-name: chapter-5-review
-📝 Chapter 5 Review
--------------------------
-<br>
-.contents[
-Vault Authentication Methods
-* Supports over a dozen auth methods
-* Policies assigned to a token after auth
-* Multiple policies can be assigned to an entity
-* Policies prevent unauthorized access
-* The default policy in vault is *deny*
-]
 
 ---
 name: Chapter-6
