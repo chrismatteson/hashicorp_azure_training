@@ -848,13 +848,13 @@ Spend some time pointing out what some of these do:
 
 ---
 name: chapter-5-exercise
-.center[.lab-header[👩‍🔬 Chapter 4: Exercise 5]]
+.center[.lab-header[👩‍🔬 Chapter 5: Exercise]]
 <br><br><br>
 ### Dynamic Secrets
 * Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
 * Read the creds path and show that dynamic secrets are generated each time.
 
-https://www.vaultproject.io/docs/secrets/databases/mysql.html  
+https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
 
 ### Leases
 * View the leases from the creds generated in the prior step.
