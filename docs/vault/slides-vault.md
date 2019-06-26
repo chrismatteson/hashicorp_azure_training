@@ -1160,7 +1160,7 @@ Vault Transit - Encryption as a Service
 name: Chapter-8
 class: center,middle
 .section[
-Chapter 7  
+Chapter 8  
 Namespaces and Sentinel
 ]
 
@@ -1179,6 +1179,9 @@ Configured via environment variable (CLI) or header (API)
 name: Sentinel
 Sentinel
 -------------------------
+Go beyond ACLs to manage policies
+* Restrict times when changes can be made
+* Restrict IP ranges where changes can come from
 
 ---
 name: chapter-8-exercise
