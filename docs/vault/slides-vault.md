@@ -847,6 +847,37 @@ Spend some time pointing out what some of these do:
 * Databases - We'll cover this in the workshop. Generate dynamic database credentials that have a lease and an expiration date. 
 
 ---
+name: chapter-5-exercise
+.center[.lab-header[👩‍🔬 Chapter 4: Exercise 5]]
+<br><br><br>
+### Dynamic Secrets
+* Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
+* Read the creds path and show that dynamic secrets are generated each time.
+
+https://www.vaultproject.io/docs/secrets/databases/mysql.html  
+
+### Leases
+* View the leases from the creds generated in the prior step.
+* Revoke a single lease, show that it's been revoked.
+* Revoke all the leases, show that they have all been revoked.
+
+https://www.vaultproject.io/docs/concepts/lease.html  
+https://www.vaultproject.io/api/system/leases.html  
+
+---
+name: chapter-4-review
+📝 Chapter 4 Review
+-------------------------
+<br>
+.contents[
+Vault Authentication Methods
+* Supports over a dozen auth methods
+* Policies assigned to a token after auth
+* Multiple policies can be assigned to an entity
+* Policies prevent unauthorized access
+* The default policy in vault is *deny*
+]
+---
 name: Chapter-6
 class: center,middle
 .section[
