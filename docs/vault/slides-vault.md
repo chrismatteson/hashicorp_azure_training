@@ -856,6 +856,10 @@ name: chapter-5-exercise
 
 https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
 
+`HINT 1: The connenction url should literally have "{{username}}:{{password}}". Do not actually put your username and password in`
+
+`HINT 2: Azure requires the username to include the hostname of the server`
+
 ### Leases
 * View the leases from the creds generated in the prior step.
 * Revoke a single lease, show that it's been revoked.
