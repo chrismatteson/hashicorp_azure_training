@@ -819,11 +819,38 @@ Vault Authentication Methods
 * Policies prevent unauthorized access
 * The default policy in vault is *deny*
 ]
+
 ---
-name: Chapter-4
+name: Chapter-5
 class: center,middle
 .section[
-Chapter 4
+Chapter 5      
+Vault Secrets Engines
+]
+
+---
+name: Vault-Secrets-Engines
+Vault Secrets Engines
+-------------------------
+.center[![:scale 85%](images/vault-secrets-engines.png)]
+HashiCorp Vault ships with many different secrets engines. Some are for storing secrets, others can dynamically manage credentials or even provide encryption as a service.
+
+???
+Spend some time pointing out what some of these do:
+* KV - we've already got some experience with this one. Supports versioning, which we don't cover in this workshop.
+* PKI - If you ever have to manage SSL certificates this one is for you.
+* SSH - Take all the pain and drudgery out of securing your SSH infrastructure. Vault can provide key signing services that make securing SSH a snap.
+* Transit - Imagine if you had an API that could handle all your encryption and decryption needs, based on policy, without ever having to manage a complicated key infrastructure. Vault Transit - Encryption as a Service
+* TOTP - Vault is like a swiss army knife with many tools. The TOTP tool allows Vault to either act as a code-generating device for MFA logins (useful for automated logins to MFA-enabled systems), or it can also provide TOTP server capabilities for MFA infrastructure.
+* Active Directory - we can rotate passwords and will soon be able to generate dynamic credentials.  Works on Azure AD too!
+* All the cloud IAM engines. Provide dynamic cloud creds for jobs, humans, etc.
+* Databases - We'll cover this in the workshop. Generate dynamic database credentials that have a lease and an expiration date. 
+
+---
+name: Chapter-6
+class: center,middle
+.section[
+Chapter 6
 Authorization in Vault: Policies
 ]
 
@@ -870,7 +897,7 @@ This policy grants all permissions to all secrets mounted under `lob_a/dept_1/` 
 Sudo is mainly reserved for interacting with 'root-protected' paths like things under /sys.
 
 ---
-name: chapter-4a-lab
+name: chapter-6a-lab
 .center[.lab-header[👩‍🔬 Lab Exercise 4a: Create New Policies]]
 <br><br>
 Policies are assigned when a user or app authenticates. Create the following two policies using the Vault UI Policies tab. You can copy and paste the code below right into the UI.
@@ -892,7 +919,7 @@ path "secret/*" {
 ```
 
 ---
-name: chapter-4a-lab-answer
+name: chapter-6a-lab-answer
 .center[.lab-header[👩‍🔬 Lab Exercise 4a: Answer]]
 <br><br><br>
 1. Click on the **Policies** link on the top navigation bar.
@@ -902,7 +929,7 @@ name: chapter-4a-lab-answer
 1. Repeat for the `secret` policy.
 
 ---
-name: chapter-4-review
+name: chapter-6-review
 📝 Chapter 4 Review
 -------------------------
 <br>
@@ -914,33 +941,6 @@ Vault ACL Policies
 * Assigned when an entity authenticates
 * Root policy is special, not for everyday use
 ]
-
-
----
-name: Chapter-6
-class: center,middle
-.section[
-Chapter 6      
-Vault Secrets Engines
-]
-
----
-name: Vault-Secrets-Engines
-Vault Secrets Engines
--------------------------
-.center[![:scale 85%](images/vault-secrets-engines.png)]
-HashiCorp Vault ships with many different secrets engines. Some are for storing secrets, others can dynamically manage credentials or even provide encryption as a service.
-
-???
-Spend some time pointing out what some of these do:
-* KV - we've already got some experience with this one. Supports versioning, which we don't cover in this workshop.
-* PKI - If you ever have to manage SSL certificates this one is for you.
-* SSH - Take all the pain and drudgery out of securing your SSH infrastructure. Vault can provide key signing services that make securing SSH a snap.
-* Transit - Imagine if you had an API that could handle all your encryption and decryption needs, based on policy, without ever having to manage a complicated key infrastructure. Vault Transit - Encryption as a Service
-* TOTP - Vault is like a swiss army knife with many tools. The TOTP tool allows Vault to either act as a code-generating device for MFA logins (useful for automated logins to MFA-enabled systems), or it can also provide TOTP server capabilities for MFA infrastructure.
-* Active Directory - we can rotate passwords and will soon be able to generate dynamic credentials.  Works on Azure AD too!
-* All the cloud IAM engines. Provide dynamic cloud creds for jobs, humans, etc.
-* Databases - We'll cover this in the workshop. Generate dynamic database credentials that have a lease and an expiration date. 
 
 ---
 name: Chapter-7
