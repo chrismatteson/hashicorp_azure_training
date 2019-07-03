@@ -53,12 +53,11 @@ Table of Contents
 0. HashiCorp Vault Overview
 1. Vault Lab Environment
 1. Interacting with Vault (CLI, GUI, API)
-1. Authorization (authn): Policies
-1. Authentication (authz): Auth Methods
+1. Authenticating to Vault: Auth Methods
 1. Vault Secrets Engines
-1. Dynamic Secrets
+1. Authorization in Vault: Policies
 1. Encryption as a Service
-1. Vault Enterprise
+1. Namespaces and Sentinel
 ]
 
 ???
