@@ -84,7 +84,7 @@ Table of Contents
 3. Organizing Your Terraform Code, Comments, and Data Sources
 4. Modules, Internals, and Backends
 5. Terraform Enterprise - Built for Teams and Organizations
-6. Protecting Sensative Values
+6. Protecting Sensitive Values
 7. Sentinel Policy Enforcement
 8. Version Control Systems and Terraform
 9. Access Controls
