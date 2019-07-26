@@ -195,6 +195,17 @@ Vault Architecture - Vault Autounseal
 .center[![:scale 90%](images/vault-autounseal.png)]
 
 ---
+name: chapter-1-exercise-1
+.center[.lab-header[👩‍🔬 Chapter 1: Exercise 1]]
+<br>
+### Connect to Azure and Setup Environment
+* If you completed Terraform 101 workshop, you should be ready to go for this class
+* Otherwise, connect into Azure Portal, open cloudshell, git clone this repo, cd into exercises/azure/vault/chapter1 and run terraform init/terraform apply
+
+<br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter1)]]
+
+---
 name: chapter-1-review
 📝 Chapter 1 Review
 -------------------------

@@ -12,3 +12,5 @@
   client_id=${azuread_application.vaultapp.application_id} \
   client_secret=${azuread_service_principal_password.vaultapp.value}`
 
+* Access Identity token
+curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https://management.azure.com' -H Metadata:true

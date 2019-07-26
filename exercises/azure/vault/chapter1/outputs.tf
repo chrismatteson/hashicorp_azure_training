@@ -31,7 +31,11 @@ output "VM_Name" {
   value = azurerm_virtual_machine.main.name
 }
 
-output "JWT_Token" {
-  value = "jwt=`curl http://localhost:50342/oauth2/token?resource=https://management.azure.com -H metadata:true | jq .access_token | tr -d '\"'"
+output "SSH" {
+  value = "ssh ubuntu@${module.networking.public_ip}"
+}
+
+output "SSH_Password" {
+  value = "Password1234!"
 }
 
