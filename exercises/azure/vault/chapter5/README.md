@@ -2,7 +2,7 @@
 * Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
 * Read the creds path and show that dynamic secrets are generated each time.
 
-https://www.vaultproject.io/docs/secrets/databases/mysql.html
+https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
 
 ### Chapter 5 - Exercise 2 - Leases
 * View the leases from the creds generated in the prior step.

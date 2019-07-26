@@ -7,4 +7,4 @@ https://www.vaultproject.io/docs/auth/azure.html
 
 `HINT 1: Use the tenant_id, application_id, and service_principal_password you created with your Terraform code. Use the state commands to find the values of each these items`
 
-`HINT 2: Query the resource https://management.azure.com`
+`HINT 2: Query the resource https://management.azure.com/`
