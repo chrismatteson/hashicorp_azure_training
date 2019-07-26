@@ -35,8 +35,9 @@ https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html
 https://www.terraform.io/docs/configuration/outputs.html
 
 * Configure Vault: `export VAULT_ADDR=http://${azurerm_public_ip.main.ip_address}:8200`
-* SQL Server FQDN: `${azurerm_sql_server.postgresql.fqdn}`
-* SQL Server Username/Password: `${azurerm_postgresql_server.sql.administrator_login}\\${azurerm_postgresql_server.sql.administrator_login_password}`
+* SQL Server FQDN: `${azurerm_mysql_server.sql.fqdn}`
+* SQL Server Username: `${azurerm_mysql_server.sql.administrator_login}@${azurerm_mysql_server.sql.name}`
+* SQL Server Password: `${azurerm_postgresql_server.sql.administrator_login_password}`
 * Subscription ID: `${data.azurerm_client_config.current.subscription_id}`
 * Resource Group Name: `${azurerm_virtual_machine.main.resource_group_name}`
 * VM Name: `${azurerm_virtual_machine.main.name}`

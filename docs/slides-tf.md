@@ -1583,8 +1583,9 @@ name: chapter-5-exercise-4
 ### Add Useful Output
 * Add outputs for to ease using the Terraform code.
  * Configure Vault: `export VAULT_ADDR=http://${module.networking.public_ip}:8200`
- * SQL Server FQDN: `${azurerm_sql_server.postgresql.fqdn}`
- * SQL Server Username/Password: `${azurerm_postgresql_server.sql.administrator_login}\\${azurerm_postgresql_server.sql.administrator_login_password}`
+ * SQL Server FQDN: `${azurerm_mysql_server.sql.fqdn}`
+ * SQL Server Username: `${azurerm_mysql_server.sql.administrator_login}@${azurerm_mysql_server.sql.name}`
+ * SQL Server Password: `${azurerm_mysql_server.sql.administrator_login_password}`
  * Subscription ID: `${data.azurerm_client_config.current.subscription_id}`
  * Resource Group Name: `${azurerm_virtual_machine.main.resource_group_name}`
  * VM Name: `${azurerm_virtual_machine.main.name}`

@@ -11,12 +11,16 @@ output "vault_config" {
   description = "Configure local vault agent to use public IP address of Vault Server"
 }
 
-output "PostgreSQL_Server_FQDN" {
+output "MySQL_Server_FQDN" {
   value = azurerm_mysql_server.sql.fqdn
 }
 
-output "PostgreSQL_Server_Username_Password" {
-  value = "${azurerm_mysql_server.sql.administrator_login}\\${azurerm_mysql_server.sql.administrator_login_password}"
+output "MySQL_Server_Username" {
+  value = "${azurerm_mysql_server.sql.administrator_login}@${azurerm_mysql_server.sql.name}"
+}
+
+output "MySQL_Server_Password" {
+  value = azurerm_mysql_server.sql.administrator_login_password}
 }
 
 output "Subscription_ID" {

@@ -11,12 +11,16 @@ output "vault_config" {
   description = "Configure local vault agent to use public IP address of Vault Server"
 }
 
-output "PostgreSQL_Server_FQDN" {
+output "MySQL_Server_FQDN" {
   value = azurerm_mysql_server.sql.fqdn
 }
 
-output "PostgreSQL_Server_Username_Password" {
-  value = "${azurerm_mysql_server.sql.administrator_login}\\${azurerm_mysql_server.sql.administrator_login_password}"
+output "MySQL_Server_Username" {
+  value = "${azurerm_mysql_server.sql.administrator_login}@${azurerm_mysql_server.sql.name}"
+}
+
+output "MySQL_Server_Password" {
+  value = azurerm_mysql_server.sql.administrator_login_password}
 }
 
 output "Subscription_ID" {
@@ -31,7 +35,11 @@ output "VM_Name" {
   value = azurerm_virtual_machine.main.name
 }
 
-output "JWT_Token" {
-  value = "jwt=`curl http://localhost:50342/oauth2/token?resource=https://management.azure.com -H metadata:true | jq .access_token | tr -d '\"'"
+output "SSH" {
+  value = "ssh ubuntu@${module.networking.public_ip}"
+}
+
+output "SSH_Password" {
+  value = "Password1234!"
 }
 
