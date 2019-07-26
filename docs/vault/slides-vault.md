@@ -339,6 +339,8 @@ https://www.vaultproject.io/docs/commands/status.html
 https://www.vaultproject.io/docs/commands/token/lookup.html  
 
 `HINT 1: Copy the unseal keys and initial root token somewhere incase you need to use them again`
+<br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter2)]]
 
 ---
 name: chapter-2-exercise-2
@@ -348,7 +350,8 @@ name: chapter-2-exercise-2
 * Verify that vault license is installed
 
 https://www.vaultproject.io/api/system/license.html  
-
+<br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter2)]]
 ???
 
 ---
@@ -788,7 +791,7 @@ Notice the policy section.  Policies are mapped to authentication endpoints.  To
 
 ---
 name: chapter-4-exercise
-.center[.lab-header[👩‍🔬 Chapter 4: Exercise 5]]
+.center[.lab-header[👩‍🔬 Chapter 4: Exercise]]
 ### Auth Method 1
 * Enable and configure userpass auth method.
 
@@ -800,7 +803,8 @@ https://www.vaultproject.io/docs/auth/userpass.html
 https://www.vaultproject.io/docs/auth/azure.html  
 
 `HINT 1: Use the tenant_id, application_id, and service_principal_password provided along with your Azure credentials.`
-
+<br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter4)]]
 
 ---
 name: chapter-4-review
@@ -843,8 +847,8 @@ Spend some time pointing out what some of these do:
 * Databases - We'll cover this in the workshop. Generate dynamic database credentials that have a lease and an expiration date. 
 
 ---
-name: chapter-5-exercise
-.center[.lab-header[👩‍🔬 Chapter 5: Exercise]]
+name: chapter-5-exercise-1
+.center[.lab-header[👩‍🔬 Chapter 5: Exercise 1]]
 <br><br><br>
 ### Dynamic Secrets
 * Enable Vault Database Secret Engine and configure it to connect to mysql_database created in a prior exercise.
@@ -855,7 +859,12 @@ https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
 `HINT 1: The connenction url should literally have "{{username}}:{{password}}". Do not actually put your username and password in`
 
 `HINT 2: Azure requires the username to include the hostname of the server`
+<br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter5)]]
 
+---
+name: chapter-5-exercise-2
+.center[.lab-header[👩‍🔬 Chapter 5: Exercise 2]]
 ### Leases
 * View the leases from the creds generated in the prior step.
 * Revoke a single lease, show that it's been revoked.
@@ -863,6 +872,8 @@ https://www.vaultproject.io/docs/secrets/databases/mysql-maria.html
 
 https://www.vaultproject.io/docs/concepts/lease.html  
 https://www.vaultproject.io/api/system/leases.html  
+<br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter5)]]
 
 ---
 name: chapter-5-review
@@ -941,7 +952,8 @@ https://www.vaultproject.io/docs/concepts/policies.html
 * Authenticate to Vault using the JWT token, verify access to the MySQL creds, and that there is not access to view th MySQL Secret Engine configuration.
 
 https://www.vaultproject.io/docs/auth/azure.html  
-
+<br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter6)]]
 ---
 name: chapter-6-review
 📝 Chapter 6 Review
@@ -991,7 +1003,8 @@ Use the Vault UI to:
 * Encrypt and Decrypt a string
 
 https://www.vaultproject.io/docs/secrets/transit/index.html  
-
+<br><br><br>
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter7)]]
 
 ---
 name: chapter-7-review

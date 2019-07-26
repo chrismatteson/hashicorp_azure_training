@@ -987,7 +987,7 @@ https://www.terraform.io/docs/configuration/providers.html
 
 `HINT 1: If you want your code to be completely reusable, use random_id to generate unique names. For instance, we could create a resource "random_id" "project_name" and use intepolation to pass ${random_id.project_name.hex} as the input to any name fields. https://www.terraform.io/docs/providers/random/r/id.html`
 <br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise1)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter2)]]
 
 ---
 name: chapter-2-exercise-2
@@ -1005,7 +1005,7 @@ https://www.terraform.io/docs/import
 https://www.terraform.io/docs/state/index.html  
 https://www.terraform.io/docs/commands  
 
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise1)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter2)]]
 
 ---
 name: chapter-2-review
@@ -1182,7 +1182,7 @@ https://www.terraform.io/docs/configuration/expressions.html#references-to-named
 
 `HINT 2: Terraform docs site examples for more complicated resources often include the code for prerequisate resources as well. Sometimes it's easier to copy/paste from the example for the last resource you want to create than starting with the first`
 <br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise2)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter3)]]
 
 ---
 name: chapter-3-exercise-2
@@ -1193,7 +1193,7 @@ name: chapter-3-exercise-2
 https://www.terraform.io/intro/examples/count.html  
 https://www.terraform.io/docs/configuration/resources.html#count-multiple-resource-instances
 <br><br><br><br><br><br><br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise2)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter3)]]
 
 ---
 name: defining-variables
@@ -1300,7 +1300,7 @@ name: chapter-3-exercise-3
 
 https://www.terraform.io/docs/configuration/variables.html  
 <br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise3)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter3)]]
 
 ---
 name: chapter-3-exercise-4
@@ -1312,7 +1312,7 @@ name: chapter-3-exercise-4
 
 https://www.terraform.io/docs/configuration/outputs.html  
 <br><br><br><br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise3)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter3)]]
 
 ---
 name: chapter-3-exercise-5
@@ -1324,7 +1324,7 @@ name: chapter-3-exercise-5
 https://www.terraform.io/docs/configuration/locals.html  
 https://www.terraform.io/docs/configuration/functions.html
 <br><br><br><br><br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise3)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter)]]
 
 ---
 name: chapter-3-review
@@ -1427,7 +1427,7 @@ https://www.terraform.io/docs/providers/azurerm/d/client_config.html
 
 https://www.terraform.io/docs/providers/template/d/file.html  
 
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise4)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter4)]]
 
 ---
 name: chapter-4-review
@@ -1545,7 +1545,7 @@ https://www.terraform.io/docs/configuration/modules.html
 
 `HINT 2: Create an outputs for network_interface id and public_ip ip_address to be used in a later exercise.`
 
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise5)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter5)]]
 
 ---
 name: chapter-5-exercise-2
@@ -1562,7 +1562,7 @@ https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure
 
 `HINT 2: Use the publisher "Microsoft.ManagedIdentity", the type "ManagedIdentityExtensionForLinux" and type_handler_version "1.0"`
 
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise6)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter5)]]
 
 ---
 name: chapter-5-exercise-3
@@ -1575,7 +1575,7 @@ https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html
 https://www.terraform.io/docs/providers/azurerm/r/mysql_database.html  
 https://www.terraform.io/docs/providers/azurerm/r/mysql_firewall_rule.html  
 <br><br><br><br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise6)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter5)]]
 
 ---
 name: chapter-5-exercise-4
@@ -1592,7 +1592,7 @@ name: chapter-5-exercise-4
 
 https://www.terraform.io/docs/configuration/outputs.html
 
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise6)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter5)]]
 
 ---
 name: chapter-5-review
@@ -1856,7 +1856,7 @@ https://www.hashicorp.com/resources/why-consider-terraform-enterprise-over-open-
 https://www.hashicorp.com/resources/getting-started-with-terraform-enterprise  
 https://www.terraform.io/docs/enterprise/users-teams-organizations/users.html  
 <br><br><br><br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise7)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter6)]]
 
 ---
 name: chapter-6-exercise-2
@@ -1873,7 +1873,7 @@ name: chapter-6-exercise-2
 https://www.terraform.io/docs/commands/cli-config.html  
 https://www.terraform.io/docs/backends/types/remote.html  
 <br><br><br><br><br><br><br><br>
-.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/exercise7)]]
+.footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter6)]]
 
 ---
 name: chapter-6-review
