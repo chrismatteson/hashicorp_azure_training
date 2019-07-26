@@ -803,6 +803,8 @@ https://www.vaultproject.io/docs/auth/userpass.html
 https://www.vaultproject.io/docs/auth/azure.html  
 
 `HINT 1: Use the tenant_id, application_id, and service_principal_password provided along with your Azure credentials.`
+
+`HINT 2: Query the resource https://management.azure.com`
 <br><br>
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/vault/chapter4)]]
 

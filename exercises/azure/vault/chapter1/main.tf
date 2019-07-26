@@ -85,23 +85,10 @@ resource "azurerm_virtual_machine" "main" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
-}
 
-resource "azurerm_virtual_machine_extension" "virtual_machine_extension" {
-  name                 = "vault"
-  location             = var.location
-  resource_group_name  = azurerm_resource_group.main.name
-  virtual_machine_name = azurerm_virtual_machine.main.name
-  publisher            = "Microsoft.ManagedIdentity"
-  type                 = "ManagedIdentityExtensionForLinux"
-  type_handler_version = "1.0"
-
-  settings = <<SETTINGS
-    {
-        "port": 50342
-    }
-SETTINGS
-
+  identity {
+    type = "SystemAssigned"
+  }
 }
 
 resource "azurerm_mysql_server" "sql" {
