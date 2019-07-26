@@ -4,6 +4,6 @@
 - https://portal.azure.com
 - Open Cloud Shell
 - git clone https://github.com/chrismatteson/hashicorp_azure_training
-- cd hashicorp_azure_training
+- cd hashicorp_azure_training/exercises/azure/vault/chapter1
 - `terraform init`
 - `terraform apply`
