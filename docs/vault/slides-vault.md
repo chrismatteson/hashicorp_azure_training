@@ -344,12 +344,10 @@ name: chapter-2-exercise-1
 .center[.lab-header[👩‍🔬 Chapter 2: Exercise 1]]
 ### Connect to Vault
 * Run commands from outputs to install and configure vault agent
-
 ### Deploy Vault
 * Initialize, Unseal, and Authenticate to Vault using the initial root token.
 * View status of vault
 * Lookup token information
-
 https://learn.hashicorp.com/vault/getting-started/deploy#initializing-the-vault
 https://www.vaultproject.io/docs/commands/status.html
 https://www.vaultproject.io/docs/commands/token/lookup.html
