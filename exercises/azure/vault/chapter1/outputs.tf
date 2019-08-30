@@ -20,7 +20,7 @@ output "MySQL_Server_Username" {
 }
 
 output "MySQL_Server_Password" {
-  value = azurerm_mysql_server.sql.administrator_login_password}
+  value = azurerm_mysql_server.sql.administrator_login_password
 }
 
 output "Subscription_ID" {
