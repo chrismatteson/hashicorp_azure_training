@@ -1423,7 +1423,7 @@ https://www.terraform.io/docs/providers/azurerm/d/client_config.html
 ### Template File Data Resources
 * Download the below code into a file called setupvault.tpl. Then create a data template_file to pass vault_url variable.
 
-[setupvault.tpl](https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/master/exercises/exercise4/setupvault.tpl)
+[setupvault.tpl](https://raw.githubusercontent.com/chrismatteson/hashicorp_azure_training/master/exercises/azure/terraform/chapter4/setupvault.tpl)
 
 https://www.terraform.io/docs/providers/template/d/file.html  
 
