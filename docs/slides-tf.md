@@ -1295,7 +1295,7 @@ name: chapter-3-exercise-3
 * Set defaults for each variable as follows:
  * location = eastus
  * tags = {}
- * vault binary url = http://hc-enterprise-binaries.s3.amazonaws.com/vault/ent/1.1.1/vault-enterprise_1.1.1%2Bent_linux_amd64.zip
+ * vault binary url = https://releases.hashicorp.com/vault/1.3.0+ent/vault_1.3.0+ent_linux_amd64.zip
 * Update main.tf file to use Azure location variable for the Resource Group.
 
 https://www.terraform.io/docs/configuration/variables.html  
@@ -1771,12 +1771,11 @@ Create an Organization
 -------------------------
 .center[![:scale 70%](images/sandbox.png)]
 
-Create a new organization. Name it with a prefix which the instructor will provide and your name **prefix-yourname**. We'll be using this later in the training.
+Create a new organization.
 
 ???
-**Okay, now everybody should create a new organization. Write those down too so I can upgrade them to trial organizations. This will just take a moment.**
+**Okay, everyone should create a new organization.**
 
-Instructors, provide a unique prefix based on the course for everyone to include in their organization name. Then ask students to provide you their organization names. You'll need to go into the admin console and upgrade them all to trial organizations.
 
 ---
 name: why-remote-state
@@ -1848,7 +1847,8 @@ name: chapter-6-exercise-1
 .center[.lab-header[👩🏽‍🔬 Chaper 6: Exercise 1]]
 ### Create Terraform Enterprise User and Organization
 * Create a Terraform Enterprise trial account.
-* Create a new organization, make sure to include the provided prefix in the name.
+* Create a new organization.
+* Upgrade the organization to Enterprise trial via Settings -> General -> Request Preview Access
 * Create an API key for your user.
 * Provide the name of the organization to the instructor.
 
