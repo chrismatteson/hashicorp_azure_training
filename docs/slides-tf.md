@@ -1322,7 +1322,7 @@ name: chapter-3-exercise-5
 * Update the Resource Group with the tags local.
 
 https://www.terraform.io/docs/configuration/locals.html  
-https://www.terraform.io/docs/configuration/functions.html
+https://www.terraform.io/docs/configuration/functions/merge.html
 <br><br><br><br><br><br><br><br><br>
 .footnote[.right[[s](https://github.com/chrismatteson/hashicorp_azure_training/tree/master/solutions/azure/terraform/chapter)]]
 
